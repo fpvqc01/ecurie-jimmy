@@ -92,3 +92,19 @@ Paires forex majeures (EUR/USD etc.) avec le pipeline macro par devise (scores c
 des taux/inflation déjà codés dans macro.py) — jamais backtesté dans cet environnement.
 
 Bonne revue! — Jimmy (et Claude, son partenaire de laboratoire)
+
+## Structure du depot (mise a jour)
+
+- `robots/` — les 5 EA MQL5 + l'indicateur Canal_Donchian
+- `templates/` — les modeles de graphiques MT5 (robot + indicateurs integres, un par marche)
+- `pipeline_python/` — scripts de donnees (bias/news/vol) + package bot/ + config.yaml.
+  Lancer avec Python 3.12 (pandas, requests). `bot.cmd ftmo-bias` orchestre le tout.
+- `backtests/` — TOUT L'OUTILLAGE DE VALIDATION. Point d'entree : `optimisation_finale.py`
+  (moteur de simulation du portefeuille : classes Sleeve/Fib/Donch/EmaBTC, frais reels,
+  plafond de positions, TP/reentree). Les autres scripts l'importent via exec() et testent
+  chaque question (concentration, vol targeting, temps de challenge, etc.).
+  Donnees : Yahoo Finance (gratuit, aucune cle requise).
+- `CONVERSATION_Ecurie_Jimmy.md` — l'historique complet du raisonnement (4 jours).
+
+Pour evaluer une nouvelle idee : l'implementer comme variante dans le moteur, la faire
+passer par les 4 standards (voir plus haut), et comparer a la config actuelle.

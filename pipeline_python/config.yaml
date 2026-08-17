@@ -1,0 +1,100 @@
+# === Environnement OANDA ===
+# "practice" = compte demo (argent fictif). Ne passe JAMAIS a "live"
+# avant d'avoir valide la strategie en demo pendant plusieurs semaines.
+oanda:
+  environment: practice        # practice | live
+  allow_live: false            # garde-fou : doit etre true EN PLUS de environment=live
+
+# Les cles/secrets vont dans des variables d'environnement, pas ici :
+#   OANDA_API_KEY     -> jeton API OANDA (genere dans ton profil OANDA, section "My Services > API")
+#   OANDA_ACCOUNT_ID  -> ex: 101-002-1234567-001
+#   FRED_API_KEY      -> gratuit sur https://fred.stlouisfed.org/docs/api/api_key.html
+
+# === Univers trade ===
+# Les 7 paires majeures en USD (regle simple, pas de tri retroactif des
+# "gagnantes" — ce serait de la sur-optimisation).
+pairs:
+  - EUR_USD
+  - GBP_USD
+  - USD_JPY
+  - USD_CAD
+  - AUD_USD
+  - NZD_USD
+  - USD_CHF
+
+# === Couche MACRO (direction) ===
+macro:
+  # Seuil sur l'ecart de score entre les 2 devises d'une paire.
+  # |score(base) - score(quote)| doit depasser ce seuil pour autoriser un trade.
+  bias_threshold: 0.5
+  # Poids des composantes du score par devise
+  weights:
+    carry: 0.4        # niveau du taux directeur (portage)
+    rate_momentum: 0.4 # la banque centrale monte ou baisse ses taux ?
+    inflation_trend: 0.2 # l'inflation accelere (pression hawkish) ou decelere ?
+  # Codes de zone BIS par devise (source : stats.bis.org, gratuit, sans cle).
+  # Taux directeurs = dataset WS_CBPOL, inflation YoY = dataset WS_LONG_CPI.
+  series:
+    USD: US
+    EUR: XM   # zone euro
+    GBP: GB
+    JPY: JP
+    CAD: CA
+    AUD: AU
+    NZD: NZ
+    CHF: CH
+
+# === Actifs non-forex (strategies macro dediees, voir bot/assets.py) ===
+# Regles long-only en H4, timing assoupli (plus de trades que le forex daily).
+# ATTENTION : parametres choisis sur le passe (3-8 ans de backtest) -> attendre
+# la confirmation en demo avant de leur faire confiance.
+assets:
+  XAU_USD:                    # OR — moteur : taux reels americains
+    bias: gold_real_rates
+    granularity: H4
+    candle_count: 500
+    risk_per_trade_pct: 1.0
+    stop_atr_mult: 3.0
+    take_profit_r: 2.0
+    timing:
+      fib_zone: [0.2, 0.8]
+      rsi_pullback_long: 55
+      rsi_pullback_short: 45
+      sr_proximity_atr: 99.0  # filtre support/resistance desactive
+  NAS100_USD:                 # US100 — moteur : posture de la Fed
+    bias: nasdaq_fed
+    granularity: H4
+    candle_count: 500
+    risk_per_trade_pct: 1.0
+    stop_atr_mult: 2.0
+    take_profit_r: 2.0
+    timing:
+      fib_zone: [0.1, 0.9]
+      rsi_pullback_long: 60
+      rsi_pullback_short: 40
+      sr_proximity_atr: 99.0
+      swing_lookback: 40
+
+# === Couche TIMING (declencheur technique, bougies journalieres) ===
+# Entree en pullback dans le sens du biais macro :
+#   long  : retracement dans la zone fib 38.2-61.8% du dernier swing haussier,
+#           RSI sous rsi_pullback_long et qui remonte, prix proche d'un support
+#   short : miroir (zone fib du swing baissier, RSI au-dessus, proche resistance)
+timing:
+  granularity: D         # bougies journalieres
+  candle_count: 120      # historique charge
+  swing_lookback: 60     # fenetre pour trouver le swing high/low du retracement fib
+  fib_zone: [0.382, 0.618]  # zone de retracement acceptee
+  rsi_period: 14
+  rsi_pullback_long: 45  # RSI doit etre passe sous ce niveau puis remonter
+  rsi_pullback_short: 55 # RSI doit etre passe au-dessus puis redescendre
+  sr_pivot_strength: 3   # un pivot = plus haut/bas local sur N bougies de chaque cote
+  sr_proximity_atr: 1.0  # distance max (en ATR) entre le prix et le support/resistance
+  atr_period: 14
+
+# === Risque ===
+risk:
+  risk_per_trade_pct: 0.5   # % du NAV risque par trade (0.5 = un demi pourcent)
+  stop_atr_mult: 3.0        # stop-loss a 3 x ATR (moins de sorties prematurees)
+  take_profit_r: 2.0        # take-profit a 2 x la distance du stop (2R)
+  max_open_positions: 4
