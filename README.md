@@ -79,6 +79,14 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
 - 8 stratégies cumulées : corrélation intra-marché, vole les sièges du plafond
 - Risque global ×2+ : brise les limites FTMO (validé par simulation)
 - Plafond de 1 position : trop restrictif ; sans plafond : Sharpe s'effondre
+- **Robot GBPUSD (18 août, 3 scripts test_gbpusd*.py, frais réels des specs MT5 :
+  swap -4,47 pts/j, commission 2,5 $/lot/côté, spread ~0,3 pip)** : criblage 10 ans →
+  seule l'EMA 20/50 achat seul survit (+9,4 R, PF 2,17, moitiés +4,3/+5,1) mais 2,3 trades/an
+  et paramètres voisins deux fois plus faibles ; la couche macro BIS par devise (scores
+  carry/momentum taux/inflation, décalés de 2 mois) DÉTRUIT l'avantage partout (filtre
+  EMA : tout négatif ; macro seul : -62,7 R/10 ans) ; en portefeuille sous plafond de 2 :
+  CAGR 18,1→15,1 %, Sharpe 1,38→1,19, 1re moitié 5,3→1,4 % — le robot vole les sièges
+  de l'or pour +1,2 point en 5 ans. REJETÉ (standards 1 et 4).
 
 **Standards de validation utilisés** (à conserver pour toute proposition) :
 1. principe économique externe (pas d'idée née de l'optimisation elle-même),
@@ -86,10 +94,14 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
 3. stabilité sur les DEUX moitiés de période ET sur les paramètres voisins,
 4. amélioration au niveau du PORTEFEUILLE sous le plafond de 2 (pas juste en solo).
 
-## Territoire encore inexploré
+## Territoire forex : exploré et fermé (18 août)
 
-Paires forex majeures (EUR/USD etc.) avec le pipeline macro par devise (scores carry/momentum
-des taux/inflation déjà codés dans macro.py) — jamais backtesté dans cet environnement.
+L'hypothèse « paires forex majeures + pipeline macro par devise » a été testée sur GBPUSD
+(voir cimetière ci-dessus et backtests/test_gbpusd*.py) : les scores macro BIS, même
+correctement décalés du retard de publication, n'ont aucun pouvoir directionnel au
+quotidien sur la paire, et le meilleur candidat technique est trop lent (2,3 trades/an)
+pour justifier un siège sous le plafond de 2 positions. L'EUR/USD partagerait les mêmes
+frais et la même macro — pas de raison d'attendre un résultat différent sans une idée neuve.
 
 Bonne revue! — Jimmy (et Claude, son partenaire de laboratoire)
 
