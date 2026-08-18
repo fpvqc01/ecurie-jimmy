@@ -94,14 +94,24 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
 3. stabilité sur les DEUX moitiés de période ET sur les paramètres voisins,
 4. amélioration au niveau du PORTEFEUILLE sous le plafond de 2 (pas juste en solo).
 
-## Territoire forex : exploré et fermé (18 août)
+## Territoire forex : exploré (18 août) — GBPUSD fermé, USDJPY sur le banc d'essai
 
-L'hypothèse « paires forex majeures + pipeline macro par devise » a été testée sur GBPUSD
-(voir cimetière ci-dessus et backtests/test_gbpusd*.py) : les scores macro BIS, même
-correctement décalés du retard de publication, n'ont aucun pouvoir directionnel au
-quotidien sur la paire, et le meilleur candidat technique est trop lent (2,3 trades/an)
-pour justifier un siège sous le plafond de 2 positions. L'EUR/USD partagerait les mêmes
-frais et la même macro — pas de raison d'attendre un résultat différent sans une idée neuve.
+**GBPUSD : rejeté** (voir cimetière et backtests/test_gbpusd*.py) : les scores macro BIS,
+même correctement décalés du retard de publication, n'ont aucun pouvoir directionnel au
+quotidien, et le meilleur candidat technique est trop lent (2,3 trades/an) pour justifier
+un siège sous le plafond de 2 positions. Même conclusion attendue pour l'EUR/USD.
+
+**USDJPY : candidat VALIDE en réserve** (backtests/test_usdjpy*.py) — la paire des cycles
+de politique monétaire Fed/BoJ. EMA 20/50 dans les DEUX sens (premier candidat vendeur du
+système), TP 1,5R, stop 2×ATR, risque 0,75 % : +14,4 R/10 ans, PF 1,91, moitiés +5,4/+9,0,
+plateau robuste (voisins 10/40→30/60 tous positifs, TP 1R→3R tous positifs, ~4 trades/an).
+Le filtre macro BIS n'ajoute rien ici non plus (qualité par trade meilleure, total amputé).
+En portefeuille sous plafond de 2 : CAGR identique (+18,1 %), Sharpe 1,38→1,39, les deux
+moitiés ET les 12 derniers mois légèrement meilleurs — il ne vole pas de sièges. Verdict :
+n'augmente pas le rendement, mais diversifie (seul robot capable de gagner quand les actifs
+risqués baissent). Décision d'implémentation laissée ouverte ; il faudrait d'abord confirmer
+les swaps réels FTMO (specs MT5 USDJPY : swap achat probablement positif — carry — mais
+la majoration du courtier peut l'annuler ; hypothèses du test : +0,005 %/j achat, -0,010 %/j vente).
 
 Bonne revue! — Jimmy (et Claude, son partenaire de laboratoire)
 
