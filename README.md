@@ -79,6 +79,12 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
 - 8 stratégies cumulées : corrélation intra-marché, vole les sièges du plafond
 - Risque global ×2+ : brise les limites FTMO (validé par simulation)
 - Plafond de 1 position : trop restrictif ; sans plafond : Sharpe s'effondre
+- Stat-arb « style Renaissance » (test_simons.py : z-score 1 j, renversement 5 j, paire
+  or/argent) : tout négatif aux frais retail (-14 à -40 % sur 10 ans) — l'avantage par
+  trade est plus petit que les frais ; ne marche qu'avec l'infrastructure d'un fonds
+- Écurie en mode « news seulement » (test_ecurie_news.py : entrées limitées aux 0-2 j
+  après NFP/CPI/FOMC) : CAGR 17,9→6,9 %, 1re moitié négative ; l'avantage vient des
+  tendances/replis, pas des annonces — les news restent un garde-fou, pas un signal
 - **Robot GBPUSD (18 août, 3 scripts test_gbpusd*.py, frais réels des specs MT5 :
   swap -4,47 pts/j, commission 2,5 $/lot/côté, spread ~0,3 pip)** : criblage 10 ans →
   seule l'EMA 20/50 achat seul survit (+9,4 R, PF 2,17, moitiés +4,3/+5,1) mais 2,3 trades/an
