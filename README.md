@@ -85,6 +85,12 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
 - Écurie en mode « news seulement » (test_ecurie_news.py : entrées limitées aux 0-2 j
   après NFP/CPI/FOMC) : CAGR 17,9→6,9 %, 1re moitié négative ; l'avantage vient des
   tendances/replis, pas des annonces — les news restent un garde-fou, pas un signal
+- Entrée immédiate à la sortie des annonces (test_entree_news.py, H1 2 ans, ~75 annonces) :
+  MOMENTUM -41 R (la réaction est déjà dans le prix) ; FADE +27 R et le contrôle sur
+  fausses dates (-27 R) prouve un vrai signal de sur-réaction — MAIS rejeté quand même :
+  décroissance brutale (+23,3 R an 1 → +3,7 R an 2, signature IBS), historique testable
+  limité à 2 ans, et spreads d'annonce réels 5-10× non modélisables. Le seul rejet avec
+  un signal authentique — à retester si des données H1 de 10 ans deviennent disponibles
 - **Robot GBPUSD (18 août, 3 scripts test_gbpusd*.py, frais réels des specs MT5 :
   swap -4,47 pts/j, commission 2,5 $/lot/côté, spread ~0,3 pip)** : criblage 10 ans →
   seule l'EMA 20/50 achat seul survit (+9,4 R, PF 2,17, moitiés +4,3/+5,1) mais 2,3 trades/an
