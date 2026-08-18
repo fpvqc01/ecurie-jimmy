@@ -85,6 +85,13 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
 - Écurie en mode « news seulement » (test_ecurie_news.py : entrées limitées aux 0-2 j
   après NFP/CPI/FOMC) : CAGR 17,9→6,9 %, 1re moitié négative ; l'avantage vient des
   tendances/replis, pas des annonces — les news restent un garde-fou, pas un signal
+- Runner 3R/24 h après TP (test_runner_3r.py, variante plafonnée du runner 75/25) :
+  -1 à -2 pts de CAGR — la ré-entrée pleine grandeur sur repli domine toujours le bout
+  de position au stop serré (3e rejet de la famille runner)
+- Fermeture partielle 1/3 à +500 $ (test_partiel_500.py, voisins 1/2 et 250/1000 $) :
+  CAGR 17,9→12,1 % contre pire journée -4,02→-2,83 % — assurance beaucoup trop chère ;
+  leçon : un seuil en dollars vaut 0,17R pour l'or et 0,67R pour le BTC, les règles
+  doivent rester en R/ATR
 - Entrée immédiate à la sortie des annonces (test_entree_news.py, H1 2 ans, ~75 annonces) :
   MOMENTUM -41 R (la réaction est déjà dans le prix) ; FADE +27 R et le contrôle sur
   fausses dates (-27 R) prouve un vrai signal de sur-réaction — MAIS rejeté quand même :
