@@ -28,3 +28,14 @@ systeme : cherche les failles, les risques oublies et les pistes testables.
 - robots_mql5_I2plus/ : les 5 robots en production (MQL5)
 - robots_mql4_L3/ : les 5 robots du banc d'essai (MQL4, pyramidage)
 - backtests_cles/ : moteur de simulation + 5 tests representatifs
+
+## Question 6 (ajoutee) : l'EVOLUTION
+Le dossier contient les 4 generations MQL5 de la semaine :
+  robots_mql5_V1/  -> originaux (15-16 aout) : strategies de base
+  robots_mql5_I2/  -> +TP/re-entree, plafond d'ecurie, breakeven
+  robots_mql5_I2plus/ -> +volatility targeting (EN PRODUCTION, observation)
+  robots_mql5_L3/  -> +pyramidage Turtle, gardien 2,5 %, verif de marge
+  robots_mql4_L3/  -> portage MetaTrader 4 de L3 (banc d'essai live)
+Analyse l'evolution : (a) une generation a-t-elle INTRODUIT un defaut que les
+suivantes trainent encore ? (b) y a-t-il de la complexite accumulee qui ne
+paie pas ? (c) si tu devais couper UNE fonctionnalite de L3, laquelle et pourquoi ?
