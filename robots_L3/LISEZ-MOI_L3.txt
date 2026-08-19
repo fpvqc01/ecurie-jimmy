@@ -1,0 +1,73 @@
+================================================================
+ ECURIE L3 — construite le 19 aout 2026
+ Base : I2+ (en production) + les 3 decouvertes validees du 19
+================================================================
+
+CE QUI CHANGE PAR RAPPORT A I2+
+--------------------------------
+1. PYRAMIDAGE TURTLE sur les 2 robots de CASSURE seulement
+   (BTCUSD_Cassure_L3_H4 et USOIL_Petrole_L3_D1) :
+     - une unite supplementaire chaque fois que le prix avance de
+       0,5 x ATR au-dessus de la derniere unite achetee
+     - maximum 3 unites empilees
+     - stop COMMUN a toutes les unites, place au plus haut entre
+       le canal bas et (derniere unite - 2,0 x ATR)
+     - une seule unite ajoutee par bougie (choix prudent : en
+       backtest les ajouts pouvaient etre multiples dans une
+       bougie explosive ; la version live participe donc un peu
+       moins aux mouvements violents)
+     - inputs : PyramidageActif, MaxUnites, PasUniteATR,
+       StopSousDerniereUniteATR (modifiables sans recompiler)
+   Backtest 5 ans : +31,0 %/an, Sharpe 1,91, challenge median 81 j
+   (contre +17,6 %, Sharpe 1,37, 111 j pour I2+).
+   NON applique aux robots or / Nasdaq / BTC EMA : teste, resultat
+   apparent superbe mais artefact (18 declenchements du gardien).
+
+2. GARDIEN QUOTIDIEN RESSERRE : -3,5 % -> -2,5 % sur les 5 robots
+   OBLIGATOIRE avec le pyramidage : sans lui, un ecart de prix qui
+   deborde la coupure de 50 % donne -5,25 % = challenge FTMO mort.
+   Avec -2,5 %, il reste 1,25 point de marge sous la limite -5 %.
+   Bonus mesure : le gardien serre AMELIORE le rendement (il coupe
+   les mauvaises journees plus tot).
+
+3. PLAFOND D'ECURIE PAR PILES : ComptePositionsEcurie() compte
+   desormais les PILES et non les positions. Un robot qui detient
+   3 unites sur le meme marche occupe UN seul des 2 sieges.
+   (Sans ca, le pyramidage aurait bloque toute l'ecurie.)
+
+CORRECTIONS DE BOGUES (trouvees le 19 aout)
+--------------------------------------------
+4. Test de position robuste dans les 3 robots fib/EMA : ils
+   utilisaient PositionSelect(_Symbol), peu fiable sur un compte
+   HEDGING — d'ou le journal de l'or qui affichait "position=aucune"
+   alors qu'un trade etait ouvert. Risque reel de double entree.
+   Remplace par une boucle explicite symbole + magic.
+5. Commentaires d'ordre : "MacroBot_I2" -> "Ecurie_L3".
+6. Journal des cassures : affiche maintenant le nombre d'unites.
+
+NOUVEAUX NUMEROS MAGIQUES (pour cohabiter avec I2+ sans conflit)
+-----------------------------------------------------------------
+   20260915  BTCUSD_EMA_L3_H1, XAUUSD_Or_L3_H4, US100_Nasdaq_L3_H4
+   20260917  BTCUSD_Cassure_L3_H4
+   20260918  USOIL_Petrole_L3_D1
+
+INSTALLATION (sur le NOUVEAU compte demo, PAS sur celui en cours)
+------------------------------------------------------------------
+Les .ex5 sont deja dans MQL5\Experts\Jimmy L3 et les modeles dans
+MQL5\Profiles\Templates\Jimmy L3 de CE terminal. Pour un 2e terminal :
+  1. copier le dossier Jimmy L3 dans MQL5\Experts
+  2. copier les 5 .tpl dans MQL5\Profiles\Templates
+  3. redemarrer, ouvrir un graphique par marche au bon timeframe :
+       BTCUSD H1  -> jimmy btc ema L3 H1
+       BTCUSD H4  -> jimmy btc cassure L3 H4
+       XAUUSD H4  -> jimmy or L3 H4
+       US100  H4  -> jimmy nasdaq L3 H4
+       USOIL  D1  -> jimmy petrole L3 D1
+  4. activer "Algo Trading"
+
+RAPPEL IMPORTANT
+----------------
+L3 n'a JAMAIS tourne en conditions reelles. I2+ est la version en
+production sur le compte demo FTMO en cours d'observation. Ne pas
+melanger les deux sur le meme compte : le pyramidage et le gardien
+resserre changeraient les mesures de la periode d'observation.
