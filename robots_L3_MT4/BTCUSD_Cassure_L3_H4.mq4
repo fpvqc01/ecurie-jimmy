@@ -369,6 +369,14 @@ void VerifierTpEncaisse()
 int OnInit()
   {
    EventSetTimer(60);
+   // Dans le STRATEGY TESTER : les coupe-circuits doivent repartir a neuf.
+   // (en reel ils sont volontairement permanents jusqu a reinitialisation)
+   if(IsTesting())
+     {
+      GlobalVariableDel(BaseGV());
+      GlobalVariableDel(HaltGV());
+      GlobalVariableDel(DayGV());
+     }
    if(!GlobalVariableCheck(BaseGV())) GlobalVariableSet(BaseGV(), AccountBalance());
    soldeReference = GlobalVariableGet(BaseGV());
    Notifier("BTCUSD Cassure L3 H4 demarre. Base: " + DoubleToString(soldeReference, 2) +

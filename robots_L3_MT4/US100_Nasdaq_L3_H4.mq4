@@ -369,6 +369,14 @@ void VerifierTpEncaisse()
 int OnInit()
   {
    EventSetTimer(60);
+   // Dans le STRATEGY TESTER : les coupe-circuits doivent repartir a neuf.
+   // (en reel ils sont volontairement permanents jusqu a reinitialisation)
+   if(IsTesting())
+     {
+      GlobalVariableDel(BaseGV());
+      GlobalVariableDel(HaltGV());
+      GlobalVariableDel(DayGV());
+     }
    if(!GlobalVariableCheck(BaseGV())) GlobalVariableSet(BaseGV(), AccountBalance());
    soldeReference = GlobalVariableGet(BaseGV());
    Notifier("US100 Nasdaq L3 H4 demarre. Base: " + DoubleToString(soldeReference, 2) +
@@ -463,7 +471,9 @@ void OnTick()
       cloture > plancherSwing)
      {
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
+      Print("Repli atteint apres TP : re-entree.");
       OuvrirAchat(stopDist, "Ecurie_L3 re-entree");
+      attenteReentree = 0;          // desarme : une seule re-entree par TP
      }
   }
 
