@@ -52,9 +52,10 @@ def main() -> None:
         print(f"AVERTISSEMENT: calcul impossible ({e}) — fichier inchange.")
         return
 
-    pattern = os.path.join(os.environ["APPDATA"], "MetaQuotes", "Terminal",
-                           "*", "MQL5", "Files")
-    for t in glob.glob(pattern):
+    base = os.path.join(os.environ["APPDATA"], "MetaQuotes", "Terminal")
+    dossiers = glob.glob(os.path.join(base, "*", "MQL5", "Files"))
+    dossiers += glob.glob(os.path.join(base, "*", "MQL4", "Files"))  # MT4 : ecurie L3
+    for t in dossiers:
         path = os.path.join(t, "macrobot_vol.txt")
         with open(path, "w", encoding="ascii") as f:
             f.write(f"FACTEUR={facteur:.2f}\n")

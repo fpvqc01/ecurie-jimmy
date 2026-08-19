@@ -29,9 +29,9 @@ def main() -> None:
     btc = nas  # BTC suit la posture Fed, comme le Nasdaq
     line = f"GOLD={gold};NAS={nas};BTC={btc}"
 
-    pattern = os.path.join(os.environ["APPDATA"], "MetaQuotes", "Terminal",
-                           "*", "MQL5", "Files")
-    targets = glob.glob(pattern)
+    base = os.path.join(os.environ["APPDATA"], "MetaQuotes", "Terminal")
+    targets = glob.glob(os.path.join(base, "*", "MQL5", "Files"))
+    targets += glob.glob(os.path.join(base, "*", "MQL4", "Files"))  # MT4 : ecurie L3
     if not targets:
         print("Aucun dossier MQL5\\Files trouve — MetaTrader 5 est-il installe ?")
         return

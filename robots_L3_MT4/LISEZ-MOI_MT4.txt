@@ -1,0 +1,70 @@
+================================================================
+ ECURIE L3 — VERSION METATRADER 4 (MQL4)
+ Construite le 19 aout 2026 pour le compte demo FTMO-Demo2
+================================================================
+
+INSTALLATION : DEJA FAITE
+--------------------------
+Tout est deja en place dans ton MT4 (FTMO MetaTrader 4) :
+  MQL4\Experts\Jimmy L3\   les 5 robots (.mq4 + .ex4 compiles)
+  MQL4\Indicators\         Canal_Donchian.ex4
+  templates\               les 5 modeles "jimmy ... L3 ..."
+Ce dossier-ci (Downloads\Ecurie_L3_MT4) est une copie de secours.
+
+CE QU'IL TE RESTE A FAIRE DANS MT4
+-----------------------------------
+1. Redemarrer MetaTrader 4 (pour qu'il voie les nouveaux fichiers)
+2. Activer le bouton "Trading algorithmique" (doit etre vert)
+3. Ouvrir un graphique par marche, puis clic droit > Modele :
+
+   MARCHE        TIMEFRAME   MODELE A APPLIQUER
+   BTCUSD        H1          jimmy btc ema L3 H1
+   BTCUSD        H4          jimmy btc cassure L3 H4
+   XAUUSD        H4          jimmy or L3 H4
+   US100.cash    H4          jimmy nasdaq L3 H4
+   USOIL.cash    D1          jimmy petrole L3 D1
+
+   Le modele attache le robot ET affiche ses indicateurs :
+     - btc ema     : EMA 20 (jaune) + EMA 50 (rouge) + ATR
+     - or/nasdaq   : RSI 14 (avec niveaux 30/70) + ATR
+     - cassures    : canal Donchian (bleu = entree, rouge = stop) + ATR
+
+4. Verifier dans l'onglet "Experts" qu'il n'y a pas d'erreur, et que
+   chaque robot ecrit son message de demarrage.
+
+CE QUI EST IDENTIQUE A LA VERSION MT5
+--------------------------------------
+  - Strategies : EMA 20/50, fib+RSI, cassures Donchian, saison petrole
+  - Gardien -2,5 %/jour et -8 % total, partages entre les 5 robots
+  - Plafond de 2 piles simultanees (un robot qui pyramide = 1 siege)
+  - Risque : 0,75 % (BTC, petrole), 1,5 % (Nasdaq), 3 % (or)
+  - Pyramidage Turtle sur les 2 cassures : +1 unite chaque +0,5 ATR,
+    max 3, stop commun a 2,0 ATR sous la derniere unite
+  - TP + re-entree sur repli (EMA 2R, or 1,5R, Nasdaq 1R)
+  - Filtres macro/annonces, facteur de volatilite, journal, push
+
+CE QUI DIFFERE (limites de MQL4)
+---------------------------------
+  - MQL4 n'a pas OnTradeTransaction : la detection d'un TP encaisse
+    (qui arme la re-entree) se fait en interrogeant l'historique des
+    ordres. Fonctionnellement equivalent, mais verifie les premieres
+    re-entrees dans le journal pour confirmer.
+  - MT4 est toujours en mode "hedging" : le pyramidage y est naturel
+    (chaque unite est un ordre distinct).
+  - Les numeros magiques sont les memes qu'en MT5 (20260915/17/18),
+    mais comme c'est un AUTRE compte sur un AUTRE terminal, aucun
+    conflit n'est possible.
+
+PIPELINE DE DONNEES : DEJA BRANCHE
+-----------------------------------
+Les scripts Python (biais macro BIS, annonces ForexFactory, facteur de
+volatilite) ecrivent maintenant dans les DEUX terminaux — MQL5\Files
+pour l'ecurie I2+ et MQL4\Files pour l'ecurie L3. Verifie avec :
+   bot.cmd ftmo-bias
+Tu dois voir deux chemins par fichier (un ...D0E82... et un ...2C68B...).
+
+REGLE D'OR
+----------
+Le compte MT5 (I2+) est en periode d'observation : on ne le touche pas.
+Le compte MT4 (L3) est le banc d'essai de la nouvelle configuration.
+A la revue de septembre, on comparera les deux sur donnees reelles.
