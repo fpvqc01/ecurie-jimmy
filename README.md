@@ -57,6 +57,32 @@ Performance simulée (5 ans, frais réels du compte relevés dans MT5) :
 
 Le swap BTC est le frais dominant — toute stratégie qui tient longtemps ses positions BTC le paie cher.
 
+## 🏆 CANDIDAT VALIDÉ EN ATTENTE D'IMPLÉMENTATION : pyramidage Turtle (19 août)
+
+Seule idée en 70+ backtests à passer les 4 standards ET le test de survie ET le contrôle
+d'exécution. Source : règles originales des Turtles (Dennis/Eckhardt) — ajouter des unités
+à chaque +0,5 ATR en faveur du trade, stop suiveur commun, max 3-4 unités.
+**Appliqué aux DEUX robots de cassure seulement** (BTC Cassure, Pétrole — ceux qui ont un
+stop suiveur et aucun TP) :
+
+| Config (portefeuille, gardien -3,5 % actif) | CAGR | Sharpe | Creux | Morts/challenge | Durée médiane |
+|---|---|---|---|---|---|
+| Référence actuelle | +17,6 % | 1,37 | -6,1 % | 14 % | 111 j |
+| + pyramidage 2 unités | +24,3 % | 1,62 | -3,7 % | 14 % | 91 j |
+| **+ pyramidage 3 unités** | **+29,2 %** | **1,74** | **-3,2 %** | **15 %** | **81 j** |
+| + pyramidage 4 unités | +36,2 % | 1,90 | -2,8 % | 16 % | 80 j |
+
+Validations : les 12 combinaisons de voisins (2/3/4 unités × 0,25/0,5/0,75/1 ATR) battent
+toutes la référence ; les DEUX moitiés de période s'améliorent (+19,1/+40,0 vs +5,3/+31,4) ;
+l'avantage survit à l'exécution réaliste (unités remplies au pire de niveau/ouverture +
+glissement 0,15 % → +29,0 %). Pourquoi ce n'est pas le mirage du risque ×2 (rejeté, 42 % de
+morts) : le pyramidage n'ajoute du risque QUE sur les trades déjà gagnants, financés par le
+profit ouvert et couverts par le stop suiveur — les perdants gardent leur taille d'origine.
+**Réserve honnête** : le gain vient d'un petit nombre de trades (les cassures font ~15-20
+trades en 5 ans, le pétrole seulement 7) — c'est la littérature (un siècle de données AQR)
+qui sert d'échantillon externe. **NE PAS appliquer aux robots fib/TP** (or, Nasdaq) : +64,6 %
+apparent mais 18 déclenchements du gardien en 5 ans = artefact de moteur, pas une stratégie.
+
 ## ⚠️ IMPORTANT pour l'optimisation : le cimetière des idées déjà testées
 
 ~60 backtests réalisés (Python, données Yahoo 5-10 ans, frais réels, validation par moitiés
@@ -79,6 +105,11 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
 - 8 stratégies cumulées : corrélation intra-marché, vole les sièges du plafond
 - Risque global ×2+ : brise les limites FTMO (validé par simulation)
 - Plafond de 1 position : trop restrictif ; sans plafond : Sharpe s'effondre
+- Filtre time-series momentum 12 mois / 6 mois (Moskowitz-Ooi-Pedersen) comme régime global
+  (test_litterature.py) : CAGR 17,6→9,3 %, 1re moitié négative — même famille d'échec que
+  l'EMA200 : ces filtres arrivent trop tard sur des robots qui suivent déjà la tendance
+- Plafond par sous-jacent corrélé (interdire 2 positions BTC simultanées, règle Turtle) :
+  17,6→16,6 %, Sharpe 1,37→1,30 — le plafond de 2 gère déjà la corrélation dans les faits
 - Stat-arb « style Renaissance » (test_simons.py : z-score 1 j, renversement 5 j, paire
   or/argent) : tout négatif aux frais retail (-14 à -40 % sur 10 ans) — l'avantage par
   trade est plus petit que les frais ; ne marche qu'avec l'infrastructure d'un fonds
