@@ -83,6 +83,30 @@ trades en 5 ans, le pétrole seulement 7) — c'est la littérature (un siècle 
 qui sert d'échantillon externe. **NE PAS appliquer aux robots fib/TP** (or, Nasdaq) : +64,6 %
 apparent mais 18 déclenchements du gardien en 5 ans = artefact de moteur, pas une stratégie.
 
+### ⚠️ Condition obligatoire découverte au stress du gardien (test_gardien_stress.py)
+
+Le pyramidage **détruit le coussin de sécurité naturel** de l'écurie. Pire journée AVANT
+intervention du gardien : **-4,02 % en config actuelle** (sous la limite FTMO -5 % même si
+le gardien tombait en panne) contre **-5,62 % avec 3 unités**. Le pyramidage devient donc
+dépendant d'une coupure parfaite — et un écart de prix (weekend BTC) qui la déborde de 50 %
+donne -5,25 % = challenge mort.
+
+**Correctif validé** : resserrer le gardien quotidien de -3,5 % à **-2,5 %** quand on
+pyramide. Il rétablit 1,25 point de marge sous la limite FTMO même avec 50 % de débordement,
+et — contre-intuitivement — **améliore aussi le rendement** (coupe les mauvaises journées
+plus tôt) :
+
+| Config | CAGR | Sharpe | Pire jour si gardien déborde 50 % | Marge sous -5 % |
+|---|---|---|---|---|
+| 3 unités, gardien -3,5 % | +29,2 % | 1,75 | -5,25 % | **-0,25 (brèche)** |
+| 3 unités, gardien -3,0 % | +29,7 % | 1,82 | -4,50 % | +0,50 |
+| **3 unités, gardien -2,5 %** | **+30,1 %** | **1,87** | **-3,75 %** | **+1,25** |
+| 3 unités, gardien -2,0 % | +22,7 % | 1,63 | -3,00 % | +2,00 (trop serré) |
+
+Le gardien à -2,0 % coupe trop de journées récupérables. **Configuration recommandée pour
+l'implémentation : pyramidage 3 unités à +0,5 ATR sur les 2 cassures + gardien quotidien
+à -2,5 %** (morts en challenge 15 %, durée médiane 82 j contre 111 j aujourd'hui).
+
 ## ⚠️ IMPORTANT pour l'optimisation : le cimetière des idées déjà testées
 
 ~60 backtests réalisés (Python, données Yahoo 5-10 ans, frais réels, validation par moitiés
