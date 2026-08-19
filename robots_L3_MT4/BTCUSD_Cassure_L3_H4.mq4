@@ -195,7 +195,20 @@ double CalculerLot(double distanceSL)
    if(pas > 0) lot = MathFloor(lot / pas) * pas;
    if(lot < mini) return(0.0);
    if(lot > maxi) lot = maxi;
-   return(NormalizeDouble(lot, 2));
+   lot = NormalizeDouble(lot, 2);
+
+   // L3 : verification de la MARGE (sinon erreur 134, ordre perdu en silence)
+   int essais = 0;
+   while(lot >= mini && essais < 12)
+     {
+      ResetLastError();
+      double libre = AccountFreeMarginCheck(Symbol(), OP_BUY, lot);
+      if(libre > 0 && GetLastError() != 134) return(lot);
+      lot = NormalizeDouble(lot - MathMax(pas, lot * 0.2), 2);   // on reduit
+      essais++;
+     }
+   Print("Marge insuffisante pour ouvrir : ordre annule (lot demande trop gros).");
+   return(0.0);
   }
 
 //+------------------------------------------------------------------+
