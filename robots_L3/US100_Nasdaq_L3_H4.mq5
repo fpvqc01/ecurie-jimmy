@@ -435,6 +435,30 @@ void LireFacteurVol()
      }
   }
 //+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+//| L3 : verifie que la MARGE suffit, sinon reduit le lot ou annule   |
+//| (sans ca l'ordre est rejete et le signal est perdu en silence)    |
+//+------------------------------------------------------------------+
+double LotSelonMarge(double lot)
+  {
+   double lotMin = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   double pas    = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   double prix   = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double marge  = 0.0;
+   int essais = 0;
+   while(lot >= lotMin && essais < 12)
+     {
+      if(OrderCalcMargin(ORDER_TYPE_BUY, _Symbol, lot, prix, marge))
+         if(marge < AccountInfoDouble(ACCOUNT_MARGIN_FREE) * 0.95)
+            return(lot);
+      lot -= MathMax(pas, lot * 0.2);
+      if(pas > 0) lot = MathFloor(lot / pas) * pas;
+      essais++;
+     }
+   Print("Marge insuffisante pour ouvrir : ordre annule.");
+   return(0.0);
+  }
+
 double LotsForRisk(double stopDist)
   {
    double tickSize  = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
@@ -453,7 +477,7 @@ double LotsForRisk(double stopDist)
    lots = MathFloor(lots / lotStep) * lotStep;
    if(lots < minLot)
       return 0;
-   return MathMin(lots, maxLot);
+   return LotSelonMarge(MathMin(lots, maxLot));
   }
 
 //+------------------------------------------------------------------+

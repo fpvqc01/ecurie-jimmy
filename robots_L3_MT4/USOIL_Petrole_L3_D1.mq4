@@ -188,16 +188,39 @@ double CalculerLot(double distanceSL)
    if(distanceSL <= 0) return(0.0);
    double valeurTick = MarketInfo(Symbol(), MODE_TICKVALUE);
    double tailleTick = MarketInfo(Symbol(), MODE_TICKSIZE);
-   if(valeurTick <= 0 || tailleTick <= 0) return(0.0);
    double risque = AccountBalance() * RisqueParTradePct / 100.0 * facteurVol;
-   double perteParLot = distanceSL / tailleTick * valeurTick;
-   if(perteParLot <= 0) return(0.0);
+   double perteParLot = 0.0;
+   if(valeurTick > 0 && tailleTick > 0)
+      perteParLot = distanceSL / tailleTick * valeurTick;
+   if(perteParLot <= 0)
+     {
+      // FALLBACK : MODE_TICKVALUE peut etre 0 sur les CFD/crypto en MT4.
+      // Nos symboles cotent en USD : perte par lot = distance x taille de contrat.
+      double tailleContrat = MarketInfo(Symbol(), MODE_LOTSIZE);
+      if(tailleContrat > 0)
+        {
+         perteParLot = distanceSL * tailleContrat;
+         Print("AVERTISSEMENT: tick value invalide (", DoubleToString(valeurTick, 5),
+               ") — fallback contrat=", DoubleToString(tailleContrat, 2));
+        }
+     }
+   if(perteParLot <= 0)
+     {
+      Print("REFUS D'ENTREE: impossible de calculer la perte par lot (tickValue=",
+            DoubleToString(valeurTick, 5), " tickSize=", DoubleToString(tailleTick, 5), ")");
+      return(0.0);
+     }
    double lot = risque / perteParLot;
    double pas = MarketInfo(Symbol(), MODE_LOTSTEP);
    double mini = MarketInfo(Symbol(), MODE_MINLOT);
    double maxi = MarketInfo(Symbol(), MODE_MAXLOT);
    if(pas > 0) lot = MathFloor(lot / pas) * pas;
-   if(lot < mini) return(0.0);
+   if(lot < mini)
+     {
+      Print("REFUS D'ENTREE: lot calcule ", DoubleToString(lot, 4),
+            " sous le minimum ", DoubleToString(mini, 2), " — risque trop petit pour ce stop.");
+      return(0.0);
+     }
    if(lot > maxi) lot = maxi;
    lot = NormalizeDouble(lot, 2);
 
@@ -486,6 +509,8 @@ void OnTick()
                   unites  = NombreUnites();
                   dernier = PrixDerniereUnite();
                  }
+         else
+            Print("OrderSend (pyramide) echoue, erreur ", GetLastError());
               }
            }
         }
@@ -507,7 +532,12 @@ void OnTick()
    if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
 
    double distanceSL = Ask - basCanal;
-   if(distanceSL <= 0 || distanceSL > 0.15 * Ask) return;
+   if(distanceSL <= 0 || distanceSL > 0.50 * Ask)
+     {
+      Print("REFUS D'ENTREE: distance de stop ", DoubleToString(distanceSL, Digits),
+            " hors bornes (0 a 50 % du prix).");
+      return;
+     }
    double lot = CalculerLot(distanceSL);
    if(lot <= 0) return;
 
@@ -520,5 +550,7 @@ void OnTick()
       Notifier(StringConcatenate("ENTREE achat ", DoubleToString(lot, 2), " lot @ ",
                DoubleToString(Ask, Digits), " | stop ", DoubleToString(basCanal, Digits)));
      }
+   else
+      Print("OrderSend (entree) echoue, erreur ", GetLastError(), " lot=", DoubleToString(lot, 2));
   }
 //+------------------------------------------------------------------+

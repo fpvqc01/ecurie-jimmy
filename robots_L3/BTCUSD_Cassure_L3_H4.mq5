@@ -386,6 +386,30 @@ void LireFacteurVol()
      }
   }
 //+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+//| L3 : verifie que la MARGE suffit, sinon reduit le lot ou annule   |
+//| (sans ca l'ordre est rejete et le signal est perdu en silence)    |
+//+------------------------------------------------------------------+
+double LotSelonMarge(double lot)
+  {
+   double lotMin = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   double pas    = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   double prix   = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double marge  = 0.0;
+   int essais = 0;
+   while(lot >= lotMin && essais < 12)
+     {
+      if(OrderCalcMargin(ORDER_TYPE_BUY, _Symbol, lot, prix, marge))
+         if(marge < AccountInfoDouble(ACCOUNT_MARGIN_FREE) * 0.95)
+            return(lot);
+      lot -= MathMax(pas, lot * 0.2);
+      if(pas > 0) lot = MathFloor(lot / pas) * pas;
+      essais++;
+     }
+   Print("Marge insuffisante pour ouvrir : ordre annule.");
+   return(0.0);
+  }
+
 double CalculerLot(double distanceSL)
   {
    double valeurTick = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
@@ -412,7 +436,7 @@ double CalculerLot(double distanceSL)
             DoubleToString(lotMin, 4), "). Trade annulé pour respecter le risque.");
       return(0);
      }
-   return(lot);
+   return(LotSelonMarge(lot));
   }
 
 //+------------------------------------------------------------------+
@@ -588,7 +612,7 @@ void OnTick()
 
    double prix = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
    double distanceSL = prix - basCanal;
-   if(distanceSL <= 0 || distanceSL > 0.10 * prix) return; // garde-fou : risque > 10% du prix = aberrant
+   if(distanceSL <= 0 || distanceSL > 0.50 * prix) return; // garde-fou : risque > 10% du prix = aberrant
    double lot = CalculerLot(distanceSL);
    if(lot <= 0) return;
 
