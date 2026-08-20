@@ -606,7 +606,7 @@ void OnTick()
    double hautDecision = iHigh(_Symbol, UT_Decision, 1);
    if(declencheur <= 0 || hautDecision <= 0) return;
 
-   double hautCanal = hautDecision;   // L4.3
+   double hautCanal = rates[1].high;   // L4.3 (corrige 20 aout : la veille fait partie du canal)
    for(int i = 2; i <= PeriodeEntree; i++)
       if(rates[i].high > hautCanal) hautCanal = rates[i].high;
    double basCanal = rates[1].low;   // L4.3
