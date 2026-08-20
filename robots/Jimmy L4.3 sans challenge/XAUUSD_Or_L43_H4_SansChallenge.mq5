@@ -250,6 +250,8 @@ void EcrireJournal(string texte)
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   if(MQLInfoInteger(MQL_TESTER))
+      GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
    Print("L4.3 charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
    if(Preset == PRESET_GOLD)
      {

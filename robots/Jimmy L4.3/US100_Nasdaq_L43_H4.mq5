@@ -218,6 +218,8 @@ void EcrireJournal(string texte)
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   if(MQLInfoInteger(MQL_TESTER))
+      GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
    if(Preset == PRESET_GOLD)
      {
       SwingLookback = 60; FibLo = 0.20; FibHi = 0.80;

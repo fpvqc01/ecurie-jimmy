@@ -194,6 +194,8 @@ void EcrireJournal(string texte)
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   if(MQLInfoInteger(MQL_TESTER))
+      GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
    Print("L4.31 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
    Print("L4.3 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
