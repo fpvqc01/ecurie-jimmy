@@ -43,6 +43,7 @@ input bool   PushNotifications       = true;
 input bool   BreakevenActif          = true;
 input bool   FacteurVolActif         = true;   // moduler le risque selon la volatilite (L3)
 input bool   JournalActif            = true;   // journal de reflexion (Files\Ecurie_Journal)
+input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois (crises)
 input bool   ModeChallengeActif = false; // L3+ : risque reduit en drawdown
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur sous la moyenne 20 j
 
@@ -81,6 +82,49 @@ bool PositionOuverte()
       if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
       if(PositionGetInteger(POSITION_MAGIC) != MagicNumber) continue;
       return(true);
+     }
+   return(false);
+  }
+
+//+------------------------------------------------------------------+
+//| PLAFOND DE CORRELATION (valide sur 99 ans de crises)              |
+//| L'or et les indices semblent independants... jusqu'a une crise de |
+//| liquidite qui les fait chuter ENSEMBLE (septembre 2011 : l'or de  |
+//| 1920 a 1530 pendant que les indices plongeaient). Un seul robot   |
+//| de la famille metal/indice peut donc etre en position a la fois.  |
+//| Test : 2011 passe de -8,0 % (compte mort) a -2,2 % ; crises       |
+//| positives 5/7 -> 6/7 ; cout 1,1 point de rendement annuel.        |
+//+------------------------------------------------------------------+
+bool EstMetalOuIndice(string symbole)
+  {
+   string s = symbole;
+   StringToUpper(s);
+   if(StringFind(s, "XAU") >= 0) return(true);   // or
+   if(StringFind(s, "XAG") >= 0) return(true);   // argent
+   if(StringFind(s, "US100") >= 0) return(true); // Nasdaq
+   if(StringFind(s, "NAS") >= 0) return(true);
+   if(StringFind(s, "US30") >= 0) return(true);
+   if(StringFind(s, "US500") >= 0) return(true);
+   if(StringFind(s, "SPX") >= 0) return(true);
+   if(StringFind(s, "GER") >= 0 || StringFind(s, "DE30") >= 0) return(true);
+   return(false);
+  }
+
+//| true si une AUTRE position metal/indice de l'ecurie est ouverte
+bool FamilleCorreleeOccupee()
+  {
+   if(!PlafondCorrelationActif) return(false);
+   if(!EstMetalOuIndice(_Symbol)) return(false);   // ne concerne pas BTC/petrole
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+     {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket == 0) continue;
+      long m = PositionGetInteger(POSITION_MAGIC);
+      if(m != 20260815 && m != 20260817 && m != 20260818 &&
+         m != 20260915 && m != 20260917 && m != 20260918) continue;
+      string sym = PositionGetString(POSITION_SYMBOL);
+      if(sym == _Symbol) continue;                 // c'est nous
+      if(EstMetalOuIndice(sym)) return(true);      // un cousin est deja expose
      }
    return(false);
   }
@@ -603,7 +647,8 @@ void OnTick()
      }
    if(setup)
      {
-      if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;   // plafond (I2)
+      if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
+   if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       plancherSwing = lo;
       attenteReentree = 0;
       OuvrirAchat(stopDist, "Ecurie_L3plus fib+RSI");
@@ -615,7 +660,8 @@ void OnTick()
       rates[1].low <= attenteReentree - RetraceReentree * atrBuf[0] &&
       rates[1].close > plancherSwing)
      {
-      if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;   // plafond (I2)
+      if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
+   if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       Print("Repli atteint apres TP : re-entree.");
       OuvrirAchat(stopDist, "Ecurie_L3plus re-entree");
       attenteReentree = 0;

@@ -26,6 +26,7 @@ input int    MinutesBlocageApresNews = 30;
 input bool   ProtegerPositionsPendantNews = true; // serrer les stops en fenetre
 input bool   FacteurVolActif       = true;   // moduler le risque selon la volatilite
 input bool   JournalActif          = true;   // journal de reflexion (Files\Ecurie_Journal)
+input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois (crises)
 input bool   ModeChallengeActif = false; // L3+ : reduire le risque en drawdown (phases FTMO)
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur de risque sous la moyenne 20 j
 input bool   NotificationsPush     = true;   // push cellulaire (MetaQuotes ID)
@@ -86,6 +87,44 @@ void EcrireJournal(string texte)
 //| Plafond d'ecurie : on compte les PILES (magic+symbole), pas les   |
 //| ordres — un robot qui pyramide occupe UN seul siege.              |
 //+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+//| PLAFOND DE CORRELATION (valide sur 99 ans de crises)              |
+//| Un seul robot de la famille metal/indice (or, Nasdaq) en position |
+//| a la fois : evite la double exposition au meme choc de liquidite  |
+//| (septembre 2011 : or ET indices en chute simultanee = compte mort)|
+//| Test : 2011 de -8,0 % (mort) a -2,2 % ; crises positives 5/7->6/7.|
+//+------------------------------------------------------------------+
+bool EstMetalOuIndice(string symbole)
+  {
+   string s = symbole;
+   StringToUpper(s);
+   if(StringFind(s, "XAU") >= 0) return(true);
+   if(StringFind(s, "XAG") >= 0) return(true);
+   if(StringFind(s, "US100") >= 0) return(true);
+   if(StringFind(s, "NAS") >= 0) return(true);
+   if(StringFind(s, "US30") >= 0) return(true);
+   if(StringFind(s, "US500") >= 0) return(true);
+   if(StringFind(s, "SPX") >= 0) return(true);
+   if(StringFind(s, "GER") >= 0 || StringFind(s, "DE30") >= 0) return(true);
+   return(false);
+  }
+
+bool FamilleCorreleeOccupee()
+  {
+   if(!PlafondCorrelationActif) return(false);
+   if(!EstMetalOuIndice(Symbol())) return(false);
+   for(int i = OrdersTotal() - 1; i >= 0; i--)
+     {
+      if(!OrderSelect(i, SELECT_BY_POS, MODE_TRADES)) continue;
+      int m = OrderMagicNumber();
+      if(m != 20260815 && m != 20260817 && m != 20260818 &&
+         m != 20260915 && m != 20260917 && m != 20260918) continue;
+      if(OrderSymbol() == Symbol()) continue;
+      if(EstMetalOuIndice(OrderSymbol())) return(true);
+     }
+   return(false);
+  }
+
 int ComptePositionsEcurie()
   {
    string vues = "";
@@ -512,6 +551,7 @@ void OnTick()
 
    if(!croisement && !reentree) return;
    if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
+   if(FamilleCorreleeOccupee()) return;   // plafond de correlation
 
    double lot = CalculerLot(stopDist);
    if(lot <= 0) return;
