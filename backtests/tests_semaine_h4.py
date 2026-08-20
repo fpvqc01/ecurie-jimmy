@@ -5,7 +5,10 @@ BTC seul = 8 ans H4 (Binance 2017-2026).
 12h Montreal = 16h UTC (EDT). Barres H4 UTC : 0,4,8,12,16,20."""
 import pandas as pd, numpy as np
 from datetime import timedelta
-from moteur_h4 import (sim, ligne, ENTETE, FERIES, GC, NQ, CL, BTC)
+from moteur_h4 import (sim as _sim, ligne, ENTETE, FERIES, GC, NQ, CL, BTC)
+def sim(*a, **k):
+    k.setdefault('debut', '2024-08-21')   # fenetre commune : sans ca, l'union
+    return _sim(*a, **k)                  # des index melangeait 9 ans de BTC
 
 GENS = ("I2+", "L3", "I2++", "L3+")
 JOURS_US = set(NQ.index.date)
