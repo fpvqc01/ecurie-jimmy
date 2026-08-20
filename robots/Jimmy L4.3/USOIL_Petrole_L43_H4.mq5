@@ -24,6 +24,7 @@ input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale (FTMO 
 input int    PeriodeEntree        = 20;     // Cassure du plus haut des N jours
 input int    PeriodeSortie        = 10;     // Stop suiveur sous le plus bas des M jours
 input ENUM_TIMEFRAMES UT_Decision    = PERIOD_H4; // L4.3 : cadence de decision (valide walk-forward)
+input double TamponCassurePct = 0.25; // L4.31 : entree seulement si cassure > canal + X % (plateau 0,15-0,30 valide)
 input int    MoisDebutSaison      = 12;     // Saison favorable : début (mois)
 input int    JourDebutSaison      = 1;      //   ... jour
 input int    MoisFinSaison        = 5;      // Saison favorable : fin (mois)
@@ -192,7 +193,7 @@ void EcrireJournal(string texte)
 //+------------------------------------------------------------------+
 int OnInit()
   {
-   Print("L4.3 charge | decision=", EnumToString(UT_Decision), " canaux=D1");
+   Print("L4.31 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
    Print("L4.3 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
@@ -673,7 +674,7 @@ void OnTick()
    // entrée : cassure du canal haut, EN SAISON seulement, hors annonces
    if(!EnSaison()) return;
    if(!newsOK) return;
-   if(declencheur <= hautCanal) return;
+   if(declencheur <= hautCanal * (1.0 + TamponCassurePct / 100.0)) return;   // L4.31 tampon anti-faux-signal
    if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation // plafond d'ecurie (I2)
 

@@ -44,6 +44,7 @@ input bool   FacteurVolActif       = true; // moduler le risque selon la volatil
 input bool   PyramidageActif    = true;  // L3 : ajouter des unites sur un trade gagnant (Turtles)
 input int    MaxUnites          = 4;     // L4.2 : pyramide 4 (valide 21 aout, +2 pts H4 10 ans)
 input ENUM_TIMEFRAMES UT_Decision    = PERIOD_H1; // L4.3 : cadence de decision (valide walk-forward)
+input double TamponCassurePct = 0.25; // L4.31 : entree seulement si cassure > canal + X % (plateau 0,15-0,30 valide)
 input double PasUniteATR        = 0.5;   // L3 : ajouter une unite chaque +N x ATR
 input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun a N x ATR sous la derniere unite
 input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
@@ -193,7 +194,7 @@ void EcrireJournal(string texte)
 //+------------------------------------------------------------------+
 int OnInit()
   {
-   Print("L4.3 charge | decision=", EnumToString(UT_Decision), " canaux=D1");
+   Print("L4.31 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
    Print("L4.3 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
@@ -690,7 +691,7 @@ void OnTick()
 
    // entree : cassure du canal haut, si la macro le permet
    if(!macroPermis) return;
-   if(declencheur <= hautCanal) return;
+   if(declencheur <= hautCanal * (1.0 + TamponCassurePct / 100.0)) return;   // L4.31 tampon anti-faux-signal
    if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation // plafond d'ecurie (I2)
 
