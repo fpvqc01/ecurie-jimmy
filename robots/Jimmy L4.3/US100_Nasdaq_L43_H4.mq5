@@ -23,8 +23,8 @@ input ENUM_PRESET Preset             = PRESET_NASDAQ;
 input bool   MacroLongAllowed        = true;
 input bool   BiasFromFile            = true;
 input double RiskPerTradePct         = 1.5;    // L3 : x1.5
-input double DailyStopPct            = 2.5;   // L3 : resserre (valide 19 aout ; FTMO = 5)
-input double TotalStopPct            = 8.0;
+input double LimitePerteJourPct            = 2.5;   // L3 : resserre (valide 19 aout ; FTMO = 5)
+input double LimitePerteTotalePct            = 8.0;
 input double ChallengeInitialBalance = 0;
 input long   MagicNumber             = 20261115;
 input int    MaxPositionsEcurie      = 2;      // plafond global de l'ecurie (I2)
@@ -301,7 +301,7 @@ bool GuardianBlocks()
 
    if(GlobalVariableCheck(HaltGV()) && GlobalVariableGet(HaltGV()) > 0.5)
       return true;
-   if(equity <= base * (1.0 - TotalStopPct / 100.0))
+   if(equity <= base * (1.0 - LimitePerteTotalePct / 100.0))
      {
       Notifier("PERTE TOTALE MAX ATTEINTE - fermeture du compte, arret definitif");
       CloseAllOurs("");
@@ -318,7 +318,7 @@ bool GuardianBlocks()
       GlobalVariableSet(dayKey, equity);
    double dayStart = GlobalVariableGet(dayKey);
    static bool avisJourFait = false;
-   if(equity <= dayStart * (1.0 - DailyStopPct / 100.0))
+   if(equity <= dayStart * (1.0 - LimitePerteJourPct / 100.0))
      {
       if(!avisJourFait)
         {

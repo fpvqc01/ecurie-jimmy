@@ -1,6 +1,6 @@
 ﻿//+------------------------------------------------------------------+
 //|                                             BTCUSD_Cassure_L43_H1.mq5 |
-//|  Cassure de range (Donchian 55/20) sur BTC, achat seulement.     |
+//|  Cassure de range (Donchian 20/10 jours (L4.3)) sur BTC, achat seulement.     |
 //|  A attacher sur un graphique BTCUSD en H4.                       |
 //|                                                                  |
 //|  Entree  : cloture au-dessus du plus haut des 55 bougies H4      |
@@ -22,8 +22,8 @@
 input double RisqueParTradePct    = 1.5;   // parite de risque validee 10 ans (etait 0.75)   // Risque par trade en % du solde (I2 : x1.5)
 input double LimitePerteJourPct   = 2.5;    // L3 : resserre (valide 19 aout ; FTMO = 5)
 input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en % (FTMO = 10)
-input int    PeriodeEntree        = 55;     // Cassure du plus haut des N bougies
-input int    PeriodeSortie        = 20;     // Stop suiveur sous le plus bas des M bougies
+input int    PeriodeEntree        = 20;     // L4.3 corrige : canal 20 JOURS (config validee walk-forward ; etait 55 bougies H4)
+input int    PeriodeSortie        = 10;     // L4.3 corrige : sortie 10 JOURS (etait 20 bougies H4)
 input int    PeriodeATR           = 14;     // ATR (protection annonces)
 input long   NumeroMagique        = 20261117; // Identifiant distinct du bot EMA
 input int    MaxPositionsEcurie   = 2;      // Plafond global de positions de l'ecurie (I2)
