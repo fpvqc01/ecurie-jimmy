@@ -1,4 +1,4 @@
-﻿//+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
 //| XAUUSD_Or_L43_H4.mq5                                             |
 //| Base I2 (17 aout) portee en L4.31 le 20 aout 2026 :              |
 //|  - OR     : TP 1.5R (~750$) + re-entree sur repli 0.25xATR       |
@@ -256,13 +256,13 @@ int OnInit()
    Print("L4+ charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
    if(Preset == PRESET_GOLD)
      {
-      SwingLookback = 10;   // L4.32 : 10 JOURS (= moteur) FibLo = 0.20; FibHi = 0.80;
+      SwingLookback = 10; FibLo = 0.20; FibHi = 0.80;   // L4.32 : 10 JOURS (= moteur)
       RsiPull = 55.0; StopAtrMult = 3.0;
       TpR = 1.5; RetraceReentree = 0.25;    // I2
      }
    else // PRESET_NASDAQ
      {
-      SwingLookback = 7;    // L4.32 : 7 JOURS (= moteur) FibLo = 0.10; FibHi = 0.90;
+      SwingLookback = 7;  FibLo = 0.10; FibHi = 0.90;   // L4.32 : 7 JOURS (= moteur)
       RsiPull = 60.0; StopAtrMult = 2.0;
       TpR = 1.0; RetraceReentree = 0.5;     // I2
      }
