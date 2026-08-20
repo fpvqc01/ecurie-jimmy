@@ -1,12 +1,12 @@
 ﻿//+------------------------------------------------------------------+
 //|                                              BTCUSD_EMA_L43_D1.mq5 |
-//|  Version I2 du bot EMA BTC — config optimisée du 17 août 2026 :  |
+//|  Base I2 du bot EMA BTC, portee en L4.3 le 20 aout 2026 :        |
 //|   - TP à +2R (~1000 $) au lieu de 1.5R                           |
 //|   - RÉ-ENTRÉE sur repli de 0.25xATR après un TP, tant que les    |
 //|     EMA restent haussières et la macro favorable                 |
-//|   - risque 0.75 % par trade (x1.5)                               |
+//|   - risque 1.5 % (parite L4) ; decision et EMA/ATR JOURNALIERS   |
 //|   - PLAFOND d'écurie : max 2 positions simultanées (tous robots) |
-//|  Même magic que la V1 : reprend les positions existantes.        |
+//|  Magic L4.3 (20261115) : ecurie independante des autres.         |
 //+------------------------------------------------------------------+
 #property copyright "Jimmy"
 #property version   "2.00"

@@ -647,7 +647,7 @@ void OnTick()
               {
                double slProvisoire = NormalizeDouble(basCanal, _Digits);
                if(trade.Buy(lotAjout, _Symbol, 0.0, slProvisoire, 0.0,
-                            "L3 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
+                            "L4.3 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
                  {
                   Notifier(StringFormat("PYRAMIDE unite %d/%d : +%.2f lot @ %.2f",
                            unites + 1, MaxUnites, lotAjout,

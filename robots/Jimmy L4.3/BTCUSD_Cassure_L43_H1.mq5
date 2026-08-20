@@ -1,13 +1,13 @@
 ﻿//+------------------------------------------------------------------+
 //|                                             BTCUSD_Cassure_L43_H1.mq5 |
-//|  Cassure de range (Donchian 20/10 jours (L4.3)) sur BTC, achat seulement.     |
-//|  A attacher sur un graphique BTCUSD en H4.                       |
+//|  Cassure Donchian 20/10 JOURS sur BTC, achat seulement (L4.31).  |
+//|  Graphique SANS importance (canaux journaliers, decision H1).    |
 //|                                                                  |
-//|  Entree  : cloture au-dessus du plus haut des 55 bougies H4      |
-//|  Sortie  : stop suiveur sous le plus bas des 20 bougies H4       |
+//|  Entree  : barre H1 fermee > plus haut 20 JOURS + tampon 0,25 %  |
+//|  Sortie  : stop suiveur sous le plus bas 10 JOURS (+ pyramide 4) |
 //|  Valide avec les frais reels FTMO (commission 0.065% A/R +       |
-//|  swap -30%/an) : +7.3% sur les 2 dernieres annees, seule         |
-//|  strategie testee restee positive avec le swap reel.             |
+//|  swap -30%/an). Config L4.31 validee walk-forward 2021-2026.     |
+//|                                                                  |
 //|                                                                  |
 //|  Partage les protections FTMO (variables MACROBOT_*), le biais   |
 //|  macro BIS et le filtre d'annonces avec les autres robots.       |
@@ -665,7 +665,7 @@ void OnTick()
               {
                double slProvisoire = NormalizeDouble(basCanal, _Digits);
                if(trade.Buy(lotAjout, _Symbol, 0.0, slProvisoire, 0.0,
-                            "L3 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
+                            "L4.3 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
                  {
                   Notifier(StringFormat("PYRAMIDE unite %d/%d : +%.2f lot @ %.2f",
                            unites + 1, MaxUnites, lotAjout,
@@ -702,6 +702,6 @@ void OnTick()
    if(lot <= 0) return;
 
    double sl = NormalizeDouble(basCanal, _Digits);
-   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "BTC_Breakout cassure 55H4");
+   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "L4.3 cassure 20j");
   }
 //+------------------------------------------------------------------+

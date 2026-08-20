@@ -1,12 +1,12 @@
 ﻿//+------------------------------------------------------------------+
 //| US100_Nasdaq_L43_H4.mq5                                             |
-//| Version I2 — config optimisee du 17 aout 2026 :                  |
+//| Base I2 (17 aout) portee en L4.31 le 20 aout 2026 :              |
 //|  - OR     : TP 1.5R (~750$) + re-entree sur repli 0.25xATR       |
 //|  - NASDAQ : TP 1.0R (~500$) + re-entree sur repli 0.5xATR        |
 //|  - re-entree permise tant que le creux du swing d'origine tient  |
-//|  - risque 1.5 % par trade (x1.5)                                 |
+//|  - risque : or 2,0 % (L4) / Nasdaq 1,5 % ; filtre dollar sur or  |
 //|  - plafond d'ecurie : max 2 positions simultanees (tous robots)  |
-//| Meme magic que la V1 : reprend les positions existantes.         |
+//| Magic L4.3 (20261115) : ecurie independante des autres.          |
 //+------------------------------------------------------------------+
 #property copyright "Macro Bot"
 #property version   "2.00"
@@ -249,7 +249,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
-   Print("MacroBot L3 demarre. Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
+   Print("MacroBot L4.3 demarre. Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
 
@@ -651,7 +651,7 @@ void OnTick()
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       plancherSwing = lo;
       attenteReentree = 0;
-      OuvrirAchat(stopDist, "Ecurie_L4 fib+RSI");
+      OuvrirAchat(stopDist, "Ecurie_L4.3 fib+RSI");
       return;
      }
 
@@ -663,7 +663,7 @@ void OnTick()
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       Print("Repli atteint apres TP : re-entree.");
-      OuvrirAchat(stopDist, "Ecurie_L4 re-entree");
+      OuvrirAchat(stopDist, "Ecurie_L4.3 re-entree");
       attenteReentree = 0;
      }
   }
