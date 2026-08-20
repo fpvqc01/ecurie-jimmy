@@ -1,17 +1,16 @@
 ﻿//+------------------------------------------------------------------+
-//|                                             BTCUSD_Cassure_L43_H1.mq5 |
-//|  Cassure Donchian 20/10 JOURS sur BTC, achat seulement (L4.31).  |
-//|  Graphique SANS importance (canaux journaliers, decision H1).    |
+//|                                           USOIL_Petrole_L43_H4.mq5 |
+//|  Cassure Donchian 20/10 JOURNALIER sur le pétrole WTI,           |
+//|  achat seulement, ACTIVE SEULEMENT EN SAISON (déc -> mai :       |
+//|  accumulation des raffineries avant la "driving season" US).     |
 //|                                                                  |
-//|  Entree  : barre H1 fermee > plus haut 20 JOURS + tampon 0,25 %  |
-//|  Sortie  : stop suiveur sous le plus bas 10 JOURS (+ pyramide 4) |
-//|  Valide avec les frais reels FTMO (commission 0.065% A/R +       |
-//|  swap -30%/an). Config L4.31 validee walk-forward 2021-2026.     |
+//|  Backtest 10 ans frais FTMO réels : +11.9%/an, Sharpe 0.65,      |
+//|  robuste sur 5 fenêtres saisonnières et les 2 moitiés.           |
+//|  Le swap long du pétrole est POSITIF sur ce compte (bonus).      |
 //|                                                                  |
-//|                                                                  |
-//|  Partage les protections FTMO (variables MACROBOT_*), le biais   |
-//|  macro BIS et le filtre d'annonces avec les autres robots.       |
-//|  Magic distinct : ne touche jamais aux trades du bot EMA H1.     |
+//|  Utilise les données JOURNALIÈRES peu importe le graphique       |
+//|  (impossible de se tromper de cadre de temps en l'attachant).    |
+//|  Protections FTMO partagées avec les autres robots (MACROBOT_*). |
 //+------------------------------------------------------------------+
 #property copyright "Jimmy"
 #property version   "1.00"
@@ -21,30 +20,32 @@
 
 input double RisqueParTradePct    = 1.5;   // parite de risque validee 10 ans (etait 0.75)   // Risque par trade en % du solde (I2 : x1.5)
 input double LimitePerteJourPct   = 2.5;    // L3 : resserre (valide 19 aout ; FTMO = 5)
-input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en % (FTMO = 10)
-input int    PeriodeEntree        = 20;     // L4.3 corrige : canal 20 JOURS (config validee walk-forward ; etait 55 bougies H4)
-input int    PeriodeSortie        = 10;     // L4.3 corrige : sortie 10 JOURS (etait 20 bougies H4)
-input int    PeriodeATR           = 14;     // ATR (protection annonces)
-input long   NumeroMagique        = 20261117; // Identifiant distinct du bot EMA
+input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale (FTMO = 10)
+input int    PeriodeEntree        = 20;     // Cassure du plus haut des N jours
+input int    PeriodeSortie        = 10;     // Stop suiveur sous le plus bas des M jours
+input ENUM_TIMEFRAMES UT_Decision    = PERIOD_H4; // L4.3 : cadence de decision (valide walk-forward)
+input double TamponCassurePct = 0.25; // L4.31 : entree seulement si cassure > canal + X % (plateau 0,15-0,30 valide)
+input int    MoisDebutSaison      = 12;     // Saison favorable : début (mois)
+input int    JourDebutSaison      = 1;      //   ... jour
+input int    MoisFinSaison        = 5;      // Saison favorable : fin (mois)
+input int    JourFinSaison        = 31;     //   ... jour
+input int    PeriodeATR           = 14;     // ATR journalier (protection annonces)
+input long   NumeroMagique        = 20261118; // Identifiant distinct
 input int    MaxPositionsEcurie   = 2;      // Plafond global de positions de l'ecurie (I2)
-input bool   BiaisMacroDepuisFichier = true; // biais BIS (macrobot_bias.txt, relu chaque minute)
-input bool   AchatPermisSansFichier  = true; // fichier absent -> achats permis quand meme ?
-input bool   FiltreNouvellesActif    = true; // bloquer les entrees autour des annonces USD
+input bool   FiltreNouvellesActif    = true; // bloquer les entrées autour des annonces USD fort impact
 input int    MinutesBlocageAvantNews = 30;
 input int    MinutesBlocageApresNews = 30;
 
 enum ENUM_PROTECTION_NEWS
   {
    PROTECTION_AUCUNE = 0,   // ne rien faire sur les positions ouvertes
-   PROTECTION_SERRER = 1,   // serrer les stops pendant la fenetre d'annonce (recommande)
+   PROTECTION_SERRER = 1,   // serrer les stops pendant la fenêtre d'annonce (recommandé)
    PROTECTION_FERMER = 2    // fermer les positions avant l'annonce
   };
 input ENUM_PROTECTION_NEWS ProtectionPositionsNews = PROTECTION_SERRER;
 input bool   FacteurVolActif       = true; // moduler le risque selon la volatilite des marches (L3)
 input bool   PyramidageActif    = true;  // L3 : ajouter des unites sur un trade gagnant (Turtles)
 input int    MaxUnites          = 4;     // L4.2 : pyramide 4 (valide 21 aout, +2 pts H4 10 ans)
-input ENUM_TIMEFRAMES UT_Decision    = PERIOD_H1; // L4.3 : cadence de decision (valide walk-forward)
-input double TamponCassurePct = 0.25; // L4.31 : entree seulement si cassure > canal + X % (plateau 0,15-0,30 valide)
 input double PasUniteATR        = 0.5;   // L3 : ajouter une unite chaque +N x ATR
 input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun a N x ATR sous la derniere unite
 input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
@@ -55,9 +56,7 @@ input bool   NotificationsPush       = true; // push cellulaire (MetaQuotes ID)
 
 CTrade   trade;
 int      hAtr = INVALID_HANDLE;
-datetime derniereBarre = 0;
-datetime derniereLectureBiais = 0;
-bool     biaisMacroOK = true;
+datetime dernierJour = 0;
 datetime derniereLectureNews = 0;
 long     newsEpochs[];
 bool     newsBloquaitAvant = false;
@@ -148,9 +147,9 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4.3-SC] BTC breakout : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4+SC] Pétrole : " + msg) && !avertiEchec)
      {
-      Print("Push non envoye. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
+      Print("Push non envoyé. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
      }
   }
@@ -170,7 +169,7 @@ void OnTradeTransaction(const MqlTradeTransaction &trans,
    long   sens = HistoryDealGetInteger(trans.deal, DEAL_ENTRY);
 
    if(sens == DEAL_ENTRY_IN)
-      Notifier(StringFormat("ENTRÉE cassure %.2f lot @ %s", vol, DoubleToString(prix, _Digits)));
+      Notifier(StringFormat("ENTRÉE cassure saisonnière %.2f lot @ %s", vol, DoubleToString(prix, _Digits)));
    else if(sens == DEAL_ENTRY_OUT)
       Notifier(StringFormat("SORTIE %.2f lot @ %s | P/L: %.2f $", vol,
                             DoubleToString(prix, _Digits),
@@ -197,26 +196,25 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4.32 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
-   Print("L4.3 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
+   Print("L4+ charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
+   Print("L4+ charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
-   hAtr = iATR(_Symbol, PERIOD_D1, PeriodeATR);   // L4.3 : ATR journalier
+   hAtr = iATR(_Symbol, PERIOD_D1, PeriodeATR);
    if(hAtr == INVALID_HANDLE)
      {
-      Print("Erreur : impossible de creer l'ATR.");
+      Print("Erreur : impossible de créer l'ATR.");
       return(INIT_FAILED);
      }
-
-   if(false)   // L4.3 : le graphique n'a plus d'importance
-      Print("ATTENTION : strategie calibree en H4, graphique actuel : ", EnumToString(_Period));
 
    if(!GlobalVariableCheck(BaseGV()))
       GlobalVariableSet(BaseGV(), AccountInfoDouble(ACCOUNT_BALANCE));
 
-   Print("BTCUSD_Cassure_L43_H1 démarré. Baseline challenge = ",
-         DoubleToString(GlobalVariableGet(BaseGV()), 2));
+   Print("USOIL_Petrole_L43_H4 démarré. Baseline challenge = ",
+         DoubleToString(GlobalVariableGet(BaseGV()), 2),
+         " | Saison favorable : ", MoisDebutSaison, "/", JourDebutSaison,
+         " au ", MoisFinSaison, "/", JourFinSaison);
 
    EventSetTimer(60);
    return(INIT_SUCCEEDED);
@@ -229,7 +227,6 @@ void OnTimer()
    LireNouvelles();
    LireFacteurVol();
    if(ModeChallengeActif && facteurVol > 1.0) facteurVol = 1.0;   // L4.32 : jamais amplifier en challenge
-   BiaisMacroPermis();
    BloqueParNouvelles();
    ProtegerPositionsNews();
   }
@@ -242,8 +239,20 @@ void OnDeinit(const int reason)
   }
 
 //+------------------------------------------------------------------+
-//| Ferme les positions de CE robot (magic 20261117).                |
-//| toutLeCompte=true : tous les symboles (urgence gardien)          |
+//| Sommes-nous dans la fenêtre saisonnière favorable ?              |
+//| Gère les fenêtres qui chevauchent le Nouvel An (déc -> mai).     |
+//+------------------------------------------------------------------+
+bool EnSaison()
+  {
+   MqlDateTime now;
+   TimeToStruct(TimeCurrent(), now);
+   int md  = now.mon * 100 + now.day;
+   int deb = MoisDebutSaison * 100 + JourDebutSaison;
+   int fin = MoisFinSaison * 100 + JourFinSaison;
+   if(deb <= fin) return(md >= deb && md <= fin);
+   return(md >= deb || md <= fin);   // fenêtre à cheval sur l'année
+  }
+
 //+------------------------------------------------------------------+
 void FermerPositions(bool toutLeCompte)
   {
@@ -257,9 +266,6 @@ void FermerPositions(bool toutLeCompte)
      }
   }
 
-//+------------------------------------------------------------------+
-//| Coupe-circuits FTMO partages (chaque robot surveille l'equite    |
-//| du compte entier et ferme ses propres positions en cas d'alerte) |
 //+------------------------------------------------------------------+
 bool VerifierProtections()
   {
@@ -299,29 +305,6 @@ bool VerifierProtections()
      }
    avisJourFait = false;
    return(true);
-  }
-
-//+------------------------------------------------------------------+
-bool BiaisMacroPermis()
-  {
-   if(!BiaisMacroDepuisFichier) return(true);
-   if(TimeCurrent() - derniereLectureBiais < 60) return(biaisMacroOK);
-   derniereLectureBiais = TimeCurrent();
-
-   int fh = FileOpen("macrobot_bias.txt", FILE_READ | FILE_TXT | FILE_ANSI);
-   if(fh == INVALID_HANDLE)
-     {
-      biaisMacroOK = AchatPermisSansFichier;
-      return(biaisMacroOK);
-     }
-   string ligne = FileReadString(fh);
-   FileClose(fh);
-
-   bool nouveau = (StringFind(ligne, "BTC=1") >= 0);
-   if(nouveau != biaisMacroOK)
-      Print("Biais macro BTC : ", nouveau ? "ACHATS PERMIS" : "ACHATS BLOQUÉS", " (", ligne, ")");
-   biaisMacroOK = nouveau;
-   return(biaisMacroOK);
   }
 
 //+------------------------------------------------------------------+
@@ -383,7 +366,7 @@ void ProtegerPositionsNews()
    double atrBuf[];
    ArraySetAsSeries(atrBuf, true);
    if(CopyBuffer(hAtr, 0, 1, 1, atrBuf) < 1) return;
-   double serre = atrBuf[0] * 0.5;
+   double serre = atrBuf[0] * 0.25;   // ATR journalier : serrage au quart
    if(serre <= 0) return;
    double distMin = (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
 
@@ -520,8 +503,7 @@ double CalculerLot(double distanceSL)
    if(lot > lotMax) lot = lotMax;
    if(lot < lotMin)
      {
-      Print("Lot calculé trop petit (", DoubleToString(lot, 4), " < ",
-            DoubleToString(lotMin, 4), "). Trade annulé pour respecter le risque.");
+      Print("Lot calculé trop petit (", DoubleToString(lot, 4), "). Trade annulé.");
       return(0);
      }
    return(LotSelonMarge(lot));
@@ -616,23 +598,22 @@ void OnTick()
    LireNouvelles();
    LireFacteurVol();
    if(ModeChallengeActif && facteurVol > 1.0) facteurVol = 1.0;   // L4.32 : jamais amplifier en challenge
-   bool macroPermis = BiaisMacroPermis() && !BloqueParNouvelles();
+   bool newsOK = !BloqueParNouvelles();
    ProtegerPositionsNews();
 
-   // une decision par bougie H4 fermee
-   datetime barreActuelle = iTime(_Symbol, UT_Decision, 0);   // L4.3
-   if(barreActuelle == derniereBarre) return;
-   derniereBarre = barreActuelle;
+   // une décision par JOUR (données journalières, peu importe le graphique)
+   datetime jourActuel = iTime(_Symbol, UT_Decision, 0);   // L4.3 : decision par barre UT
+   if(jourActuel == dernierJour) return;
+   dernierJour = jourActuel;
 
    int besoin = MathMax(PeriodeEntree, PeriodeSortie) + 2;
    MqlRates rates[];
    ArraySetAsSeries(rates, true);
-   if(CopyRates(_Symbol, PERIOD_D1, 0, besoin, rates) < besoin) return;   // L4.3 : canaux journaliers
+   if(CopyRates(_Symbol, PERIOD_D1, 0, besoin, rates) < besoin) return;
    double declencheur  = iClose(_Symbol, UT_Decision, 1);   // L4.3 : barre de decision fermee
    double hautDecision = iHigh(_Symbol, UT_Decision, 1);
    if(declencheur <= 0 || hautDecision <= 0) return;
 
-   // canaux calcules sur les bougies AVANT la bougie signal (index 1)
    double hautCanal = rates[1].high;   // L4.3 (corrige 20 aout : la veille fait partie du canal)
    for(int i = 2; i <= PeriodeEntree; i++)
       if(rates[i].high > hautCanal) hautCanal = rates[i].high;
@@ -640,13 +621,14 @@ void OnTick()
    for(int i = 2; i <= PeriodeSortie; i++)
       if(rates[i].low < basCanal) basCanal = rates[i].low;
 
-   EcrireJournal(StringFormat("cloture=%.2f | canal_haut=%.2f (dist %.2f%%) | canal_bas=%.2f | position=%s | macro=%s | news=%s | facteurVol=%.2f",
+   EcrireJournal(StringFormat("cloture=%.2f | canal_haut=%.2f (dist %.2f%%) | canal_bas=%.2f | saison=%s | position=%s | news=%s | facteurVol=%.2f",
       declencheur, hautCanal, (hautCanal - declencheur) / declencheur * 100.0, basCanal,
-      (PositionOuverte() ? (StringFormat("OUVERTE %d unite(s)", NombreUnites())) : "aucune"), (biaisMacroOK ? "OK" : "BLOQUE"),
+      (EnSaison() ? "FAVORABLE" : "hors saison"), (PositionOuverte() ? (StringFormat("OUVERTE %d unite(s)", NombreUnites())) : "aucune"),
       (newsBloquaitAvant ? "FENETRE ANNONCE" : "libre"), facteurVol));
    if(PositionOuverte())
      {
-      // sortie : cloture sous le canal bas, sinon stop suiveur remonte
+      // sortie : clôture journalière sous le canal bas (toujours active,
+      // même hors saison — on ne garde jamais une position sans gestion)
       if(declencheur < basCanal)
         {
          FermerPositions(false);
@@ -673,7 +655,7 @@ void OnTick()
               {
                double slProvisoire = NormalizeDouble(basCanal, _Digits);
                if(trade.Buy(lotAjout, _Symbol, 0.0, slProvisoire, 0.0,
-                            "L4.3 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
+                            "L4+ unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
                  {
                   Notifier(StringFormat("PYRAMIDE unite %d/%d : +%.2f lot @ %.2f",
                            unites + 1, MaxUnites, lotAjout,
@@ -697,19 +679,20 @@ void OnTick()
       return;
      }
 
-   // entree : cassure du canal haut, si la macro le permet
-   if(!macroPermis) return;
+   // entrée : cassure du canal haut, EN SAISON seulement, hors annonces
+   if(!EnSaison()) return;
+   if(!newsOK) return;
    if(declencheur <= hautCanal * (1.0 + TamponCassurePct / 100.0)) return;   // L4.31 tampon anti-faux-signal
    if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation // plafond d'ecurie (I2)
 
    double prix = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
    double distanceSL = prix - basCanal;
-   if(distanceSL <= 0 || distanceSL > 0.50 * prix) return; // garde-fou : risque > 10% du prix = aberrant
+   if(distanceSL <= 0 || distanceSL > 0.50 * prix) return;
    double lot = CalculerLot(distanceSL);
    if(lot <= 0) return;
 
    double sl = NormalizeDouble(basCanal, _Digits);
-   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "L4.3 cassure 20j");
+   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "USOIL_Breakout saison");
   }
 //+------------------------------------------------------------------+

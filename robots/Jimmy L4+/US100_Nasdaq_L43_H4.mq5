@@ -44,7 +44,7 @@ input bool   BreakevenActif          = true;
 input bool   FacteurVolActif         = true;   // moduler le risque selon la volatilite (L3)
 input bool   JournalActif            = true;   // journal de reflexion (Files\Ecurie_Journal)
 input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois (crises)
-input bool   ModeChallengeActif = false; // SANS mode challenge (variante MT6)
+input bool   ModeChallengeActif = true;  // L4 : ACTIF par defaut (valide scan 21 aout, 2 moteurs)
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur sous la moyenne 20 j
 
 CTrade   trade;
@@ -156,7 +156,7 @@ void Notifier(string msg)
    Print(msg);
    if(!PushNotifications) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4.3-SC] " + _Symbol + " : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4+] " + _Symbol + " : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID.");
       avertiEchec = true;
@@ -252,7 +252,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
-   Print("MacroBot L4.32 demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
+   Print("MacroBot L4+ demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
 
@@ -662,7 +662,7 @@ void OnTick()
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       plancherSwing = lo;
       attenteReentree = 0;
-      OuvrirAchat(stopDist, "Ecurie_L4.3 fib+RSI");
+      OuvrirAchat(stopDist, "Ecurie_L4+ fib+RSI");
       return;
      }
 
@@ -674,7 +674,7 @@ void OnTick()
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       Print("Repli atteint apres TP : re-entree.");
-      OuvrirAchat(stopDist, "Ecurie_L4.3 re-entree");
+      OuvrirAchat(stopDist, "Ecurie_L4+ re-entree");
       attenteReentree = 0;
      }
   }

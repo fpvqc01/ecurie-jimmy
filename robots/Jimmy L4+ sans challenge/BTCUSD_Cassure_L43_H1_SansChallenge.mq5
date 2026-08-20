@@ -49,7 +49,7 @@ input double PasUniteATR        = 0.5;   // L3 : ajouter une unite chaque +N x A
 input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun a N x ATR sous la derniere unite
 input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
 input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois (crises)
-input bool   ModeChallengeActif = true;  // L4 : ACTIF par defaut (valide scan 21 aout, 2 moteurs)
+input bool   ModeChallengeActif = false; // SANS mode challenge (variante MT6)
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur sous la moyenne 20 j
 input bool   NotificationsPush       = true; // push cellulaire (MetaQuotes ID)
 
@@ -148,7 +148,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4.3] BTC breakout : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4+SC] BTC breakout : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
@@ -197,8 +197,8 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4.32 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
-   Print("L4.3 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
+   Print("L4+ charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
+   Print("L4+ charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
@@ -673,7 +673,7 @@ void OnTick()
               {
                double slProvisoire = NormalizeDouble(basCanal, _Digits);
                if(trade.Buy(lotAjout, _Symbol, 0.0, slProvisoire, 0.0,
-                            "L4.3 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
+                            "L4+ unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
                  {
                   Notifier(StringFormat("PYRAMIDE unite %d/%d : +%.2f lot @ %.2f",
                            unites + 1, MaxUnites, lotAjout,
@@ -710,6 +710,6 @@ void OnTick()
    if(lot <= 0) return;
 
    double sl = NormalizeDouble(basCanal, _Digits);
-   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "L4.3 cassure 20j");
+   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "L4+ cassure 20j");
   }
 //+------------------------------------------------------------------+

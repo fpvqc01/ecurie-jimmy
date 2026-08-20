@@ -167,7 +167,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4.3] BTC bot : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4+] BTC bot : " + msg) && !avertiEchec)
      {
       Print("Push non envoyé. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
@@ -228,7 +228,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4.32 charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs));
+   Print("L4+ charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs));
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 

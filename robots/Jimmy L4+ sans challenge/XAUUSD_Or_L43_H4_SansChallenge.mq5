@@ -188,7 +188,7 @@ void Notifier(string msg)
    Print(msg);
    if(!PushNotifications) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4.3-SC] " + _Symbol + " : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4+SC] " + _Symbol + " : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID.");
       avertiEchec = true;
@@ -253,7 +253,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4.3 charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
+   Print("L4+ charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
    if(Preset == PRESET_GOLD)
      {
       SwingLookback = 10;   // L4.32 : 10 JOURS (= moteur) FibLo = 0.20; FibHi = 0.80;
@@ -285,7 +285,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
-   Print("MacroBot L4.32 demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
+   Print("MacroBot L4+ demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
 
@@ -696,7 +696,7 @@ void OnTick()
    if(DollarFort(RelireFiltreAvantTrade)) return;   // L4.1 filtre dollar (relecture avant trade)
       plancherSwing = lo;
       attenteReentree = 0;
-      OuvrirAchat(stopDist, "Ecurie_L4.3 fib+RSI");
+      OuvrirAchat(stopDist, "Ecurie_L4+ fib+RSI");
       return;
      }
 
@@ -709,7 +709,7 @@ void OnTick()
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
    if(DollarFort(RelireFiltreAvantTrade)) return;   // L4.1 filtre dollar (relecture avant trade)
       Print("Repli atteint apres TP : re-entree.");
-      OuvrirAchat(stopDist, "Ecurie_L4.3 re-entree");
+      OuvrirAchat(stopDist, "Ecurie_L4+ re-entree");
       attenteReentree = 0;
      }
   }
