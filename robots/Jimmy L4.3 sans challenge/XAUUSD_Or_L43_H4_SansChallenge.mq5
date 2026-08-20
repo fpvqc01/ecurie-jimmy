@@ -264,12 +264,12 @@ int OnInit()
       TpR = 1.0; RetraceReentree = 0.5;     // I2
      }
 
-   if(_Period != PERIOD_H4)
+   if(false)   // L4.3 : periode H4 fixee en dur, l'avertissement n'a plus d'objet
       Print("ATTENTION: la strategie a ete calibree en H4, graphique actuel: ",
             EnumToString(_Period));
 
-   hATR = iATR(_Symbol, _Period, AtrPeriod);
-   hRSI = iRSI(_Symbol, _Period, RsiPeriod, PRICE_CLOSE);
+   hATR = iATR(_Symbol, PERIOD_H4, AtrPeriod);   // L4.3 : H4 fixe, graphique sans importance
+   hRSI = iRSI(_Symbol, PERIOD_H4, RsiPeriod, PRICE_CLOSE);   // L4.3 : H4 fixe
    if(hATR == INVALID_HANDLE || hRSI == INVALID_HANDLE)
       return INIT_FAILED;
 
@@ -614,13 +614,13 @@ void OnTick()
    ProtegerPositionsNews();
    GererBreakeven();
 
-   datetime barTime = iTime(_Symbol, _Period, 0);
+   datetime barTime = iTime(_Symbol, PERIOD_H4, 0);   // L4.3 : decision par barre H4 fixe
    if(barTime == lastBar)
       return;
    lastBar = barTime;
 
    EcrireJournal(StringFormat("cloture=%.2f | position=%s | biais_macro=%s | news=%s | facteurVol=%.2f | reentree_armee=%s | plancher_swing=%.2f",
-      iClose(_Symbol, _Period, 1), (PositionOuverte() ? "OUVERTE" : "aucune"),
+      iClose(_Symbol, PERIOD_H4, 1), (PositionOuverte() ? "OUVERTE" : "aucune"),
       (cacheBiasOK ? "OK" : "BLOQUE"), (cacheNewsBloq ? "FENETRE ANNONCE" : "libre"),
       facteurVol, (attenteReentree > 0 ? "OUI" : "non"), plancherSwing));
 
@@ -633,7 +633,7 @@ void OnTick()
 
    int need = SwingLookback + 5;
    MqlRates rates[];
-   if(CopyRates(_Symbol, _Period, 0, need, rates) < need)
+   if(CopyRates(_Symbol, PERIOD_H4, 0, need, rates) < need)
       return;
    ArraySetAsSeries(rates, true);
 
