@@ -41,8 +41,17 @@ def main():
         except OSError as e:
             print("  impossible d'ecrire dans %s : %s" % (dossier, e))
     etat = "FORT (or bloque)" if fort else "pas fort (or libre)"
-    print("DXY %.2f vs EMA200 %.2f -> dollar %s | '%s' ecrit dans %d dossiers"
-          % (dernier, ema, etat, ligne, ecrits))
+    msg = ("DXY %.2f vs EMA200 %.2f -> dollar %s | '%s' ecrit dans %d dossiers"
+           % (dernier, ema, etat, ligne, ecrits))
+    print(msg)
+    return msg
 
 if __name__ == "__main__":
-    main()
+    import os
+    journal = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dxy_journal.log")
+    try:
+        msg = main()
+    except Exception as e:
+        msg = "ERREUR : %s (fail-open : les robots ne bloquent rien)" % e
+    with open(journal, "a", encoding="utf-8") as f:
+        f.write("%s  %s\n" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), msg))
