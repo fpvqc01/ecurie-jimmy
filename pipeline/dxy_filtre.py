@@ -31,7 +31,7 @@ def main():
         ema = alpha * c + (1 - alpha) * ema
     dernier = clotures[-1]
     fort = 1 if dernier > ema else 0
-    ligne = "%d %s" % (fort, datetime.date.today().isoformat())
+    ligne = "%d %s" % (fort, datetime.date.today().strftime("%Y.%m.%d"))
     ecrits = 0
     for dossier in CIBLES:
         try:
