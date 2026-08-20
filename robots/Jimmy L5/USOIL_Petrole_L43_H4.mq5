@@ -1,4 +1,4 @@
-﻿//+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
 //|                                           USOIL_Petrole_L43_H4.mq5 |
 //|  Cassure Donchian 20/10 JOURNALIER sur le pétrole WTI,           |
 //|  achat seulement, ACTIVE SEULEMENT EN SAISON (déc -> mai :       |
@@ -46,7 +46,7 @@ input ENUM_PROTECTION_NEWS ProtectionPositionsNews = PROTECTION_SERRER;
 input bool   FacteurVolActif       = true; // moduler le risque selon la volatilite des marches (L3)
 input bool   PyramidageActif    = true;  // L3 : ajouter des unites sur un trade gagnant (Turtles)
 input int    MaxUnites          = 4;     // L4.2 : pyramide 4 (valide 21 aout, +2 pts H4 10 ans)
-input bool   GardeVendrediActif = true;  // L4+C : aucune nouvelle unite de pyramide le vendredi (gaps OPEP+ du week-end)
+input bool   GardeVendrediActif = true;  // L5C : aucune nouvelle unite de pyramide le vendredi (gaps OPEP+ du week-end)
 input double PasUniteATR        = 0.5;   // L3 : ajouter une unite chaque +N x ATR
 input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun a N x ATR sous la derniere unite
 input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
@@ -148,7 +148,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4+] Pétrole : " + msg) && !avertiEchec)
+   if(!SendNotification("[L5] Pétrole : " + msg) && !avertiEchec)
      {
       Print("Push non envoyé. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
@@ -197,8 +197,8 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4+ charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
-   Print("L4+ charge | PyramideMax=", MaxUnites, " GardeVendredi=", GardeVendrediActif, " ModeChallenge=", ModeChallengeActif);
+   Print("L5 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
+   Print("L5 charge | PyramideMax=", MaxUnites, " GardeVendredi=", GardeVendrediActif, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
@@ -648,7 +648,7 @@ void OnTick()
       //    depuis la derniere unite (une seule unite par bougie : prudent)
       MqlDateTime tvC;
       TimeToStruct(TimeCurrent(), tvC);
-      bool ajoutBloqueVendredi = (GardeVendrediActif && tvC.day_of_week == 5);   // L4+C
+      bool ajoutBloqueVendredi = (GardeVendrediActif && tvC.day_of_week == 5);   // L5C
       if(PyramidageActif && !ajoutBloqueVendredi && unites > 0 && unites < MaxUnites && atrVal > 0 && dernier > 0)
         {
          double seuilAjout = dernier + PasUniteATR * atrVal;
@@ -659,7 +659,7 @@ void OnTick()
               {
                double slProvisoire = NormalizeDouble(basCanal, _Digits);
                if(trade.Buy(lotAjout, _Symbol, 0.0, slProvisoire, 0.0,
-                            "L4+ unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
+                            "L5 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
                  {
                   Notifier(StringFormat("PYRAMIDE unite %d/%d : +%.2f lot @ %.2f",
                            unites + 1, MaxUnites, lotAjout,

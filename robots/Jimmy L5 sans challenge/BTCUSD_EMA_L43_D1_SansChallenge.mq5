@@ -1,69 +1,69 @@
-﻿//+------------------------------------------------------------------+
-//|                                             BTCUSD_Cassure_L43_H1.mq5 |
-//|  Cassure Donchian 20/10 JOURS sur BTC, achat seulement (L4.31).  |
-//|  Graphique SANS importance (canaux journaliers, decision H1).    |
-//|                                                                  |
-//|  Entree  : barre H1 fermee > plus haut 20 JOURS + tampon 0,25 %  |
-//|  Sortie  : stop suiveur sous le plus bas 10 JOURS (+ pyramide 4) |
-//|  Valide avec les frais reels FTMO (commission 0.065% A/R +       |
-//|  swap -30%/an). Config L4.31 validee walk-forward 2021-2026.     |
-//|                                                                  |
-//|                                                                  |
-//|  Partage les protections FTMO (variables MACROBOT_*), le biais   |
-//|  macro BIS et le filtre d'annonces avec les autres robots.       |
-//|  Magic distinct : ne touche jamais aux trades du bot EMA H1.     |
+//+------------------------------------------------------------------+
+//|                                              BTCUSD_EMA_L43_D1.mq5 |
+//|  Base I2 du bot EMA BTC, portee en L4.3 le 20 aout 2026 :        |
+//|   - TP à +2R (~1000 $) au lieu de 1.5R                           |
+//|   - RÉ-ENTRÉE sur repli de 0.25xATR après un TP, tant que les    |
+//|     EMA restent haussières et la macro favorable                 |
+//|   - risque 1.5 % (parite L4) ; decision et EMA/ATR JOURNALIERS   |
+//|   - PLAFOND d'écurie : max 2 positions simultanées (tous robots) |
+//|  Magic L4.3 (20261115) : ecurie independante des autres.         |
 //+------------------------------------------------------------------+
 #property copyright "Jimmy"
-#property version   "1.00"
+#property version   "2.00"
 #property strict
 
 #include <Trade\Trade.mqh>
 
 input double RisqueParTradePct    = 1.5;   // parite de risque validee 10 ans (etait 0.75)   // Risque par trade en % du solde (I2 : x1.5)
+input ENUM_TIMEFRAMES UT_Decision    = PERIOD_D1; // L4.3 : une decision par jour (valide walk-forward)
+input ENUM_TIMEFRAMES UT_Indicateurs = PERIOD_D1; // L4.3 : EMA/ATR journaliers
+input int             HeureDecision  = 8;         // L5F : heure serveur de la decision D1 (evite le spread du rollover de minuit)
 input double LimitePerteJourPct   = 2.5;    // L3 : resserre (valide 19 aout ; FTMO = 5)
-input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en % (FTMO = 10)
-input int    PeriodeEntree        = 20;     // L4.3 corrige : canal 20 JOURS (config validee walk-forward ; etait 55 bougies H4)
-input int    PeriodeSortie        = 10;     // L4.3 corrige : sortie 10 JOURS (etait 20 bougies H4)
-input int    PeriodeATR           = 14;     // ATR (protection annonces)
-input long   NumeroMagique        = 20261117; // Identifiant distinct du bot EMA
-input int    MaxPositionsEcurie   = 2;      // Plafond global de positions de l'ecurie (I2)
-input bool   BiaisMacroDepuisFichier = true; // biais BIS (macrobot_bias.txt, relu chaque minute)
-input bool   AchatPermisSansFichier  = true; // fichier absent -> achats permis quand meme ?
-input bool   FiltreNouvellesActif    = true; // bloquer les entrees autour des annonces USD
+input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en %
+input int    EMARapide            = 20;
+input int    EMALente             = 50;
+input int    PeriodeATR           = 14;
+input double MultiplicateurSL     = 2.0;    // Stop = 2 x ATR (= 1R)
+input double MultiplicateurTP     = 4.0;    // TP = 4 x ATR (= 2R, ~1000 $) (I2)
+input double RetraceReentreeATR   = 0.25;   // Ré-entrée après repli de N x ATR sous le prix de sortie TP (I2)
+input int    MaxPositionsEcurie   = 2;      // Plafond global de positions de l'écurie (I2)
+input long   NumeroMagique        = 20261115;
+input bool   ModeAchatSeulement   = true;
+input bool   BiaisMacroDepuisFichier = true;
+input bool   AchatPermisSansFichier  = true;
+input bool   FiltreNouvellesActif    = true;
 input int    MinutesBlocageAvantNews = 30;
 input int    MinutesBlocageApresNews = 30;
 
 enum ENUM_PROTECTION_NEWS
   {
-   PROTECTION_AUCUNE = 0,   // ne rien faire sur les positions ouvertes
-   PROTECTION_SERRER = 1,   // serrer les stops pendant la fenetre d'annonce (recommande)
-   PROTECTION_FERMER = 2    // fermer les positions avant l'annonce
+   PROTECTION_AUCUNE = 0,
+   PROTECTION_SERRER = 1,
+   PROTECTION_FERMER = 2
   };
 input ENUM_PROTECTION_NEWS ProtectionPositionsNews = PROTECTION_SERRER;
 input bool   FacteurVolActif       = true; // moduler le risque selon la volatilite des marches (L3)
-input bool   PyramidageActif    = true;  // L3 : ajouter des unites sur un trade gagnant (Turtles)
-input int    MaxUnites          = 4;     // L4.2 : pyramide 4 (valide 21 aout, +2 pts H4 10 ans)
-input ENUM_TIMEFRAMES UT_Decision    = PERIOD_H1; // L4.3 : cadence de decision (valide walk-forward)
-input double TamponCassurePct = 0.25; // L4.31 : entree seulement si cassure > canal + X % (plateau 0,15-0,30 valide)
-input double PasUniteATR        = 0.5;   // L3 : ajouter une unite chaque +N x ATR
-input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun a N x ATR sous la derniere unite
 input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
 input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois (crises)
-input bool   ModeChallengeActif = true;  // L4 : ACTIF par defaut (valide scan 21 aout, 2 moteurs)
+input bool   ModeChallengeActif = false; // SANS mode challenge (variante MT6)
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur sous la moyenne 20 j
-input bool   NotificationsPush       = true; // push cellulaire (MetaQuotes ID)
+input bool   NotificationsPush       = true;
 
 CTrade   trade;
-int      hAtr = INVALID_HANDLE;
+int      hEmaRapide = INVALID_HANDLE;
+int      hEmaLente  = INVALID_HANDLE;
+int      hAtr       = INVALID_HANDLE;
 datetime derniereBarre = 0;
 datetime derniereLectureBiais = 0;
 bool     biaisMacroOK = true;
 datetime derniereLectureNews = 0;
 long     newsEpochs[];
+int      fngValeur = -1;
 bool     newsBloquaitAvant = false;
 datetime derniereLectureVol = 0;
 double   facteurVol = 1.0;
 
+double   attenteReentree = 0;   // prix de sortie TP ; 0 = pas de ré-entrée en attente
 
 string BaseGV() { return "MACROBOT_BASE_" + (string)AccountInfoInteger(ACCOUNT_LOGIN); }
 string HaltGV() { return "MACROBOT_HALT_" + (string)AccountInfoInteger(ACCOUNT_LOGIN); }
@@ -78,8 +78,27 @@ string DayGV()
   }
 
 //+------------------------------------------------------------------+
-//| Plafond d'ecurie : positions de tous nos robots (I2)             |
+//| Plafond d'écurie : compte les positions de TOUS nos robots       |
+//| (magics 20261115 EMA+MacroBots, 20261117 BTC brk, 20261118 oil)  |
 //+------------------------------------------------------------------+
+
+//+------------------------------------------------------------------+
+//| L3 : test de position robuste (PositionSelect n'est pas fiable    |
+//| sur un compte hedging) -> boucle explicite symbole + magic.       |
+//+------------------------------------------------------------------+
+bool PositionOuverte()
+  {
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+     {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket == 0) continue;
+      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
+      if(PositionGetInteger(POSITION_MAGIC) != NumeroMagique) continue;
+      return(true);
+     }
+   return(false);
+  }
+
 //+------------------------------------------------------------------+
 //| PLAFOND DE CORRELATION (valide sur 99 ans de crises)              |
 //| L'or et les indices semblent independants... jusqu'a une crise de |
@@ -142,19 +161,22 @@ int ComptePositionsEcurie()
      }
    return(n);
   }
+
 //+------------------------------------------------------------------+
 void Notifier(string msg)
   {
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4+] BTC breakout : " + msg) && !avertiEchec)
+   if(!SendNotification("[L5SC] BTC bot : " + msg) && !avertiEchec)
      {
-      Print("Push non envoye. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
+      Print("Push non envoyé. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
      }
   }
 
+//+------------------------------------------------------------------+
+//| Notifications + détection des sorties TP (déclenche la ré-entrée)|
 //+------------------------------------------------------------------+
 void OnTradeTransaction(const MqlTradeTransaction &trans,
                         const MqlTradeRequest &request,
@@ -170,11 +192,21 @@ void OnTradeTransaction(const MqlTradeTransaction &trans,
    long   sens = HistoryDealGetInteger(trans.deal, DEAL_ENTRY);
 
    if(sens == DEAL_ENTRY_IN)
-      Notifier(StringFormat("ENTRÉE cassure %.2f lot @ %s", vol, DoubleToString(prix, _Digits)));
+      Notifier(StringFormat("ENTRÉE achat %.2f lot @ %s", vol, DoubleToString(prix, _Digits)));
    else if(sens == DEAL_ENTRY_OUT)
+     {
       Notifier(StringFormat("SORTIE %.2f lot @ %s | P/L: %.2f $", vol,
                             DoubleToString(prix, _Digits),
                             HistoryDealGetDouble(trans.deal, DEAL_PROFIT)));
+      long raison = HistoryDealGetInteger(trans.deal, DEAL_REASON);
+      if(raison == DEAL_REASON_TP)
+        {
+         attenteReentree = prix;   // profit encaissé -> on guette le repli
+         Print("TP encaissé : ré-entrée armée sous ", DoubleToString(prix, _Digits));
+        }
+      else
+         attenteReentree = 0;      // stop ou fermeture stratégique : pas de ré-entrée
+     }
   }
 
 
@@ -197,27 +229,25 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4+ charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
-   Print("L4+ charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
+   Print("L5 charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs), " heureDecision=", HeureDecision, "h");
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
-   hAtr = iATR(_Symbol, PERIOD_D1, PeriodeATR);   // L4.3 : ATR journalier
-   if(hAtr == INVALID_HANDLE)
+   hEmaRapide = iMA(_Symbol, UT_Indicateurs, EMARapide, 0, MODE_EMA, PRICE_CLOSE);
+   hEmaLente  = iMA(_Symbol, UT_Indicateurs, EMALente,  0, MODE_EMA, PRICE_CLOSE);
+   hAtr       = iATR(_Symbol, UT_Indicateurs, PeriodeATR);
+   if(hEmaRapide == INVALID_HANDLE || hEmaLente == INVALID_HANDLE || hAtr == INVALID_HANDLE)
      {
-      Print("Erreur : impossible de creer l'ATR.");
+      Print("Erreur : impossible de créer les indicateurs.");
       return(INIT_FAILED);
      }
-
-   if(false)   // L4.3 : le graphique n'a plus d'importance
-      Print("ATTENTION : strategie calibree en H4, graphique actuel : ", EnumToString(_Period));
 
    if(!GlobalVariableCheck(BaseGV()))
       GlobalVariableSet(BaseGV(), AccountInfoDouble(ACCOUNT_BALANCE));
 
-   Print("BTCUSD_Cassure_L43_H1 démarré. Baseline challenge = ",
-         DoubleToString(GlobalVariableGet(BaseGV()), 2));
-
+   Print("BTCUSD_EMA_L43_D1 démarré. Baseline = ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
+         " | TP 2R, ré-entrée ", DoubleToString(RetraceReentreeATR, 2),
+         "xATR, plafond écurie ", MaxPositionsEcurie);
    EventSetTimer(60);
    return(INIT_SUCCEEDED);
   }
@@ -226,9 +256,10 @@ int OnInit()
 void OnTimer()
   {
    ReleverEquite();
-   LireNouvelles();
    LireFacteurVol();
    if(ModeChallengeActif && facteurVol > 1.0) facteurVol = 1.0;   // L4.32 : jamais amplifier en challenge
+
+   LireNouvelles();
    BiaisMacroPermis();
    BloqueParNouvelles();
    ProtegerPositionsNews();
@@ -238,12 +269,11 @@ void OnTimer()
 void OnDeinit(const int reason)
   {
    EventKillTimer();
-   if(hAtr != INVALID_HANDLE) IndicatorRelease(hAtr);
+   if(hEmaRapide != INVALID_HANDLE) IndicatorRelease(hEmaRapide);
+   if(hEmaLente  != INVALID_HANDLE) IndicatorRelease(hEmaLente);
+   if(hAtr       != INVALID_HANDLE) IndicatorRelease(hAtr);
   }
 
-//+------------------------------------------------------------------+
-//| Ferme les positions de CE robot (magic 20261117).                |
-//| toutLeCompte=true : tous les symboles (urgence gardien)          |
 //+------------------------------------------------------------------+
 void FermerPositions(bool toutLeCompte)
   {
@@ -257,9 +287,6 @@ void FermerPositions(bool toutLeCompte)
      }
   }
 
-//+------------------------------------------------------------------+
-//| Coupe-circuits FTMO partages (chaque robot surveille l'equite    |
-//| du compte entier et ferme ses propres positions en cas d'alerte) |
 //+------------------------------------------------------------------+
 bool VerifierProtections()
   {
@@ -275,7 +302,7 @@ bool VerifierProtections()
 
    if(equite <= base * (1.0 - LimitePerteTotalePct / 100.0))
      {
-      Notifier("🚨 LIMITE DE PERTE TOTALE ATTEINTE. Fermeture, arrêt définitif.");
+      Notifier("🚨 LIMITE DE PERTE TOTALE ATTEINTE. Fermeture de tout le compte, arrêt définitif.");
       FermerPositions(true);
       GlobalVariableSet(HaltGV(), 1.0);
       return(false);
@@ -337,7 +364,14 @@ void LireNouvelles()
    while(!FileIsEnding(fh))
      {
       string ligne = FileReadString(fh);
-      if(StringFind(ligne, "EVENT=") == 0)
+      if(StringFind(ligne, "FNG=") == 0)
+        {
+         int v = (int)StringToInteger(StringSubstr(ligne, 4));
+         if(v != fngValeur && v >= 0)
+            Print("Fear & Greed crypto : ", v, "/100");
+         fngValeur = v;
+        }
+      else if(StringFind(ligne, "EVENT=") == 0)
         {
          string reste = StringSubstr(ligne, 6);
          int sep = StringFind(reste, ";");
@@ -396,11 +430,10 @@ void ProtegerPositionsNews()
 
       if(ProtectionPositionsNews == PROTECTION_FERMER)
         {
-         Print("Annonce imminente : fermeture préventive de la position ", ticket);
+         Print("Annonce imminente : fermeture préventive de ", ticket);
          trade.PositionClose(ticket);
          continue;
         }
-
       double slActuel = PositionGetDouble(POSITION_SL);
       double tp       = PositionGetDouble(POSITION_TP);
       double entree   = PositionGetDouble(POSITION_PRICE_OPEN);
@@ -502,11 +535,7 @@ double CalculerLot(double distanceSL)
   {
    double valeurTick = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
    double tailleTick = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
-   if(valeurTick <= 0 || tailleTick <= 0 || distanceSL <= 0)
-     {
-      Print("Impossible de calculer le lot (tick=", tailleTick, ", valeur=", valeurTick, ").");
-      return(0);
-     }
+   if(valeurTick <= 0 || tailleTick <= 0 || distanceSL <= 0) return(0);
 
    double risqueArgent = AccountInfoDouble(ACCOUNT_BALANCE) * RisqueParTradePct / 100.0 * facteurVol * FacteurChallenge();
    double perteParLot  = distanceSL / tailleTick * valeurTick;
@@ -520,15 +549,14 @@ double CalculerLot(double distanceSL)
    if(lot > lotMax) lot = lotMax;
    if(lot < lotMin)
      {
-      Print("Lot calculé trop petit (", DoubleToString(lot, 4), " < ",
-            DoubleToString(lotMin, 4), "). Trade annulé pour respecter le risque.");
+      Print("Lot calculé trop petit (", DoubleToString(lot, 4), "). Trade annulé.");
       return(0);
      }
    return(LotSelonMarge(lot));
   }
 
 //+------------------------------------------------------------------+
-bool PositionOuverte()
+int PositionActuelle()
   {
    for(int i = PositionsTotal() - 1; i >= 0; i--)
      {
@@ -536,76 +564,26 @@ bool PositionOuverte()
       if(ticket == 0) continue;
       if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
       if(PositionGetInteger(POSITION_MAGIC) != NumeroMagique) continue;
-      return(true);
+      if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) return(1);
+      return(-1);
      }
-   return(false);
+   return(0);
   }
-
 
 //+------------------------------------------------------------------+
-//| PYRAMIDAGE (L3, regle des Turtles) : l'etat est lu directement    |
-//| dans les positions ouvertes -> survit a un redemarrage de MT5.    |
+//| Ouvre un achat avec SL/TP standard (utilisé par les 2 entrées)   |
 //+------------------------------------------------------------------+
-int NombreUnites()
+void OuvrirAchat(double atrVal, string commentaire)
   {
-   int n = 0;
-   for(int i = PositionsTotal() - 1; i >= 0; i--)
-     {
-      ulong ticket = PositionGetTicket(i);
-      if(ticket == 0) continue;
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-      if(PositionGetInteger(POSITION_MAGIC) != NumeroMagique) continue;
-      n++;
-     }
-   return(n);
-  }
-
-double PrixDerniereUnite()   // prix d'ouverture le plus HAUT = derniere unite ajoutee
-  {
-   double p = 0.0;
-   for(int i = PositionsTotal() - 1; i >= 0; i--)
-     {
-      ulong ticket = PositionGetTicket(i);
-      if(ticket == 0) continue;
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-      if(PositionGetInteger(POSITION_MAGIC) != NumeroMagique) continue;
-      double po = PositionGetDouble(POSITION_PRICE_OPEN);
-      if(po > p) p = po;
-     }
-   return(p);
-  }
-
-double LotUnite()            // taille de la 1re unite (prix d'ouverture le plus BAS)
-  {
-   double p = 0.0, lot = 0.0;
-   for(int i = PositionsTotal() - 1; i >= 0; i--)
-     {
-      ulong ticket = PositionGetTicket(i);
-      if(ticket == 0) continue;
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-      if(PositionGetInteger(POSITION_MAGIC) != NumeroMagique) continue;
-      double po = PositionGetDouble(POSITION_PRICE_OPEN);
-      if(p == 0.0 || po < p) { p = po; lot = PositionGetDouble(POSITION_VOLUME); }
-     }
-   return(lot);
-  }
-
-void AppliquerStopCommun(double niveau)
-  {
-   double distMin = (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
-   double bid     = SymbolInfoDouble(_Symbol, SYMBOL_BID);
-   if(niveau > bid - distMin) niveau = bid - distMin;
-   niveau = NormalizeDouble(niveau, _Digits);
-   for(int i = PositionsTotal() - 1; i >= 0; i--)
-     {
-      ulong ticket = PositionGetTicket(i);
-      if(ticket == 0) continue;
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-      if(PositionGetInteger(POSITION_MAGIC) != NumeroMagique) continue;
-      double slActuel = PositionGetDouble(POSITION_SL);
-      if(niveau > slActuel + _Point)      // le stop ne fait que monter
-         trade.PositionModify(ticket, niveau, PositionGetDouble(POSITION_TP));
-     }
+   double distanceSL = atrVal * MultiplicateurSL;
+   double distanceTP = atrVal * MultiplicateurTP;
+   if(distanceSL <= 0) return;
+   double lot = CalculerLot(distanceSL);
+   if(lot <= 0) return;
+   double prix = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double sl   = NormalizeDouble(prix - distanceSL, _Digits);
+   double tp   = NormalizeDouble(prix + distanceTP, _Digits);
+   trade.Buy(lot, _Symbol, 0.0, sl, tp, commentaire);
   }
 
 //+------------------------------------------------------------------+
@@ -614,102 +592,60 @@ void OnTick()
    if(!VerifierProtections()) return;
 
    LireNouvelles();
-   LireFacteurVol();
-   if(ModeChallengeActif && facteurVol > 1.0) facteurVol = 1.0;   // L4.32 : jamais amplifier en challenge
    bool macroPermis = BiaisMacroPermis() && !BloqueParNouvelles();
    ProtegerPositionsNews();
 
-   // une decision par bougie H4 fermee
    datetime barreActuelle = iTime(_Symbol, UT_Decision, 0);   // L4.3
+   MqlDateTime tvF;
+   TimeToStruct(TimeCurrent(), tvF);
+   if(UT_Decision == PERIOD_D1 && tvF.hour < HeureDecision) return;   // L5F : on decide a 08:00, pas au rollover
    if(barreActuelle == derniereBarre) return;
    derniereBarre = barreActuelle;
 
-   int besoin = MathMax(PeriodeEntree, PeriodeSortie) + 2;
-   MqlRates rates[];
-   ArraySetAsSeries(rates, true);
-   if(CopyRates(_Symbol, PERIOD_D1, 0, besoin, rates) < besoin) return;   // L4.3 : canaux journaliers
-   double declencheur  = iClose(_Symbol, UT_Decision, 1);   // L4.3 : barre de decision fermee
-   double hautDecision = iHigh(_Symbol, UT_Decision, 1);
-   if(declencheur <= 0 || hautDecision <= 0) return;
+   double emaRapide[], emaLente[], atr[];
+   ArraySetAsSeries(emaRapide, true);
+   ArraySetAsSeries(emaLente,  true);
+   ArraySetAsSeries(atr,       true);
+   if(CopyBuffer(hEmaRapide, 0, 0, 3, emaRapide) < 3) return;
+   if(CopyBuffer(hEmaLente,  0, 0, 3, emaLente)  < 3) return;
+   if(CopyBuffer(hAtr,       0, 0, 2, atr)       < 2) return;
 
-   // canaux calcules sur les bougies AVANT la bougie signal (index 1)
-   double hautCanal = rates[1].high;   // L4.3 (corrige 20 aout : la veille fait partie du canal)
-   for(int i = 2; i <= PeriodeEntree; i++)
-      if(rates[i].high > hautCanal) hautCanal = rates[i].high;
-   double basCanal = rates[1].low;   // L4.3
-   for(int i = 2; i <= PeriodeSortie; i++)
-      if(rates[i].low < basCanal) basCanal = rates[i].low;
+   bool haussier           = (emaRapide[1] > emaLente[1]);
+   bool croisementHaussier = (haussier && emaRapide[2] <= emaLente[2]);
+   bool croisementBaissier = (!haussier && emaRapide[2] >= emaLente[2]);
 
-   EcrireJournal(StringFormat("cloture=%.2f | canal_haut=%.2f (dist %.2f%%) | canal_bas=%.2f | position=%s | macro=%s | news=%s | facteurVol=%.2f",
-      declencheur, hautCanal, (hautCanal - declencheur) / declencheur * 100.0, basCanal,
-      (PositionOuverte() ? (StringFormat("OUVERTE %d unite(s)", NombreUnites())) : "aucune"), (biaisMacroOK ? "OK" : "BLOQUE"),
-      (newsBloquaitAvant ? "FENETRE ANNONCE" : "libre"), facteurVol));
-   if(PositionOuverte())
+   EcrireJournal(StringFormat("prix=%.2f | EMA20=%.2f %s EMA50=%.2f | position=%s | macro=%s | news=%s | facteurVol=%.2f | reentree_armee=%s",
+      iClose(_Symbol, UT_Indicateurs, 1), emaRapide[1], (haussier ? ">" : "<"), emaLente[1],
+      (PositionActuelle() != 0 ? "OUVERTE" : "aucune"), (biaisMacroOK ? "OK" : "BLOQUE"),
+      (newsBloquaitAvant ? "FENETRE ANNONCE" : "libre"), facteurVol, (attenteReentree > 0 ? "OUI" : "non")));
+
+   // régime baissier : fermeture éventuelle + annulation de la ré-entrée
+   if(!haussier)
      {
-      // sortie : cloture sous le canal bas, sinon stop suiveur remonte
-      if(declencheur < basCanal)
-        {
+      attenteReentree = 0;
+      if(croisementBaissier && PositionActuelle() == 1)
          FermerPositions(false);
-         return;
-        }
-      // --- L3 : PYRAMIDAGE (Turtles) + stop commun -------------------
-      double atrPyr[];
-      ArraySetAsSeries(atrPyr, true);
-      double atrVal = 0.0;
-      if(CopyBuffer(hAtr, 0, 1, 1, atrPyr) >= 1) atrVal = atrPyr[0];
-
-      int    unites  = NombreUnites();
-      double dernier = PrixDerniereUnite();
-
-      // 1) ajout d'une unite quand le prix a avance de PasUniteATR
-      //    depuis la derniere unite (une seule unite par bougie : prudent)
-      if(PyramidageActif && unites > 0 && unites < MaxUnites && atrVal > 0 && dernier > 0)
-        {
-         double seuilAjout = dernier + PasUniteATR * atrVal;
-         if(hautDecision >= seuilAjout && ComptePositionsEcurie() <= MaxPositionsEcurie)
-           {
-            double lotAjout = LotUnite();
-            if(lotAjout > 0)
-              {
-               double slProvisoire = NormalizeDouble(basCanal, _Digits);
-               if(trade.Buy(lotAjout, _Symbol, 0.0, slProvisoire, 0.0,
-                            "L4+ unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
-                 {
-                  Notifier(StringFormat("PYRAMIDE unite %d/%d : +%.2f lot @ %.2f",
-                           unites + 1, MaxUnites, lotAjout,
-                           SymbolInfoDouble(_Symbol, SYMBOL_ASK)));
-                  unites  = NombreUnites();
-                  dernier = PrixDerniereUnite();
-                 }
-              }
-           }
-        }
-
-      // 2) stop commun : le plus HAUT entre le canal bas et
-      //    (derniere unite - StopSousDerniereUniteATR x ATR)
-      double niveauStop = basCanal;
-      if(PyramidageActif && unites > 1 && atrVal > 0 && dernier > 0)
-        {
-         double stopTurtle = dernier - StopSousDerniereUniteATR * atrVal;
-         if(stopTurtle > niveauStop) niveauStop = stopTurtle;
-        }
-      AppliquerStopCommun(niveauStop);
       return;
      }
 
-   // entree : cassure du canal haut, si la macro le permet
+   if(PositionActuelle() != 0) return;
    if(!macroPermis) return;
-   if(declencheur <= hautCanal * (1.0 + TamponCassurePct / 100.0)) return;   // L4.31 tampon anti-faux-signal
    if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
-   if(FamilleCorreleeOccupee()) return;   // plafond de correlation // plafond d'ecurie (I2)
+   if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond d'écurie (I2)
 
-   double prix = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
-   double distanceSL = prix - basCanal;
-   if(distanceSL <= 0 || distanceSL > 0.50 * prix) return; // garde-fou : risque > 10% du prix = aberrant
-   double lot = CalculerLot(distanceSL);
-   if(lot <= 0) return;
-
-   double sl = NormalizeDouble(basCanal, _Digits);
-   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "L4+ cassure 20j");
+   // Entrée 1 : croisement haussier frais
+   if(croisementHaussier)
+     {
+      OuvrirAchat(atr[1], "BTC_I2 croisement");
+      return;
+     }
+   // Entrée 2 (I2) : ré-entrée sur repli après un TP encaissé
+   if(attenteReentree > 0 &&
+      iLow(_Symbol, UT_Indicateurs, 1) <= attenteReentree - RetraceReentreeATR * atr[1])
+     {
+      Print("Repli de ", DoubleToString(RetraceReentreeATR, 2), "xATR atteint : ré-entrée.");
+      OuvrirAchat(atr[1], "BTC_I2 re-entree");
+      attenteReentree = 0;
+     }
   }
 //+------------------------------------------------------------------+

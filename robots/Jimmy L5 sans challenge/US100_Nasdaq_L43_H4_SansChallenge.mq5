@@ -156,7 +156,7 @@ void Notifier(string msg)
    Print(msg);
    if(!PushNotifications) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4+SC] " + _Symbol + " : " + msg) && !avertiEchec)
+   if(!SendNotification("[L5SC] " + _Symbol + " : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID.");
       avertiEchec = true;
@@ -252,7 +252,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
-   Print("MacroBot L4+ demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
+   Print("MacroBot L5 demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
 
@@ -662,7 +662,7 @@ void OnTick()
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       plancherSwing = lo;
       attenteReentree = 0;
-      OuvrirAchat(stopDist, "Ecurie_L4+ fib+RSI");
+      OuvrirAchat(stopDist, "Ecurie_L5 fib+RSI");
       return;
      }
 
@@ -674,7 +674,7 @@ void OnTick()
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
       Print("Repli atteint apres TP : re-entree.");
-      OuvrirAchat(stopDist, "Ecurie_L4+ re-entree");
+      OuvrirAchat(stopDist, "Ecurie_L5 re-entree");
       attenteReentree = 0;
      }
   }

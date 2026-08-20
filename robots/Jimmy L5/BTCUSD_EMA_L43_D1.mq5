@@ -1,4 +1,4 @@
-﻿//+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
 //|                                              BTCUSD_EMA_L43_D1.mq5 |
 //|  Base I2 du bot EMA BTC, portee en L4.3 le 20 aout 2026 :        |
 //|   - TP à +2R (~1000 $) au lieu de 1.5R                           |
@@ -17,7 +17,7 @@
 input double RisqueParTradePct    = 1.5;   // parite de risque validee 10 ans (etait 0.75)   // Risque par trade en % du solde (I2 : x1.5)
 input ENUM_TIMEFRAMES UT_Decision    = PERIOD_D1; // L4.3 : une decision par jour (valide walk-forward)
 input ENUM_TIMEFRAMES UT_Indicateurs = PERIOD_D1; // L4.3 : EMA/ATR journaliers
-input int             HeureDecision  = 8;         // L4+F : heure serveur de la decision D1 (evite le spread du rollover de minuit)
+input int             HeureDecision  = 8;         // L5F : heure serveur de la decision D1 (evite le spread du rollover de minuit)
 input double LimitePerteJourPct   = 2.5;    // L3 : resserre (valide 19 aout ; FTMO = 5)
 input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en %
 input int    EMARapide            = 20;
@@ -168,7 +168,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4+] BTC bot : " + msg) && !avertiEchec)
+   if(!SendNotification("[L5] BTC bot : " + msg) && !avertiEchec)
      {
       Print("Push non envoyé. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
@@ -229,7 +229,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4+ charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs), " heureDecision=", HeureDecision, "h");
+   Print("L5 charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs), " heureDecision=", HeureDecision, "h");
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
@@ -598,7 +598,7 @@ void OnTick()
    datetime barreActuelle = iTime(_Symbol, UT_Decision, 0);   // L4.3
    MqlDateTime tvF;
    TimeToStruct(TimeCurrent(), tvF);
-   if(UT_Decision == PERIOD_D1 && tvF.hour < HeureDecision) return;   // L4+F : on decide a 08:00, pas au rollover
+   if(UT_Decision == PERIOD_D1 && tvF.hour < HeureDecision) return;   // L5F : on decide a 08:00, pas au rollover
    if(barreActuelle == derniereBarre) return;
    derniereBarre = barreActuelle;
 

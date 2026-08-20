@@ -1,4 +1,4 @@
-﻿//+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
 //|                                             BTCUSD_Cassure_L43_H1.mq5 |
 //|  Cassure Donchian 20/10 JOURS sur BTC, achat seulement (L4.31).  |
 //|  Graphique SANS importance (canaux journaliers, decision H1).    |
@@ -148,7 +148,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4+SC] BTC breakout : " + msg) && !avertiEchec)
+   if(!SendNotification("[L5SC] BTC breakout : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
@@ -197,8 +197,8 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4+ charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
-   Print("L4+ charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
+   Print("L5 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
+   Print("L5 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
@@ -673,7 +673,7 @@ void OnTick()
               {
                double slProvisoire = NormalizeDouble(basCanal, _Digits);
                if(trade.Buy(lotAjout, _Symbol, 0.0, slProvisoire, 0.0,
-                            "L4+ unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
+                            "L5 unite " + (string)(unites + 1) + "/" + (string)MaxUnites))
                  {
                   Notifier(StringFormat("PYRAMIDE unite %d/%d : +%.2f lot @ %.2f",
                            unites + 1, MaxUnites, lotAjout,
@@ -710,6 +710,6 @@ void OnTick()
    if(lot <= 0) return;
 
    double sl = NormalizeDouble(basCanal, _Digits);
-   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "L4+ cassure 20j");
+   trade.Buy(lot, _Symbol, 0.0, sl, 0.0, "L5 cassure 20j");
   }
 //+------------------------------------------------------------------+

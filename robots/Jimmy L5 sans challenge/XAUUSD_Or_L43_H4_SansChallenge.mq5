@@ -44,7 +44,7 @@ input bool   BreakevenActif          = true;
 input bool   FacteurVolActif         = true;   // moduler le risque selon la volatilite (L3)
 input bool   JournalActif            = true;   // journal de reflexion (Files\Ecurie_Journal)
 input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois (crises)
-input bool   ModeChallengeActif = true;  // L4 : ACTIF par defaut (valide scan 21 aout, 2 moteurs)
+input bool   ModeChallengeActif = false; // SANS mode challenge (variante MT6)
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur sous la moyenne 20 j
 input bool   FiltreDollarActif  = true;  // L4.1 : pas d'entree or quand le dollar est fort (DXY > moy. 200 j)
 input bool   RelireFiltreAvantTrade = true; // L4.1 : relecture fraiche du fichier juste avant chaque trade
@@ -188,7 +188,7 @@ void Notifier(string msg)
    Print(msg);
    if(!PushNotifications) return;
    static bool avertiEchec = false;
-   if(!SendNotification("[L4+] " + _Symbol + " : " + msg) && !avertiEchec)
+   if(!SendNotification("[L5SC] " + _Symbol + " : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID.");
       avertiEchec = true;
@@ -253,7 +253,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4+ charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
+   Print("L5 charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
    if(Preset == PRESET_GOLD)
      {
       SwingLookback = 10; FibLo = 0.20; FibHi = 0.80;   // L4.32 : 10 JOURS (= moteur)
@@ -285,7 +285,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
-   Print("MacroBot L4+ demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
+   Print("MacroBot L5 demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
 
@@ -696,7 +696,7 @@ void OnTick()
    if(DollarFort(RelireFiltreAvantTrade)) return;   // L4.1 filtre dollar (relecture avant trade)
       plancherSwing = lo;
       attenteReentree = 0;
-      OuvrirAchat(stopDist, "Ecurie_L4+ fib+RSI");
+      OuvrirAchat(stopDist, "Ecurie_L5 fib+RSI");
       return;
      }
 
@@ -709,7 +709,7 @@ void OnTick()
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation   // plafond (I2)
    if(DollarFort(RelireFiltreAvantTrade)) return;   // L4.1 filtre dollar (relecture avant trade)
       Print("Repli atteint apres TP : re-entree.");
-      OuvrirAchat(stopDist, "Ecurie_L4+ re-entree");
+      OuvrirAchat(stopDist, "Ecurie_L5 re-entree");
       attenteReentree = 0;
      }
   }
