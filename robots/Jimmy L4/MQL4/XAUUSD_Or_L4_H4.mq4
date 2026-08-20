@@ -31,6 +31,7 @@ input bool   JournalActif          = true;   // journal de reflexion (Files\Ecur
 input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois (crises)
 input bool   ModeChallengeActif = true;  // L4 : ACTIF par defaut (valide scan 21 aout, 2 moteurs)
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur de risque sous la moyenne 20 j
+input bool   FiltreDollarActif  = true;  // L4.1 : pas d'entree or quand le dollar est fort (DXY > moy. 200 j)
 input bool   NotificationsPush     = true;   // push cellulaire (MetaQuotes ID)
 
 // ---- etat interne ----
@@ -109,6 +110,29 @@ bool EstMetalOuIndice(string symbole)
    if(StringFind(s, "SPX") >= 0) return(true);
    if(StringFind(s, "GER") >= 0 || StringFind(s, "DE30") >= 0) return(true);
    return(false);
+  }
+
+//+------------------------------------------------------------------+
+//| L4.1 FILTRE DOLLAR : lit Ecurie_DXY.txt ("1 AAAA-MM-JJ" = dollar |
+//| fort, or bloque). Signal absent ou vieux de plus de 7 jours ->   |
+//| ne bloque JAMAIS (securite fail-open). Valide 21 aout : +1,9 a   |
+//| +3,2 pts sur 10 ans, les 2 moteurs, modes ON et OFF.             |
+//+------------------------------------------------------------------+
+bool DollarFort()
+  {
+   if(!FiltreDollarActif) return(false);
+   int fh = FileOpen("Ecurie_DXY.txt", FILE_READ | FILE_TXT | FILE_ANSI);
+   if(fh == INVALID_HANDLE) return(false);
+   string ligne = FileReadString(fh);
+   FileClose(fh);
+   if(StringSubstr(ligne, 0, 1) != "1") return(false);
+   int esp = StringFind(ligne, " ");
+   if(esp > 0)
+     {
+      datetime d = StringToTime(StringSubstr(ligne, esp + 1));
+      if(d > 0 && TimeCurrent() - d > 7 * 86400) return(false);   // signal perime
+     }
+   return(true);
   }
 
 bool FamilleCorreleeOccupee()
@@ -571,6 +595,7 @@ void OnTick()
      {
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation
+   if(DollarFort()) return;               // L4.1 filtre dollar (DXY)
       plancherSwing = lo;
       attenteReentree = 0;
       OuvrirAchat(stopDist, "Ecurie_L3 fib+RSI");
@@ -584,6 +609,7 @@ void OnTick()
      {
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation
+   if(DollarFort()) return;               // L4.1 filtre dollar (DXY)
       Print("Repli atteint apres TP : re-entree.");
       OuvrirAchat(stopDist, "Ecurie_L3 re-entree");
       attenteReentree = 0;          // desarme : une seule re-entree par TP
