@@ -66,6 +66,7 @@ double   attenteReentree = 0;   // prix de sortie TP ; 0 = pas de ré-entrée en
 
 string BaseGV() { return "MACROBOT_BASE_" + (string)AccountInfoInteger(ACCOUNT_LOGIN); }
 string HaltGV() { return "MACROBOT_HALT_" + (string)AccountInfoInteger(ACCOUNT_LOGIN); }
+string LastEqGV() { return "MACROBOT_LASTEQ_" + (string)AccountInfoInteger(ACCOUNT_LOGIN); }   // L4.32 : equite d'avant le gap
 string DayGV()
   {
    MqlDateTime now;
@@ -227,7 +228,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4.3 charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs));
+   Print("L4.32 charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs));
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
@@ -254,6 +255,9 @@ int OnInit()
 void OnTimer()
   {
    ReleverEquite();
+   LireFacteurVol();
+   if(ModeChallengeActif && facteurVol > 1.0) facteurVol = 1.0;   // L4.32 : jamais amplifier en challenge
+
    LireNouvelles();
    BiaisMacroPermis();
    BloqueParNouvelles();
@@ -290,7 +294,10 @@ bool VerifierProtections()
    if(base <= 0) return(false);
 
    if(GlobalVariableCheck(HaltGV()) && GlobalVariableGet(HaltGV()) > 0.5)
+     {
+      FermerPositions(true);   // L4.32 : on retente la fermeture a chaque tick
       return(false);
+     }
 
    if(equite <= base * (1.0 - LimitePerteTotalePct / 100.0))
      {
@@ -302,8 +309,9 @@ bool VerifierProtections()
 
    string cle = DayGV();
    if(!GlobalVariableCheck(cle))
-      GlobalVariableSet(cle, equite);
+      GlobalVariableSet(cle, GlobalVariableCheck(LastEqGV()) ? GlobalVariableGet(LastEqGV()) : equite);   // L4.32 : reference d'AVANT le gap
    double debutJour = GlobalVariableGet(cle);
+   GlobalVariableSet(LastEqGV(), equite);   // L4.32
    static bool avisJourFait = false;
    if(equite <= debutJour * (1.0 - LimitePerteJourPct / 100.0))
      {
@@ -449,6 +457,9 @@ void LireFacteurVol()
    if(!FacteurVolActif) { facteurVol = 1.0; return; }
    if(TimeCurrent() - derniereLectureVol < 60) return;
    derniereLectureVol = TimeCurrent();
+   long modifVol = (long)FileGetInteger("macrobot_vol.txt", FILE_MODIFY_DATE);   // L4.32
+   if(modifVol > 0 && TimeCurrent() - (datetime)modifVol > 7 * 86400)
+     { facteurVol = 1.0; return; }   // L4.32 : fichier perime -> facteur neutre
    int fh = FileOpen("macrobot_vol.txt", FILE_READ | FILE_TXT | FILE_ANSI);
    if(fh == INVALID_HANDLE) { facteurVol = 1.0; return; }
    string ligne = FileReadString(fh);

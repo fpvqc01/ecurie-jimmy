@@ -66,6 +66,7 @@ int    RsiPeriod = 14, AtrPeriod = 14;
 
 string BaseGV()  { return "MACROBOT_BASE_"  + (string)AccountInfoInteger(ACCOUNT_LOGIN); }
 string HaltGV()  { return "MACROBOT_HALT_"  + (string)AccountInfoInteger(ACCOUNT_LOGIN); }
+string LastEqGV() { return "MACROBOT_LASTEQ_" + (string)AccountInfoInteger(ACCOUNT_LOGIN); }   // L4.32 : equite d'avant le gap
 
 //+------------------------------------------------------------------+
 
@@ -222,13 +223,13 @@ int OnInit()
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
    if(Preset == PRESET_GOLD)
      {
-      SwingLookback = 60; FibLo = 0.20; FibHi = 0.80;
+      SwingLookback = 10;   // L4.32 : 10 JOURS (= moteur) FibLo = 0.20; FibHi = 0.80;
       RsiPull = 55.0; StopAtrMult = 3.0;
       TpR = 1.5; RetraceReentree = 0.25;    // I2
      }
    else // PRESET_NASDAQ
      {
-      SwingLookback = 40; FibLo = 0.10; FibHi = 0.90;
+      SwingLookback = 7;    // L4.32 : 7 JOURS (= moteur) FibLo = 0.10; FibHi = 0.90;
       RsiPull = 60.0; StopAtrMult = 2.0;
       TpR = 1.0; RetraceReentree = 0.5;     // I2
      }
@@ -237,8 +238,8 @@ int OnInit()
       Print("ATTENTION: la strategie a ete calibree en H4, graphique actuel: ",
             EnumToString(_Period));
 
-   hATR = iATR(_Symbol, PERIOD_H4, AtrPeriod);   // L4.3 : H4 fixe, graphique sans importance
-   hRSI = iRSI(_Symbol, PERIOD_H4, RsiPeriod, PRICE_CLOSE);   // L4.3 : H4 fixe
+   hATR = iATR(_Symbol, PERIOD_D1, AtrPeriod);   // L4.32 : journalier (= moteur valide)   // L4.3 : H4 fixe, graphique sans importance
+   hRSI = iRSI(_Symbol, PERIOD_D1, RsiPeriod, PRICE_CLOSE);   // L4.32 : journalier   // L4.3 : H4 fixe
    if(hATR == INVALID_HANDLE || hRSI == INVALID_HANDLE)
       return INIT_FAILED;
 
@@ -251,7 +252,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
-   Print("MacroBot L4.3 demarre. Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
+   Print("MacroBot L4.32 demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
 
@@ -266,6 +267,7 @@ void OnTimer()
    ReleverEquite();
    RafraichirDonneesExternes();
    LireFacteurVol();
+   if(ModeChallengeActif && facteurVol > 1.0) facteurVol = 1.0;   // L4.32 : jamais amplifier en challenge
    ProtegerPositionsNews();
   }
 
@@ -302,7 +304,10 @@ bool GuardianBlocks()
    double base   = GlobalVariableGet(BaseGV());
 
    if(GlobalVariableCheck(HaltGV()) && GlobalVariableGet(HaltGV()) > 0.5)
+     {
+      CloseAllOurs("");   // L4.32 : on retente la fermeture a chaque tick
       return true;
+     }
    if(equity <= base * (1.0 - LimitePerteTotalePct / 100.0))
      {
       Notifier("PERTE TOTALE MAX ATTEINTE - fermeture du compte, arret definitif");
@@ -317,8 +322,9 @@ bool GuardianBlocks()
                                 now.year, now.mon, now.day,
                                 (string)AccountInfoInteger(ACCOUNT_LOGIN));
    if(!GlobalVariableCheck(dayKey))
-      GlobalVariableSet(dayKey, equity);
+      GlobalVariableSet(dayKey, GlobalVariableCheck(LastEqGV()) ? GlobalVariableGet(LastEqGV()) : equity);   // L4.32 : reference d'AVANT le gap
    double dayStart = GlobalVariableGet(dayKey);
+   GlobalVariableSet(LastEqGV(), equity);   // L4.32
    static bool avisJourFait = false;
    if(equity <= dayStart * (1.0 - LimitePerteJourPct / 100.0))
      {
@@ -468,6 +474,9 @@ void LireFacteurVol()
    if(!FacteurVolActif) { facteurVol = 1.0; return; }
    if(TimeCurrent() - derniereLectureVol < 60) return;
    derniereLectureVol = TimeCurrent();
+   long modifVol = (long)FileGetInteger("macrobot_vol.txt", FILE_MODIFY_DATE);   // L4.32
+   if(modifVol > 0 && TimeCurrent() - (datetime)modifVol > 7 * 86400)
+     { facteurVol = 1.0; return; }   // L4.32 : fichier perime -> facteur neutre
    int fh = FileOpen("macrobot_vol.txt", FILE_READ | FILE_TXT | FILE_ANSI);
    if(fh == INVALID_HANDLE) { facteurVol = 1.0; return; }
    string ligne = FileReadString(fh);
@@ -589,7 +598,7 @@ void OnTick()
    lastBar = barTime;
 
    EcrireJournal(StringFormat("cloture=%.2f | position=%s | biais_macro=%s | news=%s | facteurVol=%.2f | reentree_armee=%s | plancher_swing=%.2f",
-      iClose(_Symbol, PERIOD_H4, 1), (PositionOuverte() ? "OUVERTE" : "aucune"),
+      iClose(_Symbol, PERIOD_D1, 1), (PositionOuverte() ? "OUVERTE" : "aucune"),
       (cacheBiasOK ? "OK" : "BLOQUE"), (cacheNewsBloq ? "FENETRE ANNONCE" : "libre"),
       facteurVol, (attenteReentree > 0 ? "OUI" : "non"), plancherSwing));
 
@@ -602,7 +611,7 @@ void OnTick()
 
    int need = SwingLookback + 5;
    MqlRates rates[];
-   if(CopyRates(_Symbol, PERIOD_H4, 0, need, rates) < need)
+   if(CopyRates(_Symbol, PERIOD_D1, 0, need, rates) < need)   // L4.32 : swing sur jours
       return;
    ArraySetAsSeries(rates, true);
 
