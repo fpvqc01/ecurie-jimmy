@@ -22,7 +22,7 @@ enum ENUM_PRESET
 input ENUM_PRESET Preset             = PRESET_GOLD;
 input bool   MacroLongAllowed        = true;
 input bool   BiasFromFile            = true;
-input double RiskPerTradePct         = 3.0;    // I2+ or renforce (demi-Kelly conservateur, valide 5-10 ans)
+input double RiskPerTradePct         = 1.5;   // parite de risque validee 10 ans (etait 3.0)    // I2+ or renforce (demi-Kelly conservateur, valide 5-10 ans)
 input double DailyStopPct            = 2.5;
 input double TotalStopPct            = 8.0;
 input double ChallengeInitialBalance = 0;

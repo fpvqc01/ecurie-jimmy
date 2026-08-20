@@ -14,7 +14,7 @@
 
 #include <Trade\Trade.mqh>
 
-input double RisqueParTradePct    = 0.75;   // Risque par trade en % du solde (I2 : x1.5)
+input double RisqueParTradePct    = 1.5;   // parite de risque validee 10 ans (etait 0.75)   // Risque par trade en % du solde (I2 : x1.5)
 input double LimitePerteJourPct   = 2.5;    // L3 : resserre (valide 19 aout ; FTMO = 5)
 input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en %
 input int    EMARapide            = 20;

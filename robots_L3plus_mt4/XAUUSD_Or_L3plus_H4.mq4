@@ -6,7 +6,7 @@
 //+------------------------------------------------------------------+
 #property strict
 
-input double RisqueParTradePct     = 3.0;   // Risque par trade en % du solde
+input double RisqueParTradePct     = 1.5;   // parite de risque validee 10 ans (etait 3.0)   // Risque par trade en % du solde
 input double LimitePerteJourPct    = 2.5;    // Coupe-circuit perte du jour (FTMO = 5)
 input double LimitePerteTotalePct  = 8.0;    // Coupe-circuit perte totale (FTMO = 10)
 input int    MaxPositionsEcurie    = 2;      // Plafond global de piles ouvertes
