@@ -17,6 +17,7 @@
 input double RisqueParTradePct    = 1.5;   // parite de risque validee 10 ans (etait 0.75)   // Risque par trade en % du solde (I2 : x1.5)
 input ENUM_TIMEFRAMES UT_Decision    = PERIOD_D1; // L4.3 : une decision par jour (valide walk-forward)
 input ENUM_TIMEFRAMES UT_Indicateurs = PERIOD_D1; // L4.3 : EMA/ATR journaliers
+input int             HeureDecision  = 8;         // L4+F : heure serveur de la decision D1 (evite le spread du rollover de minuit)
 input double LimitePerteJourPct   = 2.5;    // L3 : resserre (valide 19 aout ; FTMO = 5)
 input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en %
 input int    EMARapide            = 20;
@@ -228,7 +229,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L4+ charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs));
+   Print("L4+ charge | decision=", EnumToString(UT_Decision), " indicateurs=", EnumToString(UT_Indicateurs), " heureDecision=", HeureDecision, "h");
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 
@@ -595,6 +596,9 @@ void OnTick()
    ProtegerPositionsNews();
 
    datetime barreActuelle = iTime(_Symbol, UT_Decision, 0);   // L4.3
+   MqlDateTime tvF;
+   TimeToStruct(TimeCurrent(), tvF);
+   if(UT_Decision == PERIOD_D1 && tvF.hour < HeureDecision) return;   // L4+F : on decide a 08:00, pas au rollover
    if(barreActuelle == derniereBarre) return;
    derniereBarre = barreActuelle;
 
