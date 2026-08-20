@@ -32,6 +32,7 @@ input bool   PlafondCorrelationActif = true;  // un seul metal/indice a la fois 
 input bool   ModeChallengeActif = true;  // L4 : ACTIF par defaut (valide scan 21 aout, 2 moteurs)
 input double ThrottleChallenge  = 0.75;  // L3+ : facteur de risque sous la moyenne 20 j
 input bool   FiltreDollarActif  = true;  // L4.1 : pas d'entree or quand le dollar est fort (DXY > moy. 200 j)
+input bool   RelireFiltreAvantTrade = true; // L4.1 : relecture fraiche du fichier juste avant chaque trade
 input bool   NotificationsPush     = true;   // push cellulaire (MetaQuotes ID)
 
 // ---- etat interne ----
@@ -118,12 +119,12 @@ bool EstMetalOuIndice(string symbole)
 //| ne bloque JAMAIS (securite fail-open). Valide 21 aout : +1,9 a   |
 //| +3,2 pts sur 10 ans, les 2 moteurs, modes ON et OFF.             |
 //+------------------------------------------------------------------+
-bool DollarFort()
+bool DollarFort(bool forcer = false)
   {
    if(!FiltreDollarActif) return(false);
    static datetime dernierLu = 0;                    // relecture du fichier aux
    static bool     cacheFort = false;                // 30 minutes (cache, pas de
-   if(dernierLu != 0 && TimeCurrent() - dernierLu < 1800)   // disque a chaque tick)
+   if(!forcer && dernierLu != 0 && TimeCurrent() - dernierLu < 1800)   // disque a chaque tick)
       return(cacheFort);
    dernierLu = TimeCurrent();
    cacheFort = false;
@@ -602,7 +603,7 @@ void OnTick()
      {
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation
-   if(DollarFort()) return;               // L4.1 filtre dollar (DXY)
+   if(DollarFort(RelireFiltreAvantTrade)) return;   // L4.1 filtre dollar (relecture avant trade)
       plancherSwing = lo;
       attenteReentree = 0;
       OuvrirAchat(stopDist, "Ecurie_L3 fib+RSI");
@@ -616,7 +617,7 @@ void OnTick()
      {
       if(ComptePositionsEcurie() >= MaxPositionsEcurie) return;
    if(FamilleCorreleeOccupee()) return;   // plafond de correlation
-   if(DollarFort()) return;               // L4.1 filtre dollar (DXY)
+   if(DollarFort(RelireFiltreAvantTrade)) return;   // L4.1 filtre dollar (relecture avant trade)
       Print("Repli atteint apres TP : re-entree.");
       OuvrirAchat(stopDist, "Ecurie_L3 re-entree");
       attenteReentree = 0;          // desarme : une seule re-entree par TP
