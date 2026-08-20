@@ -42,7 +42,7 @@ enum ENUM_PROTECTION_NEWS
 input ENUM_PROTECTION_NEWS ProtectionPositionsNews = PROTECTION_SERRER;
 input bool   FacteurVolActif       = true; // moduler le risque selon la volatilite des marches (L3)
 input bool   PyramidageActif    = true;  // L3 : ajouter des unites sur un trade gagnant (Turtles)
-input int    MaxUnites          = 3;     // L3 : nombre maximum d'unites empilees
+input int    MaxUnites          = 4;     // L4.2 : pyramide 4 (valide 21 aout, +2 pts H4 10 ans)
 input double PasUniteATR        = 0.5;   // L3 : ajouter une unite chaque +N x ATR
 input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun a N x ATR sous la derniere unite
 input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
@@ -192,6 +192,7 @@ void EcrireJournal(string texte)
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   Print("L4.2 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    trade.SetExpertMagicNumber(NumeroMagique);
    trade.SetDeviationInPoints(50);
 

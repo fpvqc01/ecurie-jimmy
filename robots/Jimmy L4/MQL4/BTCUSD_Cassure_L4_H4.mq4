@@ -17,7 +17,7 @@ input int    PeriodeEntree        = 55;    // cassure du plus haut des N bougies
 input int    PeriodeSortie        = 20;    // stop suiveur sous le plus bas des M
 input int    PeriodeATR           = 14;
 input bool   PyramidageActif      = true;  // L3 : ajouter des unites sur un gagnant
-input int    MaxUnites            = 3;     // L3 : maximum d'unites empilees
+input int    MaxUnites            = 4;   // L4.2 : pyramide 4 (valide 21 aout)     // L3 : maximum d'unites empilees
 input double PasUniteATR          = 0.5;   // L3 : une unite chaque +N x ATR
 input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun sous la derniere unite
 input bool   BiaisMacroDepuisFichier = true; // lire macrobot_bias.txt
@@ -478,6 +478,7 @@ void VerifierTpEncaisse()
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   Print("L4.2 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    EventSetTimer(60);
    // Dans le STRATEGY TESTER : les coupe-circuits doivent repartir a neuf.
    // (en reel ils sont volontairement permanents jusqu a reinitialisation)

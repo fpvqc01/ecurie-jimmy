@@ -21,7 +21,7 @@ input int    JourDebutSaison      = 1;
 input int    MoisFinSaison        = 5;     // saison favorable : fin
 input int    JourFinSaison        = 31;
 input bool   PyramidageActif      = true;  // L3 : ajouter des unites sur un gagnant
-input int    MaxUnites            = 3;     // L3 : maximum d'unites empilees
+input int    MaxUnites            = 4;   // L4.2 : pyramide 4 (valide 21 aout)     // L3 : maximum d'unites empilees
 input double PasUniteATR          = 0.5;   // L3 : une unite chaque +N x ATR
 input double StopSousDerniereUniteATR = 2.0; // L3 : stop commun sous la derniere unite
 input bool   BiaisMacroDepuisFichier = true; // lire macrobot_bias.txt
@@ -482,6 +482,7 @@ void VerifierTpEncaisse()
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   Print("L4.2 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
    EventSetTimer(60);
    // Dans le STRATEGY TESTER : les coupe-circuits doivent repartir a neuf.
    // (en reel ils sont volontairement permanents jusqu a reinitialisation)
