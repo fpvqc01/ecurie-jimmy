@@ -121,6 +121,12 @@ bool EstMetalOuIndice(string symbole)
 bool DollarFort()
   {
    if(!FiltreDollarActif) return(false);
+   static datetime dernierLu = 0;                    // relecture du fichier aux
+   static bool     cacheFort = false;                // 30 minutes (cache, pas de
+   if(dernierLu != 0 && TimeCurrent() - dernierLu < 1800)   // disque a chaque tick)
+      return(cacheFort);
+   dernierLu = TimeCurrent();
+   cacheFort = false;
    int fh = FileOpen("Ecurie_DXY.txt", FILE_READ | FILE_TXT | FILE_ANSI);
    if(fh == INVALID_HANDLE) return(false);
    string ligne = FileReadString(fh);
@@ -132,6 +138,7 @@ bool DollarFort()
       datetime d = StringToTime(StringSubstr(ligne, esp + 1));
       if(d > 0 && TimeCurrent() - d > 7 * 86400) return(false);   // signal perime
      }
+   cacheFort = true;
    return(true);
   }
 

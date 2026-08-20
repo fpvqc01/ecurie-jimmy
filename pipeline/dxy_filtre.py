@@ -53,5 +53,16 @@ if __name__ == "__main__":
         msg = main()
     except Exception as e:
         msg = "ERREUR : %s (fail-open : les robots ne bloquent rien)" % e
-    with open(journal, "a", encoding="utf-8") as f:
-        f.write("%s  %s\n" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), msg))
+    # execution aux 30 min : on ne journalise que les CHANGEMENTS d'etat
+    # (et les erreurs), sinon le journal se noierait en lignes identiques
+    etat_actuel = msg.split("->")[-1].split("|")[0].strip() if "->" in msg else msg
+    dernier_etat = ""
+    if os.path.exists(journal):
+        with open(journal, encoding="utf-8") as f:
+            lignes = f.readlines()
+        if lignes:
+            d = lignes[-1]
+            dernier_etat = d.split("->")[-1].split("|")[0].strip() if "->" in d else ""
+    if etat_actuel != dernier_etat or "ERREUR" in msg:
+        with open(journal, "a", encoding="utf-8") as f:
+            f.write("%s  %s\n" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), msg))
