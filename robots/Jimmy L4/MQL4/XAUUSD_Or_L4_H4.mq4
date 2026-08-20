@@ -510,6 +510,7 @@ void VerifierTpEncaisse()
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   Print("L4.1 charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
    EventSetTimer(60);
    // Dans le STRATEGY TESTER : les coupe-circuits doivent repartir a neuf.
    // (en reel ils sont volontairement permanents jusqu a reinitialisation)

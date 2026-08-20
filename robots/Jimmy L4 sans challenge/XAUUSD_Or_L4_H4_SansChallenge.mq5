@@ -250,6 +250,7 @@ void EcrireJournal(string texte)
 //+------------------------------------------------------------------+
 int OnInit()
   {
+   Print("L4.1 charge | FiltreDollar=", FiltreDollarActif, " RelireAvantTrade=", RelireFiltreAvantTrade, " ModeChallenge=", ModeChallengeActif);
    if(Preset == PRESET_GOLD)
      {
       SwingLookback = 60; FibLo = 0.20; FibHi = 0.80;
