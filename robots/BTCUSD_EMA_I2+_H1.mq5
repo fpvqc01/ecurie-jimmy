@@ -40,6 +40,7 @@ enum ENUM_PROTECTION_NEWS
   };
 input ENUM_PROTECTION_NEWS ProtectionPositionsNews = PROTECTION_SERRER;
 input bool   FacteurVolActif       = true; // moduler le risque selon la volatilite des marches (I2+)
+input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
 input bool   NotificationsPush       = true;
 
 CTrade   trade;
@@ -92,7 +93,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("BTC bot I2+ : " + msg) && !avertiEchec)
+   if(!SendNotification("[I2+] BTC bot : " + msg) && !avertiEchec)
      {
       Print("Push non envoyé. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
@@ -133,6 +134,21 @@ void OnTradeTransaction(const MqlTradeTransaction &trans,
      }
   }
 
+
+//+------------------------------------------------------------------+
+//| Journal de reflexion : une ligne par bougie dans                 |
+//| MQL5\Files\Ecurie_Journal\<robot>.txt (lisible au Bloc-notes)    |
+//+------------------------------------------------------------------+
+void EcrireJournal(string texte)
+  {
+   if(!JournalActif) return;
+   string fichier = "Ecurie_Journal\\" + MQLInfoString(MQL_PROGRAM_NAME) + ".txt";
+   int fh = FileOpen(fichier, FILE_READ | FILE_WRITE | FILE_TXT | FILE_ANSI);
+   if(fh == INVALID_HANDLE) return;
+   FileSeek(fh, 0, SEEK_END);
+   FileWriteString(fh, TimeToString(TimeCurrent(), TIME_DATE | TIME_MINUTES) + " | " + texte + "\r\n");
+   FileClose(fh);
+  }
 //+------------------------------------------------------------------+
 int OnInit()
   {
@@ -451,6 +467,11 @@ void OnTick()
    bool haussier           = (emaRapide[1] > emaLente[1]);
    bool croisementHaussier = (haussier && emaRapide[2] <= emaLente[2]);
    bool croisementBaissier = (!haussier && emaRapide[2] >= emaLente[2]);
+
+   EcrireJournal(StringFormat("prix=%.2f | EMA20=%.2f %s EMA50=%.2f | position=%s | macro=%s | news=%s | facteurVol=%.2f | reentree_armee=%s",
+      iClose(_Symbol, _Period, 1), emaRapide[1], (haussier ? ">" : "<"), emaLente[1],
+      (PositionActuelle() != 0 ? "OUVERTE" : "aucune"), (biaisMacroOK ? "OK" : "BLOQUE"),
+      (newsBloquaitAvant ? "FENETRE ANNONCE" : "libre"), facteurVol, (attenteReentree > 0 ? "OUI" : "non")));
 
    // régime baissier : fermeture éventuelle + annulation de la ré-entrée
    if(!haussier)

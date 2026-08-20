@@ -41,6 +41,7 @@ enum ENUM_PROTECTION_NEWS
   };
 input ENUM_PROTECTION_NEWS ProtectionPositionsNews = PROTECTION_SERRER;
 input bool   FacteurVolActif       = true; // moduler le risque selon la volatilite des marches (I2+)
+input bool   JournalActif          = true; // journal de reflexion (Files\Ecurie_Journal)
 input bool   NotificationsPush       = true; // push cellulaire (MetaQuotes ID)
 
 CTrade   trade;
@@ -87,7 +88,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("BTC breakout I2+ : " + msg) && !avertiEchec)
+   if(!SendNotification("[I2+] BTC breakout : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
@@ -116,6 +117,21 @@ void OnTradeTransaction(const MqlTradeTransaction &trans,
                             HistoryDealGetDouble(trans.deal, DEAL_PROFIT)));
   }
 
+
+//+------------------------------------------------------------------+
+//| Journal de reflexion : une ligne par bougie dans                 |
+//| MQL5\Files\Ecurie_Journal\<robot>.txt (lisible au Bloc-notes)    |
+//+------------------------------------------------------------------+
+void EcrireJournal(string texte)
+  {
+   if(!JournalActif) return;
+   string fichier = "Ecurie_Journal\\" + MQLInfoString(MQL_PROGRAM_NAME) + ".txt";
+   int fh = FileOpen(fichier, FILE_READ | FILE_WRITE | FILE_TXT | FILE_ANSI);
+   if(fh == INVALID_HANDLE) return;
+   FileSeek(fh, 0, SEEK_END);
+   FileWriteString(fh, TimeToString(TimeCurrent(), TIME_DATE | TIME_MINUTES) + " | " + texte + "\r\n");
+   FileClose(fh);
+  }
 //+------------------------------------------------------------------+
 int OnInit()
   {
@@ -430,6 +446,10 @@ void OnTick()
    for(int i = 3; i <= PeriodeSortie + 1; i++)
       if(rates[i].low < basCanal) basCanal = rates[i].low;
 
+   EcrireJournal(StringFormat("cloture=%.2f | canal_haut=%.2f (dist %.2f%%) | canal_bas=%.2f | position=%s | macro=%s | news=%s | facteurVol=%.2f",
+      rates[1].close, hautCanal, (hautCanal - rates[1].close) / rates[1].close * 100.0, basCanal,
+      (PositionOuverte() ? "OUVERTE (stop suiveur)" : "aucune"), (biaisMacroOK ? "OK" : "BLOQUE"),
+      (newsBloquaitAvant ? "FENETRE ANNONCE" : "libre"), facteurVol));
    if(PositionOuverte())
      {
       // sortie : cloture sous le canal bas, sinon stop suiveur remonte

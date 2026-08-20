@@ -187,7 +187,7 @@ void Notifier(string msg)
    Print(msg);
    if(!PushNotifications) return;
    static bool avertiEchec = false;
-   if(!SendNotification(_Symbol + " L3 : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4] " + _Symbol + " : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID.");
       avertiEchec = true;

@@ -42,6 +42,7 @@ input ENUM_NEWS_PROTECT NewsProtectMode = NEWS_PROTECT_SERRER;
 input bool   PushNotifications       = true;
 input bool   BreakevenActif          = true;
 input bool   FacteurVolActif         = true;   // moduler le risque selon la volatilite (I2+)
+input bool   JournalActif            = true;   // journal de reflexion (Files\Ecurie_Journal)
 
 CTrade   trade;
 int      hATR = INVALID_HANDLE, hRSI = INVALID_HANDLE;
@@ -83,7 +84,7 @@ void Notifier(string msg)
    Print(msg);
    if(!PushNotifications) return;
    static bool avertiEchec = false;
-   if(!SendNotification(_Symbol + " I2+ : " + msg) && !avertiEchec)
+   if(!SendNotification("[I2+] " + _Symbol + " : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID.");
       avertiEchec = true;
@@ -128,6 +129,21 @@ void OnTradeTransaction(const MqlTradeTransaction &trans,
      }
   }
 
+
+//+------------------------------------------------------------------+
+//| Journal de reflexion : une ligne par bougie dans                 |
+//| MQL5\Files\Ecurie_Journal\<robot>.txt (lisible au Bloc-notes)    |
+//+------------------------------------------------------------------+
+void EcrireJournal(string texte)
+  {
+   if(!JournalActif) return;
+   string fichier = "Ecurie_Journal\\" + MQLInfoString(MQL_PROGRAM_NAME) + ".txt";
+   int fh = FileOpen(fichier, FILE_READ | FILE_WRITE | FILE_TXT | FILE_ANSI);
+   if(fh == INVALID_HANDLE) return;
+   FileSeek(fh, 0, SEEK_END);
+   FileWriteString(fh, TimeToString(TimeCurrent(), TIME_DATE | TIME_MINUTES) + " | " + texte + "\r\n");
+   FileClose(fh);
+  }
 //+------------------------------------------------------------------+
 int OnInit()
   {
@@ -443,6 +459,11 @@ void OnTick()
    if(barTime == lastBar)
       return;
    lastBar = barTime;
+
+   EcrireJournal(StringFormat("cloture=%.2f | position=%s | biais_macro=%s | news=%s | facteurVol=%.2f | reentree_armee=%s | plancher_swing=%.2f",
+      iClose(_Symbol, _Period, 1), (PositionSelect(_Symbol) ? "OUVERTE" : "aucune"),
+      (cacheBiasOK ? "OK" : "BLOQUE"), (cacheNewsBloq ? "FENETRE ANNONCE" : "libre"),
+      facteurVol, (attenteReentree > 0 ? "OUI" : "non"), plancherSwing));
 
    if(PositionSelect(_Symbol))
       return;

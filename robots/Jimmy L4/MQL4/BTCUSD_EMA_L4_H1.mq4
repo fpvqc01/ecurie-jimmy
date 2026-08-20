@@ -62,7 +62,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("BTC EMA L3 : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4] BTC EMA : " + msg) && !avertiEchec)
      {
       Print("Push non envoye. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;

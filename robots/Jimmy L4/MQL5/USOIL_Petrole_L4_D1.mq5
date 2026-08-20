@@ -144,7 +144,7 @@ void Notifier(string msg)
    Print(msg);
    if(!NotificationsPush) return;
    static bool avertiEchec = false;
-   if(!SendNotification("Pétrole L3 : " + msg) && !avertiEchec)
+   if(!SendNotification("[L4] Pétrole : " + msg) && !avertiEchec)
      {
       Print("Push non envoyé. Configure ton MetaQuotes ID : Outils > Options > Notifications.");
       avertiEchec = true;
