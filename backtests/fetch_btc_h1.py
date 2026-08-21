@@ -19,7 +19,7 @@ def binance(interval, debut):
         start = k[-1][0] + 1
         if len(k) < 1000: break
         time.sleep(0.12)
-    df = pd.DataFrame(out, columns=list("tochlv") + ["ct","qv","n","tb","tq","x"])
+    df = pd.DataFrame(out, columns=list("tohlcv") + ["ct","qv","n","tb","tq","x"])
     df = df[["t","o","h","l","c"]].astype(float)
     df["t"] = pd.to_datetime(df["t"], unit="ms", utc=True).dt.tz_localize(None)
     return df.drop_duplicates("t").set_index("t").sort_index()
@@ -48,3 +48,9 @@ btc = pd.concat([b1[b1.index < b2.index[0]], b2]).sort_index()
 btc = btc[~btc.index.duplicated()]
 btc.to_csv(chemin)
 print("BTC H1 : %d barres, %s -> %s" % (len(btc), btc.index[0], btc.index[-1]))
+
+
+# --- controle de coherence ajoute le 21 aout 2026 ---
+# apres tout telechargement, verifier que les bougies ont du sens :
+#   assert (df["h"] >= df[["o","c"]].max(axis=1)).all()
+#   assert (df["l"] <= df[["o","c"]].min(axis=1)).all()
