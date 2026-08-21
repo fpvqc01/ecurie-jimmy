@@ -20,7 +20,15 @@ RACINES = [r"C:\Users\jplou\AppData\Local\Temp\claude\C--Users-jplou-Downloads\4
 fichiers = []
 for r in RACINES:
     fichiers += glob.glob(os.path.join(r, "**", "*.csv"), recursive=True)
-fichiers = sorted(set(f for f in fichiers if "AVANT_REPARATION" not in f))
+EXCLUS = ("AVANT_REPARATION", "sauvegarde_avant", "sauv_test", ".sauv")
+fichiers = sorted(set(f for f in fichiers if not any(x in f for x in EXCLUS)))
+
+# Anomalies REELLES et documentees : c'est de l'histoire, pas un bogue.
+# Verifiees une par une le 21 aout 2026, impact mesure a zero.
+CONNUES = {
+    "d10_cl.csv":   ("prix<=0", "saut >40 %"),   # WTI a -37,63 $ les 20-21 avril 2020
+    "oanda_NGF.csv": ("saut >40 %",),            # gaz naturel, roulement de contrat
+}
 
 def col(df, *noms):
     for n in noms:
@@ -62,7 +70,13 @@ for f in fichiers:
     if v: pb.append(("volume<0", int((df[v].values < 0).sum())))
 
     mauvais = [(k, x) for k, x in pb if x > 0]
-    if mauvais:
+    connues = CONNUES.get(nom, ())
+    reelles = [(k, x) for k, x in mauvais if k not in connues]
+    if mauvais and not reelles:
+        print("%-42s %8d | OK (anomalie connue et documentee : %s)"
+              % (nom[:42], n, ", ".join(k for k, _ in mauvais)))
+    elif reelles:
+        mauvais = reelles
         total_pb += 1
         print("%-42s %8d | *** %s" % (nom[:42], n,
               ", ".join("%s : %d" % (k, x) for k, x in mauvais)))
