@@ -1,0 +1,101 @@
+========================================================================
+QUESTION AU COMITÉ — LE GIVE-BACK DES PYRAMIDES (cas réel observé)
+(à coller dans ChatGPT / Gemini / Grok — 21 août 2026)
+========================================================================
+
+Tu as déjà audité ce système (L4.3 → L4+ → L6). Reprends ton COMITÉ
+D'EXPERTS (trader prop firm, quant/gestionnaire de risque, historien du
+trend following / Turtles, spécialiste FTMO, psychologue) et fais-le
+DÉBATTRE sur un problème que je viens d'observer EN RÉEL, pas en
+backtest. Appuie-toi sur la littérature (Turtles, gestion de position,
+stops suiveurs) et fais une recherche web si utile. Réponds en français,
+langage accessible.
+
+--- LE CAS RÉEL (chiffres exacts d'aujourd'hui) ---
+
+Robot de cassure Donchian sur BTC, pyramide Turtle de 3 unités (une
+version antérieure du système ; la version actuelle en utilise 4).
+
+- Unité 1 ouverte ~69 000
+- Unité 2 ajoutée à 69 352,68
+- Unité 3 ajoutée à 69 390,40  <-- pyramide PLEINE (3/3)
+- Prix actuel : 74 990 (+8 % depuis l'entrée)
+- Stop commun actuel : environ 66 700
+
+Formule du stop commun :
+    stop = max( plus-bas des 20 dernières barres H4 ,
+                prix de la DERNIÈRE unité − 2 × ATR )
+
+Ce qui se passe : dès que la pyramide atteint son maximum d'unités,
+plus aucune unité ne s'ajoute, donc « prix de la dernière unité » est
+FIGÉ POUR TOUJOURS. Le terme Turtle du stop est donc gelé (~66 700).
+Le canal bas, lui, monte lentement (62 680 → 63 943 en 24 h, soit
+~+300 par barre H4) mais il est encore ~2 800 points EN DESSOUS du
+niveau Turtle : il ne reprendra la main que dans 1 à 2 jours.
+
+Résultat concret : le prix a monté de 8 %, le stop n'a pas bougé depuis
+12 heures, et le trade rendrait environ 11 % s'il se retournait
+maintenant. Le stop est actif et correct — c'est la FORMULE qui le fige.
+
+--- CE QUI A DÉJÀ ÉTÉ TESTÉ ---
+
+Un « chandelier » (stop plancher = plus-haut atteint depuis l'entrée
+− K × ATR journalier, avec K = 3, 4, 5) a été backtesté sur 10 ans et
+REJETÉ : taux de réussite des challenges inchangé (87 % → 87 %) et CAGR
+quasi identique. Il a donc été jugé inutile.
+
+MAIS il n'a été jugé QUE sur le rendement annuel et le taux de réussite.
+Personne n'a mesuré son effet sur la DURÉE du challenge. Or rendre 11 %
+de gains acquis, c'est du temps perdu à les regagner — et la durée est
+justement mon problème (médiane ~157 jours de bourse pour les 2 phases
+d'un challenge FTMO, ce qui est long).
+
+--- CONTEXTE UTILE ---
+
+- Système : 5 robots achat seulement, compte FTMO 2-Step Swing 100 k$,
+  limites −5 %/jour et −10 % total, aucune limite de temps.
+- Chiffres actuels (données propres, mode challenge) : +38 %/an sur
+  10 ans, réussite du challenge complet 94 %, durée médiane 157 jours.
+- Protections : coupe-jour −2,5 %, arrêt total −8 %, max 2 piles
+  ouvertes, positions gardées nuit et week-end.
+- Consensus des comités précédents : ne JAMAIS monter le risque brut ni
+  élargir le coupe-jour ; chercher la vitesse dans une meilleure
+  UTILISATION du budget de risque.
+
+--- MES QUESTIONS ---
+
+1. Le débat du comité : ce give-back est-il un vrai défaut à corriger,
+   ou le prix normal et nécessaire du suivi de tendance ? Où vos experts
+   sont-ils d'accord / en désaccord ?
+
+2. L'ancre figée : dans la doctrine Turtle d'origine, le stop se
+   déplace-t-il quand la pyramide est pleine, ou reste-t-il ancré sur la
+   dernière unité comme ici ? Est-ce que je reproduis fidèlement les
+   Turtles, ou est-ce que j'ai hérité d'une simplification ?
+
+3. Quels mécanismes concrets réduiraient le give-back SANS couper les
+   grandes tendances (qui font vivre le système) ? Classe-les par :
+   gain de temps attendu / risque de sortir trop tôt / facilité de test.
+   Exemples à évaluer sans t'y limiter : chandelier ATR, stop sur le
+   plus-bas des N dernières barres qui remonte plus vite, verrouillage
+   partiel (fermer 1 unité sur 3 à un seuil de profit), breakeven
+   collectif, stop en pourcentage du profit ouvert.
+
+4. Sur quel CRITÈRE devrais-je juger ces mécanismes ? Le comité
+   précédent a rejeté le chandelier sur le CAGR ; je pense qu'il faut
+   plutôt regarder la durée médiane du challenge et la probabilité de
+   réussite. Qu'en pensez-vous, et quelle métrique unique
+   recommanderiez-vous ?
+
+5. Y a-t-il un piège que je ne vois pas ? (Par exemple : un stop qui
+   remonte vite améliore les statistiques de backtest mais se fait
+   chasser par le bruit en réel, ou change la nature même de la
+   stratégie.)
+
+Contrainte : le code source reste privé, mais toute sa logique est
+décrite ci-dessus. Si une information te manque, dis-le au lieu de
+deviner.
+========================================================================
+RAPPEL POUR JIMMY : jamais de numéro de compte, mot de passe ou clé API
+dans une IA externe. Ce paquet n'en contient pas.
+========================================================================
