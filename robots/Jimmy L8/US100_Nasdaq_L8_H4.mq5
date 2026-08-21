@@ -28,6 +28,8 @@ input double SpreadEntreeMaxPct      = 2.0;   // L8 : entree reportee si le spre
 input double LimitePerteJourPct            = 1.75;  // L8-R1 : resserre (banc L8)   // L3 : resserre (valide 19 aout ; FTMO = 5)
 input double LimitePerteTotalePct            = 8.0;
 input double ChallengeInitialBalance = 0;
+input double ObjectifPhasePct   = 10.0;  // L8-R13 : objectif de la phase en % (10 = phase 1 FTMO, 5 = phase 2, 0 = desactive)
+input double MargeObjectifPct   = 0.25;  // L8-R13 : coussin encaisse au-dessus de l'objectif (spread/commission)
 input long   MagicNumber             = 20261122;  // L8-R5 : magic propre (3 robots partageaient 20261115)
 input int    MaxPositionsEcurie      = 2;      // plafond global de l'ecurie (I2)
 input bool   NewsFilterOn            = true;
@@ -254,6 +256,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
+   Print("L8-R13 | objectif de phase=", ObjectifPhasePct, "% (+", MargeObjectifPct, "% de coussin) gardien=", LimitePerteJourPct, "%");
    Print("MacroBot L8 demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
@@ -308,6 +311,21 @@ bool GuardianBlocks()
    if(GlobalVariableCheck(HaltGV()) && GlobalVariableGet(HaltGV()) > 0.5)
      {
       CloseAllOurs("");   // L4.32 : on retente la fermeture a chaque tick
+      return true;
+     }
+
+   // ---- L8-R13 : OBJECTIF DE PHASE ATTEINT -> on encaisse ----
+   // FTMO valide sur le solde POSITIONS FERMEES. Tant que le profit reste
+   // flottant il ne compte pas, et il peut repartir. Des que l'equite passe
+   // l'objectif (plus un coussin pour le spread), on ferme tout et on arrete.
+   if(base > 0 && ObjectifPhasePct > 0
+      && equity >= base * (1.0 + (ObjectifPhasePct + MargeObjectifPct) / 100.0))
+     {
+      Notifier(StringFormat("OBJECTIF DE PHASE ATTEINT (+%.2f %%) - fermeture de tout, arret. Solde a encaisser : %.2f",
+                            100.0 * (equity / base - 1.0), equity));
+      CloseAllOurs("");
+      GlobalVariableSet(HaltGV(), 1.0);
+      GlobalVariableSet("MACROBOT_CIBLE_" + (string)AccountInfoInteger(ACCOUNT_LOGIN), equity);
       return true;
      }
    if(equity <= base * (1.0 - LimitePerteTotalePct / 100.0))

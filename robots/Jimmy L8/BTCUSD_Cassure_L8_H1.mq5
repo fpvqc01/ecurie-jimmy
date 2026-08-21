@@ -25,6 +25,8 @@ input double SpreadEntreeMaxPct      = 2.0;   // L8 : entree reportee si le spre
 input double LimitePerteJourPct   = 1.75;  // L8-R1 : resserre (banc L8 : DD -18,7 -> -13,9)    // L3 : resserre (valide 19 aout ; FTMO = 5)
 input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en % (FTMO = 10)
 input double ChallengeInitialBalance = 0;   // L8-R10 : capital initial de la phase (0 = solde au chargement)
+input double ObjectifPhasePct   = 10.0;  // L8-R13 : objectif de la phase en % (10 = phase 1 FTMO, 5 = phase 2, 0 = desactive)
+input double MargeObjectifPct   = 0.25;  // L8-R13 : coussin encaisse au-dessus de l'objectif (spread/commission)
 input int    PeriodeEntree        = 20;     // L4.3 corrige : canal 20 JOURS (config validee walk-forward ; etait 55 bougies H4)
 input int    PeriodeSortie        = 10;     // L4.3 corrige : sortie 10 JOURS (etait 20 bougies H4)
 input int    PeriodeATR           = 14;     // ATR (protection annonces)
@@ -203,6 +205,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
+   Print("L8-R13 | objectif de phase=", ObjectifPhasePct, "% (+", MargeObjectifPct, "% de coussin)");
    Print("L8 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
    Print("L8 | gardien=", LimitePerteJourPct, "% breakeven=+", BreakevenCollectifPct, "% notionnelMax=", PlafondNotionnelEquite, "x equite");
    Print("L8 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
@@ -279,6 +282,22 @@ bool VerifierProtections()
    if(GlobalVariableCheck(HaltGV()) && GlobalVariableGet(HaltGV()) > 0.5)
      {
       FermerPositions(true);   // L4.32 : on retente la fermeture a chaque tick
+      return(false);
+     }
+
+   // ---- L8-R13 : OBJECTIF DE PHASE ATTEINT -> on encaisse ----
+   // FTMO valide sur le solde POSITIONS FERMEES. Tant que le profit reste
+   // flottant il ne compte pas, et il peut repartir. Des que l'equite passe
+   // l'objectif (plus un coussin pour le spread), on ferme tout et on
+   // arrete : la phase est gagnee, c'est a Jimmy de passer a la suivante.
+   if(ObjectifPhasePct > 0
+      && equite >= base * (1.0 + (ObjectifPhasePct + MargeObjectifPct) / 100.0))
+     {
+      Notifier(StringFormat("🎯 OBJECTIF DE PHASE ATTEINT (+%.2f %%). Fermeture de tout, arret. Solde a encaisser : %.2f",
+                            100.0 * (equite / base - 1.0), equite));
+      FermerPositions(true);
+      GlobalVariableSet(HaltGV(), 1.0);
+      GlobalVariableSet("MACROBOT_CIBLE_" + (string)AccountInfoInteger(ACCOUNT_LOGIN), equite);
       return(false);
      }
 
