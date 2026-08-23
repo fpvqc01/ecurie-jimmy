@@ -1,4 +1,4 @@
-//+------------------------------------------------------------------+
+﻿//+------------------------------------------------------------------+
 //|                                           USOIL_Petrole_L43_H4.mq5 |
 //|  Cassure Donchian 20/10 JOURNALIER sur le pétrole WTI,           |
 //|  achat seulement, ACTIVE SEULEMENT EN SAISON (déc -> mai :       |
@@ -600,8 +600,34 @@ void AppliquerStopCommun(double niveau)
       if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
       if(PositionGetInteger(POSITION_MAGIC) != NumeroMagique) continue;
       double slActuel = PositionGetDouble(POSITION_SL);
-      if(niveau > slActuel + _Point)      // le stop ne fait que monter
-         trade.PositionModify(ticket, niveau, PositionGetDouble(POSITION_TP));
+      // 22 aout 2026 — deux garde-fous et une mesure d'honnetete.
+      //
+      // Le symptome : des "failed modify sl: X -> sl: X" en serie, ou
+      // le stop demande est exactement celui deja en place. Chacun coute
+      // une requete serveur et une notification push.
+      //
+      // La cause exacte n'est PAS etablie. Ce qui est verifie : `niveau`
+      // est deja normalise plus haut, donc ce n'etait pas un probleme
+      // d'arrondi. Une premiere explication (seuil trop fin) a ete
+      // ecartee : sur BTCUSD le pas de cotation egale _Point, donc
+      // l'ancien seuil valait deja un pas entier.
+      //
+      // Ce qui est fait ici, et qui vaut independamment de la cause :
+      //   - exiger au moins UN pas de cotation d'ecart, jamais moins que
+      //     l'ancien comportement ;
+      //   - refuser explicitement l'appel si la cible vaut deja le stop ;
+      //   - JOURNALISER le refus. L'ancien code ignorait le retour de
+      //     PositionModify : personne ne savait pourquoi le courtier
+      //     disait non. C'est cette ligne qui tranchera la prochaine fois.
+      double cible = NormalizeDouble(niveau, _Digits);
+      double pasCotation = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+      if(pasCotation < _Point) pasCotation = _Point;
+      if(MathAbs(cible - slActuel) < pasCotation) continue;   // deja en place
+      if(cible > slActuel + pasCotation - _Point * 0.5)   // ne fait que monter
+         if(!trade.PositionModify(ticket, cible, PositionGetDouble(POSITION_TP)))
+            PrintFormat("stop refuse #%I64u -> %s (%d) %s", ticket,
+                        DoubleToString(cible, _Digits), trade.ResultRetcode(),
+                        trade.ResultRetcodeDescription());
      }
   }
 

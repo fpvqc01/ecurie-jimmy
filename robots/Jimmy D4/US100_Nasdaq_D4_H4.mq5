@@ -31,7 +31,27 @@ input double SpreadEntreeMaxPct      = 2.0;   // L8 : entree reportee si le spre
 input double LimitePerteJourPct            = 2.25;  // L11 : rendu a 2,50 % - la deconcentration du BTC a traite la cause (banc L11 : -41 a -75 jours, reussite inchangee)   // L3 : resserre (valide 19 aout ; FTMO = 5)   // D : reglage du laboratoire
 input double LimitePerteTotalePct            = 8.0;
 input double ChallengeInitialBalance = 0;
-input double ObjectifPhasePct   = 10.0;  // L8-R13 : objectif de la phase en % (10 = phase 1 FTMO, 5 = phase 2, 0 = desactive)   // D : reglage du laboratoire
+enum PhaseChallengeFTMO
+  {
+   PHASE_1        = 1,   // Phase 1 : objectif +10 %
+   PHASE_2        = 2,   // Phase 2 : objectif +5 %
+   COMPTE_FINANCE = 0    // Compte finance : aucune fermeture automatique
+  };
+input PhaseChallengeFTMO PhaseActuelle = PHASE_1;   // R13 : la phase en cours. Le robot en deduit son objectif.
+input double ObjectifPhase1Pct  = 10.0;  // R13 : objectif de la phase 1, en % du capital de depart
+input double ObjectifPhase2Pct  = 5.0;   // R13 : objectif de la phase 2, en % du capital de depart
+
+//+------------------------------------------------------------------+
+//| R13 : l objectif depend de la phase. Avant, un seul pourcentage   |
+//| qu il fallait changer a la main entre les deux phases - oublier   |
+//| de le faire, c etait viser +10 % alors que +5 % suffisait.        |
+//+------------------------------------------------------------------+
+double ObjectifPhasePctCourant()
+  {
+   if(PhaseActuelle == PHASE_1) return(ObjectifPhase1Pct);
+   if(PhaseActuelle == PHASE_2) return(ObjectifPhase2Pct);
+   return(0.0);   // compte finance : on ne ferme pas tout seul
+  }
 input double MargeObjectifPct   = 0.25;  // L8-R13 : coussin encaisse au-dessus de l'objectif (spread/commission)
 input long   MagicNumber             = 20262043;  // L8-R5 : magic propre (3 robots partageaient 20261115)
 input int    MaxPositionsEcurie      = 2;      // plafond global de l'ecurie (I2)
@@ -313,7 +333,7 @@ int OnInit()
                     : AccountInfoDouble(ACCOUNT_BALANCE);
       GlobalVariableSet(BaseGV(), base);
      }
-   Print("L12-R13 | objectif de phase=", ObjectifPhasePct, "% (+", MargeObjectifPct, "% de coussin) gardien=", LimitePerteJourPct, "%");
+   Print("L12-R13 | objectif de phase=", ObjectifPhasePctCourant(), "% (+", MargeObjectifPct, "% de coussin) gardien=", LimitePerteJourPct, "%");
    Print("MacroBot L12 demarre (indicateurs journaliers). Baseline: ", DoubleToString(GlobalVariableGet(BaseGV()), 2),
          " | TP ", DoubleToString(TpR, 1), "R, re-entree ", DoubleToString(RetraceReentree, 2),
          "xATR, plafond ecurie ", MaxPositionsEcurie);
@@ -375,8 +395,8 @@ bool GuardianBlocks()
    // FTMO valide sur le solde POSITIONS FERMEES. Tant que le profit reste
    // flottant il ne compte pas, et il peut repartir. Des que l'equite passe
    // l'objectif (plus un coussin pour le spread), on ferme tout et on arrete.
-   if(base > 0 && ObjectifPhasePct > 0
-      && equity >= base * (1.0 + (ObjectifPhasePct + MargeObjectifPct) / 100.0))
+   if(base > 0 && ObjectifPhasePctCourant() > 0
+      && equity >= base * (1.0 + (ObjectifPhasePctCourant() + MargeObjectifPct) / 100.0))
      {
       Notifier(StringFormat("OBJECTIF DE PHASE ATTEINT (+%.2f %%) - fermeture de tout, arret. Solde a encaisser : %.2f",
                             100.0 * (equity / base - 1.0), equity));

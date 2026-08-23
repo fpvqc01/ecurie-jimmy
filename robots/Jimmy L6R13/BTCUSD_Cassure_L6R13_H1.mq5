@@ -25,7 +25,27 @@ input double SpreadEntreeMaxPct      = 2.0;   // L8 : entree reportee si le spre
 input double LimitePerteJourPct   = 2.50;  // L6R13 : gardien de L6 (variante VITESSE : -60 j, creux -18,7 %)    // L3 : resserre (valide 19 aout ; FTMO = 5)
 input double LimitePerteTotalePct = 8.0;    // Coupe-circuit perte totale en % (FTMO = 10)
 input double ChallengeInitialBalance = 0;   // L8-R10 : capital initial de la phase (0 = solde au chargement)
-input double ObjectifPhasePct   = 10.0;  // L8-R13 : objectif de la phase en % (10 = phase 1 FTMO, 5 = phase 2, 0 = desactive)
+enum PhaseChallengeFTMO
+  {
+   PHASE_1        = 1,   // Phase 1 : objectif +10 %
+   PHASE_2        = 2,   // Phase 2 : objectif +5 %
+   COMPTE_FINANCE = 0    // Compte finance : aucune fermeture automatique
+  };
+input PhaseChallengeFTMO PhaseActuelle = PHASE_1;   // R13 : la phase en cours. Le robot en deduit son objectif.
+input double ObjectifPhase1Pct  = 10.0;  // R13 : objectif de la phase 1, en % du capital de depart
+input double ObjectifPhase2Pct  = 5.0;   // R13 : objectif de la phase 2, en % du capital de depart
+
+//+------------------------------------------------------------------+
+//| R13 : l objectif depend de la phase. Avant, un seul pourcentage   |
+//| qu il fallait changer a la main entre les deux phases - oublier   |
+//| de le faire, c etait viser +10 % alors que +5 % suffisait.        |
+//+------------------------------------------------------------------+
+double ObjectifPhasePctCourant()
+  {
+   if(PhaseActuelle == PHASE_1) return(ObjectifPhase1Pct);
+   if(PhaseActuelle == PHASE_2) return(ObjectifPhase2Pct);
+   return(0.0);   // compte finance : on ne ferme pas tout seul
+  }
 input double MargeObjectifPct   = 0.25;  // L8-R13 : coussin encaisse au-dessus de l'objectif (spread/commission)
 input int    PeriodeEntree        = 20;     // L4.3 corrige : canal 20 JOURS (config validee walk-forward ; etait 55 bougies H4)
 input int    PeriodeSortie        = 10;     // L4.3 corrige : sortie 10 JOURS (etait 20 bougies H4)
@@ -205,7 +225,7 @@ int OnInit()
   {
    if(MQLInfoInteger(MQL_TESTER))
       GlobalVariablesDeleteAll("MACROBOT_");   // testeur : purge des gardiens entre les passes (correctif L3 MT4 porte en L4.3)
-   Print("L6R13-R13 | objectif de phase=", ObjectifPhasePct, "% (+", MargeObjectifPct, "% de coussin)");
+   Print("L6R13-R13 | objectif de phase=", ObjectifPhasePctCourant(), "% (+", MargeObjectifPct, "% de coussin)");
    Print("L6R13 charge | decision=", EnumToString(UT_Decision), " canaux=D1 tampon=", TamponCassurePct, "%");
    Print("L6R13 | gardien=", LimitePerteJourPct, "% breakeven=+", BreakevenCollectifPct, "% notionnelMax=", PlafondNotionnelEquite, "x equite");
    Print("L6R13 charge | PyramideMax=", MaxUnites, " ModeChallenge=", ModeChallengeActif);
@@ -290,8 +310,8 @@ bool VerifierProtections()
    // flottant il ne compte pas, et il peut repartir. Des que l'equite passe
    // l'objectif (plus un coussin pour le spread), on ferme tout et on
    // arrete : la phase est gagnee, c'est a Jimmy de passer a la suivante.
-   if(ObjectifPhasePct > 0
-      && equite >= base * (1.0 + (ObjectifPhasePct + MargeObjectifPct) / 100.0))
+   if(ObjectifPhasePctCourant() > 0
+      && equite >= base * (1.0 + (ObjectifPhasePctCourant() + MargeObjectifPct) / 100.0))
      {
       Notifier(StringFormat("🎯 OBJECTIF DE PHASE ATTEINT (+%.2f %%). Fermeture de tout, arret. Solde a encaisser : %.2f",
                             100.0 * (equite / base - 1.0), equite));
