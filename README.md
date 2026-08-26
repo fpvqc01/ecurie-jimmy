@@ -107,6 +107,61 @@ Le gardien à -2,0 % coupe trop de journées récupérables. **Configuration rec
 l'implémentation : pyramidage 3 unités à +0,5 ATR sur les 2 cassures + gardien quotidien
 à -2,5 %** (morts en challenge 15 %, durée médiane 82 j contre 111 j aujourd'hui).
 
+## 🤖 GROKBOT1 — la génération née du comité IA externe (26 août)
+
+Le comité du 21 août avait laissé un **plan de banc en 6 points**. Un seul avait
+été fait (l'ancre roulante de Grok, rejetée — voir `Jimmy R2`). GrokBot1 exécute
+les **points 4, 5 et 6**, tous touchés par Grok, et livre les deux robots de
+cassure qui portent ce qui a survécu. Rapport complet : **`RAPPORT_GROKBOT1.md`**.
+
+**✅ RETENU — coupe-temps conditionnel, 12 jours / 1,00 ATR.** *Si après 12 jours
+le meilleur profit atteint n'a jamais dépassé 1 ATR journalier d'entrée, on
+ferme.* Ce n'est pas l'âge qui coupe, c'est l'absence de progrès.
+
+| Fenêtre | CAGR | Sharpe | Réussite | Durée médiane | Give-back |
+|---|---|---|---|---|---|
+| 10 ans — référence | +7,67 % | 1,23 | 95,3 % | 600 j | 43,7 % |
+| **10 ans — coupe-temps** | **+8,63 %** | **1,31** | **96,9 %** | **573 j** | **42,1 %** |
+| 2016-2021 — référence | +8,89 % | 1,24 | 86,9 % | 687 j | 42,0 % |
+| **2016-2021 — coupe-temps** | **+11,00 %** | **1,39** | **91,4 %** | **517 j** | **39,9 %** |
+| 2021-2026 — référence | +6,82 % | 1,27 | 100 % | 557 j | 47,5 % |
+| **2021-2026 — coupe-temps** | **+6,89 %** | **1,28** | **100 %** | **557 j** | **47,1 %** |
+
+Les 4 standards passent. **Deux réserves écrites** : il ne s'est déclenché que
+**6 fois en 10 ans** (petit échantillon, comme le pyramidage à son époque), et
+le **creux maximal se creuse de −10,7 % à −12,2 %** sur la série complète — ce
+n'est pas un creux intra-challenge (la réussite FTMO monte), mais sur compte
+financé le creux total compte pour de vrai.
+
+**Les robots** : `robots/GrokBot1/GrokBot1_Cassure_BTCUSD_H1.mq5` et
+`GrokBot1_Cassure_USOIL_H4.mq5`. Châssis L13 inchangé, **magics L13 conservés** —
+GrokBot1 remplace les deux cassures d'une écurie L13 et le plafond partagé des
+trois autres robots continue de le compter sans modification. Il ajoute le
+coupe-temps (actif), le réengagement de Grok (présent, désactivé, voir le
+cimetière) et un **affichage graphique** : panneau d'état sur le graphique
+(gardien, phase, position, compte à rebours du coupe-temps, filtres) plus les
+lignes de canal et de stop sur les prix — inerte hors mode visuel, donc aucun
+coût en optimisation.
+
+**Ce que le labo retient de la manche** :
+
+1. Un mécanisme peut passer les 4 standards **et rester au bord du plateau**.
+   Distinguer désormais « le mécanisme marche » (5 voisins sur 5 gagnent sur
+   10 ans) de « ce réglage marche » (un seul passe les deux moitiés).
+2. **Une idée peut être bonne et mal logée.** Avant de jeter une proposition au
+   cimetière, vérifier qu'elle a pu *s'exprimer* — les compteurs
+   « armé / pris / doublé » du banc sont faits pour ça et devraient devenir
+   systématiques.
+3. **Fermer une position qui ne progresse pas rapporte plus que fermer plus tôt
+   une position qui progresse** (+0,96 pt contre −2,79 pts).
+
+> ⚠️ **Provenance à connaître** : la conversation Grok d'origine
+> (« MT5 Trading Robot for FTMO Challenges ») est **inaccessible depuis le labo**
+> — page derrière connexion. GrokBot1 a donc été bâti sur ce que le labo possède
+> par écrit des propositions de Grok (`RAPPORT_COMITE_L8_VITESSE.md`), plus
+> l'affichage graphique qui était la dernière demande de la conversation. Si le
+> contenu réel diffère, le banc est prêt à remesurer.
+
 ## ⚠️ IMPORTANT pour l'optimisation : le cimetière des idées déjà testées
 
 ~60 backtests réalisés (Python, données Yahoo 5-10 ans, frais réels, validation par moitiés
@@ -162,6 +217,30 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
   CAGR 18,1→15,1 %, Sharpe 1,38→1,19, 1re moitié 5,3→1,4 % — le robot vole les sièges
   de l'or pour +1,2 point en 5 ans. REJETÉ (standards 1 et 4).
 
+- **Canal de sortie rapide 7 j / 5 j, seul OU « réparé » par le réengagement
+  (26 août, `backtests/banc_grokbot1.py`, point 5 du plan du comité)** : le canal
+  7 j fait +4,88 %/an contre +7,67 % en référence, et le réengagement de Grok le
+  remonte à peine (+4,95 %) — il ne répare rien. Le canal 5 j ne fait pas mieux
+  (+5,43 %). Les durées médianes EXPLOSENT (896 j / 852 j / 818 j contre 600 j) :
+  sortir plus tôt d'une tendance ne raccourcit pas le challenge, ça l'allonge,
+  parce qu'on tronque la queue qui paie. L'hypothèse de Gemini (« le
+  réengagement répare le canal rapide ») est INFIRMÉE. 2e rejet de la famille,
+  question fermée.
+- **Réengagement après une sortie gagnante sur les CASSURES (Grok nº 5, point 4
+  du plan)** : NEUTRE, +0,04 pt de CAGR et −3 jours. Cause structurelle, et
+  c'est la leçon : sur un châssis dont l'entrée est un plus-haut de canal, le
+  déclencheur « sommet du trade précédent + K × ATR » est *au-dessus* du
+  plus-haut 20 jours — la cassure tire donc toujours la première (17 fois sur 19
+  le jour même). K = 0,25 / 0,50 / 1,00 / 1,50 donnent des résultats identiques :
+  signature d'un mécanisme inerte, pas d'un plateau. **L'idée n'est pas morte,
+  elle est mal logée** — à retester sur un châssis fib/repli ou EMA, jamais sur
+  une cassure. Code présent et désactivé dans GrokBot1.
+- **Coupe-temps conditionnel aux réglages 8 j/0,75 ATR, 8 j/1,50, 12 j/2,00,
+  20 j/3,00** : nettement gagnants sur 10 ans (+8,1 à +8,9 %) et sur la 1re
+  moitié (+10,9 à +11,9 %), mais perdants de 0,1 à 0,3 pt sur la 2e — standard 3
+  non passé. Seul le réglage écrit par le comité AVANT tout backtest
+  (12 j / 1,00 ATR) passe les deux moitiés : voir la section GrokBot1.
+
 **Standards de validation utilisés** (à conserver pour toute proposition) :
 1. principe économique externe (pas d'idée née de l'optimisation elle-même),
 2. amélioration nette avec les frais réels,
@@ -200,6 +279,11 @@ Bonne revue! — Jimmy (et Claude, son partenaire de laboratoire)
   plafond de positions, TP/reentree). Les autres scripts l'importent via exec() et testent
   chaque question (concentration, vol targeting, temps de challenge, etc.).
   Donnees : Yahoo Finance (gratuit, aucune cle requise).
+- `robots/GrokBot1/` — les 2 cassures issues du comite Grok (chassis L13 +
+  coupe-temps conditionnel + affichage graphique). Voir `RAPPORT_GROKBOT1.md`.
+- `backtests/banc_grokbot1.py` — le banc des points 4/5/6 du plan du comite
+  (3 fenetres, verdict automatique contre les criteres fixes d'avance) ;
+  `backtests/build_grokbot1.py` regenere les 2 EA depuis le chassis L13.
 - `CONVERSATION_Ecurie_Jimmy.md` — l'historique complet du raisonnement (4 jours).
 
 Pour evaluer une nouvelle idee : l'implementer comme variante dans le moteur, la faire
