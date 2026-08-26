@@ -107,60 +107,51 @@ Le gardien à -2,0 % coupe trop de journées récupérables. **Configuration rec
 l'implémentation : pyramidage 3 unités à +0,5 ATR sur les 2 cassures + gardien quotidien
 à -2,5 %** (morts en challenge 15 %, durée médiane 82 j contre 111 j aujourd'hui).
 
-## 🤖 GROKBOT1 — la génération née du comité IA externe (26 août)
+## 🤖 GROKBOT — une lignée NEUVE, deux sens, sur le FX (26 août)
 
-Le comité du 21 août avait laissé un **plan de banc en 6 points**. Un seul avait
-été fait (l'ancre roulante de Grok, rejetée — voir `Jimmy R2`). GrokBot1 exécute
-les **points 4, 5 et 6**, tous touchés par Grok, et livre les deux robots de
-cassure qui portent ce qui a survécu. Rapport complet : **`RAPPORT_GROKBOT1.md`**.
+Les 30 générations de l'écurie partagent un angle mort : **elles sont 100 %
+acheteuses** sur des actifs de risque. Aucune ne peut gagner quand le risque
+baisse. GrokBot est bâti pour être ce robot-là — **code neuf, aucune reprise du
+châssis L13 ou I2+**, son propre simulateur deux sens
+(`backtests/banc_grokbot.py`). Rapport complet : **`RAPPORT_GROKBOT.md`**.
 
-**✅ RETENU — coupe-temps conditionnel, 12 jours / 1,00 ATR.** *Si après 12 jours
-le meilleur profit atteint n'a jamais dépassé 1 ATR journalier d'entrée, on
-ferme.* Ce n'est pas l'âge qui coupe, c'est l'absence de progrès.
+**La règle** : USDJPY, croisement **EMA 20/50** journalier dans les DEUX sens,
+stop **2,0 × ATR** (= 1 R), TP **1,5 R**, risque **0,75 %**. C'est exactement le
+candidat que ce README décrivait déjà comme « valide en réserve » sans jamais
+l'implémenter — et un moteur écrit indépendamment le **réplique** :
+**+14,5 R / PF 2,04** contre les +14,4 R / PF 1,91 documentés.
 
-| Fenêtre | CAGR | Sharpe | Réussite | Durée médiane | Give-back |
-|---|---|---|---|---|---|
-| 10 ans — référence | +7,67 % | 1,23 | 95,3 % | 600 j | 43,7 % |
-| **10 ans — coupe-temps** | **+8,63 %** | **1,31** | **96,9 %** | **573 j** | **42,1 %** |
-| 2016-2021 — référence | +8,89 % | 1,24 | 86,9 % | 687 j | 42,0 % |
-| **2016-2021 — coupe-temps** | **+11,00 %** | **1,39** | **91,4 %** | **517 j** | **39,9 %** |
-| 2021-2026 — référence | +6,82 % | 1,27 | 100 % | 557 j | 47,5 % |
-| **2021-2026 — coupe-temps** | **+6,89 %** | **1,28** | **100 %** | **557 j** | **47,1 %** |
+| Fenêtre | | CAGR | Creux | Sharpe | Réussite | Durée |
+|---|---|---|---|---|---|---|
+| 10 ans | écurie seule | +7,67 % | −10,7 % | 1,23 | 95,3 % | 600 j |
+| 10 ans | + GrokBot1 (USDJPY) | **+10,07 %** | −11,2 % | 1,46 | 95,2 % | 533 j |
+| 10 ans | **+ GrokBot2 (USDJPY+USDCHF)** | +9,47 % | **−8,9 %** | 1,40 | **98,1 %** | **516 j** |
+| 2016-21 | + GrokBot2 | +11,57 % | −8,9 % | 1,44 | 95,4 % | 435 j |
+| 2021-26 | + GrokBot2 | +7,39 % | −6,7 % | 1,38 | 100 % | 495 j |
 
-Les 4 standards passent. **Deux réserves écrites** : il ne s'est déclenché que
-**6 fois en 10 ans** (petit échantillon, comme le pyramidage à son époque), et
-le **creux maximal se creuse de −10,7 % à −12,2 %** sur la série complète — ce
-n'est pas un creux intra-challenge (la réussite FTMO monte), mais sur compte
-financé le creux total compte pour de vrai.
+**GrokBot1** rapporte le plus (+2,40 pts de CAGR) mais pousse le creux de
+l'écurie à −11,2 %, **au-delà de la limite FTMO de −10 %**. **GrokBot2** — mêmes
+règles, deuxième paire — rend 0,60 pt de CAGR et achète avec le creux ramené
+**sous** la barre (−8,9 %) et +2,9 pts de réussite. **C'est la v2 qu'il faut
+utiliser.** Fichiers : `robots/GrokBot1/` (magic 20268001) et `robots/GrokBot2/`
+(20268002 / 20268003). Chaque robot est autonome mais partage les gardiens
+`MACROBOT_*` et le plafond de positions avec l'écurie, et porte un **affichage
+graphique** (panneau d'état + EMA/stop/TP sur les prix) inerte hors mode visuel.
 
-**Les robots** : `robots/GrokBot1/GrokBot1_Cassure_BTCUSD_H1.mq5` et
-`GrokBot1_Cassure_USOIL_H4.mq5`. Châssis L13 inchangé, **magics L13 conservés** —
-GrokBot1 remplace les deux cassures d'une écurie L13 et le plafond partagé des
-trois autres robots continue de le compter sans modification. Il ajoute le
-coupe-temps (actif), le réengagement de Grok (présent, désactivé, voir le
-cimetière) et un **affichage graphique** : panneau d'état sur le graphique
-(gardien, phase, position, compte à rebours du coupe-temps, filtres) plus les
-lignes de canal et de stop sur les prix — inerte hors mode visuel, donc aucun
-coût en optimisation.
+### 🔬 La découverte de la manche : le contrôle d'exécution est un CRITÈRE
 
-**Ce que le labo retient de la manche** :
+Le banc entre à la **clôture** de la bougie de signal ; un robot réel entre à
+l'**ouverture suivante**. Rejoué sous cette contrainte :
 
-1. Un mécanisme peut passer les 4 standards **et rester au bord du plateau**.
-   Distinguer désormais « le mécanisme marche » (5 voisins sur 5 gagnent sur
-   10 ans) de « ce réglage marche » (un seul passe les deux moitiés).
-2. **Une idée peut être bonne et mal logée.** Avant de jeter une proposition au
-   cimetière, vérifier qu'elle a pu *s'exprimer* — les compteurs
-   « armé / pris / doublé » du banc sont faits pour ça et devraient devenir
-   systématiques.
-3. **Fermer une position qui ne progresse pas rapporte plus que fermer plus tôt
-   une position qui progresse** (+0,96 pt contre −2,79 pts).
+| | R à la clôture | R à l'ouverture +1 |
+|---|---|---|
+| GrokBot1 | +14,5 | **+15,5** (survit) |
+| Réentrée sur repli 0,50 ATR | +21,5 | **+9,0** (s'effondre) |
 
-> ⚠️ **Provenance à connaître** : la conversation Grok d'origine
-> (« MT5 Trading Robot for FTMO Challenges ») est **inaccessible depuis le labo**
-> — page derrière connexion. GrokBot1 a donc été bâti sur ce que le labo possède
-> par écrit des propositions de Grok (`RAPPORT_COMITE_L8_VITESSE.md`), plus
-> l'affichage graphique qui était la dernière demande de la conversation. Si le
-> contenu réel diffère, le banc est prêt à remesurer.
+La réentrée sur repli était **le meilleur ajout du banc (+48 %) et un pur
+artefact de moteur** — même piège que le « +64,6 % apparent » déjà au cimetière.
+**Règle nouvelle du labo : tout mécanisme qui déclenche sur un niveau touché
+intrabar doit être mesuré à l'ouverture suivante AVANT d'être retenu.**
 
 ## ⚠️ IMPORTANT pour l'optimisation : le cimetière des idées déjà testées
 
@@ -218,7 +209,7 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
   de l'or pour +1,2 point en 5 ans. REJETÉ (standards 1 et 4).
 
 - **Canal de sortie rapide 7 j / 5 j, seul OU « réparé » par le réengagement
-  (26 août, `backtests/banc_grokbot1.py`, point 5 du plan du comité)** : le canal
+  (26 août, `backtests/banc_comite_points456.py`, point 5 du plan du comité)** : le canal
   7 j fait +4,88 %/an contre +7,67 % en référence, et le réengagement de Grok le
   remonte à peine (+4,95 %) — il ne répare rien. Le canal 5 j ne fait pas mieux
   (+5,43 %). Les durées médianes EXPLOSENT (896 j / 852 j / 818 j contre 600 j) :
@@ -234,12 +225,39 @@ de période et paramètres voisins). **Idées testées et REJETÉES — ne pas r
   le jour même). K = 0,25 / 0,50 / 1,00 / 1,50 donnent des résultats identiques :
   signature d'un mécanisme inerte, pas d'un plateau. **L'idée n'est pas morte,
   elle est mal logée** — à retester sur un châssis fib/repli ou EMA, jamais sur
-  une cassure. Code présent et désactivé dans GrokBot1.
+  une cassure. Aucun robot ne la porte : le banc du 26 août l'a rejetée une
+  seconde fois, sur un châssis deux sens et cette fois au contrôle d'exécution.
 - **Coupe-temps conditionnel aux réglages 8 j/0,75 ATR, 8 j/1,50, 12 j/2,00,
   20 j/3,00** : nettement gagnants sur 10 ans (+8,1 à +8,9 %) et sur la 1re
   moitié (+10,9 à +11,9 %), mais perdants de 0,1 à 0,3 pt sur la 2e — standard 3
   non passé. Seul le réglage écrit par le comité AVANT tout backtest
   (12 j / 1,00 ATR) passe les deux moitiés : voir la section GrokBot1.
+
+- **Réentrée sur repli après un TP, sur un châssis FX deux sens (26 août,
+  `backtests/banc_grokbot.py`)** : +21,5 R contre +14,5 pour la base... à la
+  clôture. En exécution réelle (entrée à l'ouverture suivante) : **+9,0 R, soit
+  MOINS que la base**. Artefact de moteur pur. Le mécanisme déclenchait sur un
+  niveau touché *intrabar* et le simulateur entrait au même instant — un robot ne
+  peut pas. Toute la famille (0,25 / 0,50 / 1,00 ATR) tombe pareil.
+- **Point mort (breakeven) à +0,75 / +1,00 / +1,25 R sur GrokBot** : −3 à −12 R.
+  Il coupe la queue qui paie. 4e confirmation de cette famille.
+- **Stop à 3,0 ATR sur GrokBot** — *le rejet le plus instructif du banc* : en
+  solo il a le meilleur PF mesuré (3,21) et les moitiés les mieux équilibrées
+  (+9,0 / +7,5 contre +4,5 / +10,5). En portefeuille sous le plafond de 2 :
+  **+7,81 % contre +10,07 %** — il prend trop peu de trades (22 en 10 ans) pour
+  mériter un siège. Rappel que le standard 4 n'est pas une formalité.
+- **Plafond interne d'UNE position pour GrokBot** (anti-concentration USD, ses
+  deux paires étant des jambes dollar) : −0,68 pt de CAGR et **rien** en échange
+  — creux et réussite rigoureusement inchangés. Le plafond de 2 de l'écurie gère
+  déjà la corrélation : **même conclusion que le plafond par sous-jacent testé le
+  21 août**, atteinte par un chemin indépendant.
+- **AUDUSD, AUDJPY, EURUSD, GBPUSD en EMA 20/50 deux sens** : l'AUDUSD affiche le
+  meilleur chiffre brut du criblage (+23,5 R) mais c'est un **pic** — voisin
+  EMA 30/60 à 0,0 R, stop 3,0 ATR négatif. Les trois autres échouent sur une
+  moitié. Seuls l'USDJPY (12 voisins sur 13) et l'USDCHF tiennent.
+- **TSMOM (momentum 126 / 252 jours) comme stratégie deux sens sur le FX** :
+  +0,6 à +3,5 R sur 10 ans, 1,6 à 2,4 trades/an. Trop lent et trop faible pour un
+  siège. Le TSMOM reste utile comme *littérature*, pas comme signal d'entrée.
 
 **Standards de validation utilisés** (à conserver pour toute proposition) :
 1. principe économique externe (pas d'idée née de l'optimisation elle-même),
@@ -279,11 +297,13 @@ Bonne revue! — Jimmy (et Claude, son partenaire de laboratoire)
   plafond de positions, TP/reentree). Les autres scripts l'importent via exec() et testent
   chaque question (concentration, vol targeting, temps de challenge, etc.).
   Donnees : Yahoo Finance (gratuit, aucune cle requise).
-- `robots/GrokBot1/` — les 2 cassures issues du comite Grok (chassis L13 +
-  coupe-temps conditionnel + affichage graphique). Voir `RAPPORT_GROKBOT1.md`.
-- `backtests/banc_grokbot1.py` — le banc des points 4/5/6 du plan du comite
-  (3 fenetres, verdict automatique contre les criteres fixes d'avance) ;
-  `backtests/build_grokbot1.py` regenere les 2 EA depuis le chassis L13.
+- `robots/GrokBot1/`, `robots/GrokBot2/` — la lignee GrokBot : code NEUF, deux
+  sens, FX. Voir `RAPPORT_GROKBOT.md`.
+- `backtests/banc_grokbot.py` — son banc (criblage 6 paires x 9 regles, plateau,
+  controle d'execution, portefeuille sous plafond de 2) ;
+  `backtests/build_grokbot.py` + `grokbot_modele.mq5` generent les versions.
+- `backtests/banc_comite_points456.py` — le banc des points 4/5/6 du plan du
+  comite externe. Voir `RAPPORT_COMITE_POINTS456.md`.
 - `CONVERSATION_Ecurie_Jimmy.md` — l'historique complet du raisonnement (4 jours).
 
 Pour evaluer une nouvelle idee : l'implementer comme variante dans le moteur, la faire

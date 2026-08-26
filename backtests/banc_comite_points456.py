@@ -41,7 +41,7 @@ statistique officielle, comme le demande le rapport.
 Donnees : Yahoo Finance, 10 ans de barres journalieres, cache local dans
 backtests/.cache_yahoo/. Deux fenetres, comme banc_L8 : 10 ans et 2021-2026.
 
-Lancer :  python3 banc_grokbot1.py
+Lancer :  python3 banc_comite_points456.py
 """
 import os, json, numpy as np, pandas as pd
 
@@ -434,10 +434,10 @@ def main():
         print("  du comite rejoignent le cimetiere. Un resultat negatif est un")
         print("  resultat : c'est exactement ce que le banc doit produire.")
 
-    with open(os.path.join(D, "resultats_grokbot1.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(D, "resultats_comite_points456.json"), "w", encoding="utf-8") as f:
         json.dump({"variantes": resultats, "retenus": retenus}, f, indent=2, default=float)
     print()
-    print("Resultats bruts : backtests/resultats_grokbot1.json")
+    print("Resultats bruts : backtests/resultats_comite_points456.json")
 
 if __name__ == "__main__":
     main()

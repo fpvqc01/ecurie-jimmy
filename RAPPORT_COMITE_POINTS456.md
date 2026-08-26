@@ -32,7 +32,7 @@ Trois points dormaient depuis, tous touchés par Grok :
 | 5 | Canal de sortie rapide « réparé » par le réengagement | Gemini nº 3 + Grok | jamais testé |
 | 6 | Coupe-temps conditionnel (absence de progrès) | les 3 IA | jamais testé |
 
-C'est ce que GrokBot1 met au banc. Nouveau script : **`backtests/banc_grokbot1.py`**
+C'est ce que GrokBot1 met au banc. Nouveau script : **`backtests/banc_comite_points456.py`**
 (portefeuille complet, plafond de 2, frais réels, 10 ans de barres journalières
 Yahoo, trois fenêtres). Le critère avait été **fixé d'avance par le comité** :
 *réussite qui ne baisse pas ET durée médiane en baisse* — appliqué ici sur les
@@ -134,69 +134,19 @@ C'est le **deuxième** rejet de cette famille, et il ferme la question posée le
 
 ---
 
-## 4. Ce que GrokBot1 contient
+## 4. Statut : validé, mais aucun robot ne le porte
 
-Deux robots dans `robots/GrokBot1/` — les deux **cassures**, seules concernées
-(règle du labo : jamais de mécanisme de tenue de position sur les robots fib/TP) :
+Le coupe-temps a d'abord été embarqué dans deux robots dérivés du châssis L13.
+**Ces fichiers ont été retirés** : la consigne était une lignée neuve, pas une
+variante d'un robot existant (voir `RAPPORT_GROKBOT.md`). Le mécanisme reste
+**validé et disponible** — il est à reprendre dans une prochaine écurie L14, avec
+ses réglages : `CoupeTempsJours = 12`, `CoupeTempsSeuilATR = 1,00`, appliqué aux
+seules cassures (BTC, pétrole), et **jamais** à un trade ayant déjà pyramidé
+(interaction non testée : le moteur journalier du banc ne pyramide pas).
 
-- `GrokBot1_Cassure_BTCUSD_H1.mq5` (magic 20261132)
-- `GrokBot1_Cassure_USOIL_H4.mq5` (magic 20261133)
-
-**Châssis : Jimmy L13, inchangé.** GrokBot1 garde les magics de L13 : il
-**remplace** les deux cassures d'une écurie L13, et le plafond partagé
-(`ComptePositionsEcurie`) des trois autres robots continue de le compter sans
-qu'on y touche.
-
-Ce qui est ajouté :
-
-| # | Ajout | Défaut | Réglages |
-|---|---|---|---|
-| 1 | Coupe-temps conditionnel | **actif** | `CoupeTempsJours=12`, `CoupeTempsSeuilATR=1.00`, `CoupeTempsIgnoreSiPyramide=true` |
-| 2 | Réengagement après sortie gagnante | **inactif** | `ReengagementATR=0.50`, `ReengagementJours=0` |
-| 3 | Affichage graphique | **actif** | `AffichageCoin`, `AffichageTaille`, `AffichageFond`, `AffichageLignes` |
-
-**`CoupeTempsIgnoreSiPyramide = true`** est une prudence assumée : le moteur
-journalier du banc **ne pyramide pas**, donc l'interaction coupe-temps ×
-pyramide n'a **pas** été testée. Par défaut, un trade qui a déjà ajouté une
-unité est immunisé. À rouvrir si un banc H4 avec pyramide le tranche.
-
-Détails d'implémentation qui comptent :
-
-- Le coupe-temps compte des **jours (barres D1)**, pas des barres de décision —
-  c'est ce que mesurait le banc.
-- Le seuil est en **ATR du jour d'entrée**, pas l'ATR courant : mémorisé dans une
-  variable globale du terminal, donc il survit à un redémarrage de MT5 en pleine
-  position (règle du châssis).
-- Le meilleur profit est relu sur les **plus-hauts D1** depuis l'entrée, jamais
-  gardé en mémoire vive seule.
-- Si la mesure est indisponible (ATR nul, historique manquant), **on ne coupe
-  pas**. Le doute ne ferme jamais une position.
-
-### L'affichage graphique
-
-Le panneau montre, et **ne décide rien** :
-
-```
-GROKBOT1  BTCUSD  PERIOD_H1  (chassis L13)
-phase 1  +3.42 % / 10.00 %
-gardien jour -2.50 %   total -8.0 %   actif
-----------------------------------------
-position  2/4 unite(s)  0.42 lot  +812.40 $
-entree 61240.50   stop 58900.00
-coupe-temps j7/12  0.62 ATR < 1.00 -> coupe dans 5 j
-canal bas (sortie) 58900.00   prix 62115.00
-----------------------------------------
-macro OK   annonces libre
-vol x0.92   ecurie 1/2   coupes 0
-```
-
-Plus trois lignes sur les prix : seuil d'entrée (canal + tampon), canal de
-sortie, stop courant — et le niveau de réengagement s'il est armé.
-
-Il est **inerte hors mode visuel** (le testeur ne dessine rien) et limité à un
-rafraîchissement toutes les 250 ms : aucun coût mesurable en optimisation.
-
----
+Deux détails d'implémentation à ne pas perdre : le compte se fait en **jours
+(barres D1)**, pas en barres de décision ; et le seuil est en **ATR du jour
+d'entrée**, pas l'ATR courant — donc à mémoriser au moment de l'entrée.
 
 ## 5. Ce que le labo apprend de cette manche
 
@@ -225,13 +175,13 @@ rafraîchissement toutes les 250 ms : aucun coût mesurable en optimisation.
 
 ```bash
 cd backtests
-python3 banc_grokbot1.py        # le banc complet, 3 fenêtres, verdict automatique
+python3 banc_comite_points456.py        # le banc complet, 3 fenêtres, verdict automatique
 python3 build_grokbot1.py       # régénère les 2 EA depuis le châssis L13
 ```
 
 Le banc met en cache les séries Yahoo dans `backtests/.cache_yahoo/`
 (10 ans de barres journalières, 4 marchés). Résultats bruts :
-`backtests/resultats_grokbot1.json`.
+`backtests/resultats_comite_points456.json`.
 
 ## 7. Ce qu'il reste à faire
 
