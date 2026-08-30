@@ -1,0 +1,314 @@
+{
+ "10ans|AVEC mode chal.|sans turbo|sansR13": {
+  "cagr": 26.4,
+  "creux": -11.2,
+  "reussite": 100.0,
+  "ic": [
+   75.7,
+   100.0
+  ],
+  "med": 281,
+  "esp": 281,
+  "morts": 0,
+  "departs": 228
+ },
+ "10ans|AVEC mode chal.|sans turbo|R13": {
+  "cagr": 26.4,
+  "creux": -11.2,
+  "reussite": 100.0,
+  "ic": [
+   77.2,
+   100.0
+  ],
+  "med": 238,
+  "esp": 238,
+  "morts": 0,
+  "departs": 228
+ },
+ "10ans|AVEC mode chal.|turbo|sansR13": {
+  "cagr": 26.4,
+  "creux": -11.2,
+  "reussite": 96.1,
+  "ic": [
+   72.7,
+   99.6
+  ],
+  "med": 231,
+  "esp": 240,
+  "morts": 9,
+  "departs": 228
+ },
+ "10ans|AVEC mode chal.|turbo|R13": {
+  "cagr": 26.4,
+  "creux": -11.2,
+  "reussite": 92.5,
+  "ic": [
+   71.7,
+   98.4
+  ],
+  "med": 156,
+  "esp": 175,
+  "morts": 17,
+  "departs": 228
+ },
+ "10ans|SANS mode chal.|sans turbo|sansR13": {
+  "cagr": 31.5,
+  "creux": -15.4,
+  "reussite": 94.5,
+  "ic": [
+   69.4,
+   99.2
+  ],
+  "med": 248,
+  "esp": 266,
+  "morts": 15,
+  "departs": 272
+ },
+ "10ans|SANS mode chal.|sans turbo|R13": {
+  "cagr": 31.5,
+  "creux": -15.4,
+  "reussite": 93.4,
+  "ic": [
+   70.2,
+   98.8
+  ],
+  "med": 192,
+  "esp": 212,
+  "morts": 18,
+  "departs": 272
+ },
+ "10ans|SANS mode chal.|turbo|sansR13": {
+  "cagr": 31.5,
+  "creux": -15.4,
+  "reussite": 90.8,
+  "ic": [
+   68.8,
+   97.8
+  ],
+  "med": 186,
+  "esp": 207,
+  "morts": 25,
+  "departs": 272
+ },
+ "10ans|SANS mode chal.|turbo|R13": {
+  "cagr": 31.5,
+  "creux": -15.4,
+  "reussite": 87.1,
+  "ic": [
+   66.4,
+   95.9
+  ],
+  "med": 150,
+  "esp": 184,
+  "morts": 35,
+  "departs": 272
+ },
+ "2021-26|AVEC mode chal.|sans turbo|sansR13": {
+  "cagr": 18.2,
+  "creux": -11.2,
+  "reussite": 100.0,
+  "ic": [
+   51.0,
+   100.0
+  ],
+  "med": 415,
+  "esp": 415,
+  "morts": 0,
+  "departs": 109
+ },
+ "2021-26|AVEC mode chal.|sans turbo|R13": {
+  "cagr": 18.2,
+  "creux": -11.2,
+  "reussite": 100.0,
+  "ic": [
+   56.6,
+   100.0
+  ],
+  "med": 365,
+  "esp": 365,
+  "morts": 0,
+  "departs": 109
+ },
+ "2021-26|AVEC mode chal.|turbo|sansR13": {
+  "cagr": 18.2,
+  "creux": -11.2,
+  "reussite": 95.4,
+  "ic": [
+   51.6,
+   99.8
+  ],
+  "med": 334,
+  "esp": 340,
+  "morts": 5,
+  "departs": 109
+ },
+ "2021-26|AVEC mode chal.|turbo|R13": {
+  "cagr": 18.2,
+  "creux": -11.2,
+  "reussite": 90.8,
+  "ic": [
+   53.9,
+   98.8
+  ],
+  "med": 182,
+  "esp": 205,
+  "morts": 10,
+  "departs": 109
+ },
+ "2021-26|SANS mode chal.|sans turbo|sansR13": {
+  "cagr": 20.6,
+  "creux": -15.4,
+  "reussite": 86.9,
+  "ic": [
+   43.5,
+   98.3
+  ],
+  "med": 326,
+  "esp": 373,
+  "morts": 17,
+  "departs": 130
+ },
+ "2021-26|SANS mode chal.|sans turbo|R13": {
+  "cagr": 20.6,
+  "creux": -15.4,
+  "reussite": 86.2,
+  "ic": [
+   42.8,
+   98.1
+  ],
+  "med": 270,
+  "esp": 324,
+  "morts": 18,
+  "departs": 130
+ },
+ "2021-26|SANS mode chal.|turbo|sansR13": {
+  "cagr": 20.6,
+  "creux": -15.4,
+  "reussite": 83.1,
+  "ic": [
+   43.4,
+   96.9
+  ],
+  "med": 200,
+  "esp": 242,
+  "morts": 22,
+  "departs": 130
+ },
+ "2021-26|SANS mode chal.|turbo|R13": {
+  "cagr": 20.6,
+  "creux": -15.4,
+  "reussite": 76.2,
+  "ic": [
+   42.0,
+   93.4
+  ],
+  "med": 174,
+  "esp": 246,
+  "morts": 31,
+  "departs": 130
+ },
+ "3ans|AVEC mode chal.|sans turbo|sansR13": {
+  "cagr": 16.2,
+  "creux": -8.1,
+  "reussite": 100.0,
+  "ic": [
+   34.2,
+   100.0
+  ],
+  "med": 450,
+  "esp": 450,
+  "morts": 0,
+  "departs": 64
+ },
+ "3ans|AVEC mode chal.|sans turbo|R13": {
+  "cagr": 16.2,
+  "creux": -8.1,
+  "reussite": 100.0,
+  "ic": [
+   34.2,
+   100.0
+  ],
+  "med": 444,
+  "esp": 444,
+  "morts": 0,
+  "departs": 64
+ },
+ "3ans|AVEC mode chal.|turbo|sansR13": {
+  "cagr": 16.2,
+  "creux": -8.1,
+  "reussite": 100.0,
+  "ic": [
+   34.2,
+   100.0
+  ],
+  "med": 432,
+  "esp": 432,
+  "morts": 0,
+  "departs": 64
+ },
+ "3ans|AVEC mode chal.|turbo|R13": {
+  "cagr": 16.2,
+  "creux": -8.1,
+  "reussite": 100.0,
+  "ic": [
+   43.8,
+   100.0
+  ],
+  "med": 406,
+  "esp": 406,
+  "morts": 0,
+  "departs": 64
+ },
+ "3ans|SANS mode chal.|sans turbo|sansR13": {
+  "cagr": 20.3,
+  "creux": -10.1,
+  "reussite": 98.5,
+  "ic": [
+   33.2,
+   100.0
+  ],
+  "med": 450,
+  "esp": 458,
+  "morts": 0,
+  "departs": 67
+ },
+ "3ans|SANS mode chal.|sans turbo|R13": {
+  "cagr": 20.3,
+  "creux": -10.1,
+  "reussite": 98.5,
+  "ic": [
+   33.2,
+   100.0
+  ],
+  "med": 446,
+  "esp": 453,
+  "morts": 1,
+  "departs": 67
+ },
+ "3ans|SANS mode chal.|turbo|sansR13": {
+  "cagr": 20.3,
+  "creux": -10.1,
+  "reussite": 97.0,
+  "ic": [
+   32.2,
+   100.0
+  ],
+  "med": 448,
+  "esp": 456,
+  "morts": 2,
+  "departs": 67
+ },
+ "3ans|SANS mode chal.|turbo|R13": {
+  "cagr": 20.3,
+  "creux": -10.1,
+  "reussite": 86.6,
+  "ic": [
+   33.3,
+   98.8
+  ],
+  "med": 386,
+  "esp": 440,
+  "morts": 9,
+  "departs": 67
+ }
+}

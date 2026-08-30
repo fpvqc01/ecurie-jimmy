@@ -1,0 +1,138 @@
+{
+ "10 ans ": [
+  {
+   "config": "REFERENCE (aucun filtre)",
+   "reussite": 100.0,
+   "ic95": [
+    80.63865817272801,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 121.2,
+   "p45": 0.0,
+   "p60": 1.6194331983805668,
+   "esp": 236.0,
+   "cagr": 25.132197119821885,
+   "dd": -10.988708261018365,
+   "trades": 283,
+   "entrees_bloquees": 0,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 247,
+   "n_independants": 16
+  },
+  {
+   "config": "FILTRE COURT (-4 h -> +18 h)",
+   "reussite": 100.0,
+   "ic95": [
+    79.6110733695652,
+    100.0
+   ],
+   "med": 246.5,
+   "p10": 140.3,
+   "p45": 0.0,
+   "p60": 1.6528925619834711,
+   "esp": 246.5,
+   "cagr": 24.642514695094864,
+   "dd": -10.91241912262072,
+   "trades": 280,
+   "entrees_bloquees": 29,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 242,
+   "n_independants": 15
+  },
+  {
+   "config": "FILTRE LARGE (-4 h -> +30 h)",
+   "reussite": 100.0,
+   "ic95": [
+    79.6110733695652,
+    100.0
+   ],
+   "med": 245.0,
+   "p10": 124.9,
+   "p45": 0.0,
+   "p60": 1.5384615384615385,
+   "esp": 245.0,
+   "cagr": 24.751273078347037,
+   "dd": -11.036026218159822,
+   "trades": 273,
+   "entrees_bloquees": 49,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 260,
+   "n_independants": 15
+  }
+ ],
+ "2021-26": [
+  {
+   "config": "REFERENCE (aucun filtre)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 139.4,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 236.0,
+   "cagr": 23.50593817228841,
+   "dd": -10.734233477301602,
+   "trades": 151,
+   "entrees_bloquees": 0,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 109,
+   "n_independants": 8
+  },
+  {
+   "config": "FILTRE COURT (-4 h -> +18 h)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 245.5,
+   "p10": 148.6,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 245.5,
+   "cagr": 22.750792514608563,
+   "dd": -10.912419122620653,
+   "trades": 146,
+   "entrees_bloquees": 17,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 104,
+   "n_independants": 8
+  },
+  {
+   "config": "FILTRE LARGE (-4 h -> +30 h)",
+   "reussite": 100.0,
+   "ic95": [
+    64.56611570247934,
+    100.0
+   ],
+   "med": 251.5,
+   "p10": 152.1,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 251.5,
+   "cagr": 22.216041532389006,
+   "dd": -10.781686711964223,
+   "trades": 143,
+   "entrees_bloquees": 28,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 112,
+   "n_independants": 7
+  }
+ ]
+}

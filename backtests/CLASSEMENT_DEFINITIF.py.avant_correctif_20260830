@@ -1,0 +1,201 @@
+# -*- coding: utf-8 -*-
+"""CLASSEMENT DEFINITIF DES ECURIES (21 aout 2026).
+
+Remplace classement_generations.py, banc_ecuries_L6*.py et les autres.
+
+CE QUI CHANGE PAR RAPPORT A TOUT CE QUI PRECEDE
+-----------------------------------------------
+1. DONNEES FIGEES ET AUDITEES. Lit `donnees/` (jeu de reference verifie
+   par FIGER_donnees.py, 0 anomalie, empreinte dans MANIFESTE.txt) au
+   lieu de `backtests/`, dont les CSV contenaient ~7 200 barres de
+   week-end synthetiques par marche - un choix qui deplacait a lui seul
+   le taux de reussite de L8 de 89 % a 75 %.
+2. SIMULATEUR CORRIGE. Utilise SIMULATEUR_FTMO.py : objectif au solde
+   ferme, aucun challenge jete, jours de trading comptes sur les
+   OUVERTURES, intervalles de confiance affiches.
+3. ARMES EGALES. Chaque generation est mesuree AVEC et SANS R13, parce
+   que R13 est une fonction de 20 lignes greffable partout : la comparer
+   a des ecuries a qui on la retire n'est pas un classement, c'est une
+   mesure de R13.
+
+Le comite du 21 aout a montre que les ecarts de REUSSITE entre L6, L6++
+et L8 sont indiscernables du hasard (P(L8 > L6++) = 57 %), et que le
+seul avantage qui resiste au bruit est la VITESSE, entierement due a
+R13. Ce script est concu pour que ce genre de constat soit lisible
+directement : chaque taux vient avec son intervalle de confiance et le
+nombre de challenges REELLEMENT independants.
+"""
+import io
+import os
+import sys
+
+import numpy as np
+import pandas as pd
+
+D = os.path.dirname(os.path.abspath(__file__))
+RACINE = os.path.dirname(D)
+DONNEES = os.path.join(RACINE, "donnees")
+sys.path.insert(0, D)
+
+import SIMULATEUR_FTMO as SF          # noqa: E402
+import banc_L8 as B                   # noqa: E402
+
+ALLOC, PYR = B.ALLOC, B.PYR
+
+# (libelle, debut, fin, piste_min)
+# piste_min = jours garantis apres chaque depart. Sur une fenetre courte
+# il faut la reduire, sinon il ne reste presque aucun depart ; les
+# challenges non termines sont alors comptes comme des ECHECS
+# (conservateur), jamais jetes.
+FENETRES = (("10 ans  ", "2015-08-21", "2026-12-31", 730),
+            ("2021-26 ", "2021-01-01", "2026-08-20", 730),
+            ("3 ans   ", "2023-08-21", "2026-08-20", 365))
+
+
+# ------------------------------------------------------------------ #
+# Instrumentation : P&L realise + jours d'OUVERTURE (correctif C3)
+# ------------------------------------------------------------------ #
+def instrumenter(s):
+    s.pnl_r = {}
+    s.ouvertures = {}
+    s._cum0 = 0.0
+    ouvrir0, clore0 = s.ouvrir, s._clore
+    tot = lambda: sum(s.pnl.values())          # noqa: E731
+
+    def ouvrir(t, *a, **k):
+        avant = tot()
+        r = ouvrir0(t, *a, **k)
+        if r and s.pos is not None:
+            s._cum0 = avant
+            s.ouvertures[t.date()] = 1         # C3 : jour de trading FTMO
+        return r
+
+    def _clore(t, prix):
+        clore0(t, prix)
+        s.pnl_r[t] = s.pnl_r.get(t, 0.0) + (tot() - s._cum0)
+
+    s.ouvrir, s._clore = ouvrir, _clore
+    return s
+
+
+def series(ns0, garde_be, debut, fin, alloc=None):
+    """Retourne (cagr, dd, marque_au_marche, realise, ouvertures)."""
+    ns, f_or, fab = ns0["ns"], ns0["f_or"], ns0["fab_l431"]
+    boite = []
+
+    def f():
+        sl = fab()()
+        a = ALLOC if alloc is None else alloc
+        for s in sl:
+            if s.nom in a:
+                s.risque = a[s.nom]
+        if garde_be:
+            for s in sl:
+                if s.nom in PYR:
+                    B.breakeven(s, garde_be)
+        for s in sl:
+            instrumenter(s)
+        boite[:] = sl
+        return sl
+
+    ns["DEBUT"], ns["FIN"] = debut, fin
+    ns["sleeves_l4"] = f
+    r = ns["sim_h4"](interdit=f_or)
+
+    tj = r[6].sort_index()
+    realise, ouverts = {}, {}
+    for s in boite:
+        for tt, vv in s.pnl_r.items():
+            j = tt.date()
+            realise[j] = realise.get(j, 0.0) + vv
+        for j in s.ouvertures:
+            ouverts[j] = 1
+
+    tjr = pd.Series([realise.get(j.date(), 0.0) for j in tj.index], index=tj.index)
+    tjo = pd.Series([ouverts.get(j.date(), 0) for j in tj.index], index=tj.index)
+    return r[0], r[2], tj, tjr, tjo
+
+
+# ------------------------------------------------------------------ #
+def rediriger_vers_donnees():
+    """Pointe le moteur sur le jeu de reference audite au lieu de backtests/."""
+    if not os.path.isdir(DONNEES):
+        sys.exit("dossier de reference introuvable : " + DONNEES)
+    manifeste = os.path.join(DONNEES, "MANIFESTE.txt")
+    if not os.path.isfile(manifeste):
+        sys.exit("MANIFESTE.txt absent - lancer FIGER_donnees.py d'abord")
+    txt = io.open(manifeste, encoding="utf-8").read()
+    if "JEU DE DONNEES SAIN" not in txt:
+        sys.exit("le manifeste signale des anomalies - refus de tourner")
+    emp = [l for l in txt.splitlines() if l.startswith("EMPREINTE GLOBALE")]
+    return emp[0] if emp else "EMPREINTE inconnue"
+
+
+# (nom, gardien, breakeven, turbo)
+# turbo = (multiplicateur, seuil d equite de phase) ou None.
+# ATTENTION : les lignes turbo sont une BORNE OPTIMISTE - multiplier la
+# serie de rendements apres coup ne tient pas compte du fait que des
+# positions plus grosses touchent d autres stops. Voir SIMULATEUR_FTMO.
+CONFIGS = (
+    ("L6   (g2,50 sans BE)", 0.0250, None, None),
+    ("L6+  turbo-coussin",   0.0250, None, (1.33, 0.04)),
+    ("L6++ (g2,50 + BE5%)",  0.0250, 0.05, None),
+    ("L6++ 5% + turbo",      0.0250, 0.05, (1.33, 0.04)),
+    ("L8   (g1,75 + BE5%)",  0.0175, 0.05, None),
+    ("L9   (g2,50 + BE5%)",  0.0250, 0.05, None),
+    ("g2,00 + BE5%",         0.0200, 0.05, None),
+    ("g1,75 sans BE",        0.0175, None, None),
+    ("g1,50 + BE5%",         0.0150, 0.05, None),
+)
+
+
+def main():
+    emp = rediriger_vers_donnees()
+    print("=" * 100)
+    print("CLASSEMENT DEFINITIF - simulateur corrige, donnees figees")
+    print(emp)
+    print("=" * 100)
+    print()
+    print("Lecture : l'objectif est valide au SOLDE FERME, aucun challenge")
+    print("n'est jete, les jours de trading sont des OUVERTURES, et chaque")
+    print("taux vient avec son IC95 calcule sur les challenges INDEPENDANTS.")
+    print()
+
+    cache = {}
+    for libelle, deb, fin, piste in FENETRES:
+        print("-" * 100)
+        print("FENETRE %s  (piste garantie : %d jours)" % (libelle, piste))
+        print("-" * 100)
+        print("%-24s %6s %7s | %-18s %5s %5s %5s | %-18s %5s %5s %5s"
+              % ("configuration", "CAGR", "creux",
+                 "SANS R13  [IC95]", "med", "p90", "esp",
+                 "AVEC R13  [IC95]", "med", "p90", "esp"))
+
+        for nom, garde, be, turbo in CONFIGS:
+            cle = (garde, deb, fin)
+            if cle not in cache:
+                cache[cle] = B.charger(garde)
+            cagr, dd, tj, tjr, tjo = series(cache[cle], be, deb, fin)
+            a = SF.simuler(tj, tjr, tjo, piste_min=piste, r13=False, turbo=turbo)
+            b = SF.simuler(tj, tjr, tjo, piste_min=piste, r13=True, turbo=turbo)
+            creux = "  n/d " if turbo else ("%6.1f%%" % dd)   # turbo : creux non mesurable ainsi
+            print("%-24s %+5.1f%% %7s | %4.1f%% [%4.1f-%4.1f] %5.0f %5.0f %5.0f | %4.1f%% [%4.1f-%4.1f] %5.0f %5.0f %5.0f"
+                  % (nom, cagr, creux,
+                     a["reussite"], a["ic95"][0], a["ic95"][1],
+                     a["duree_med"], a["duree_p90"], SF.esperance_jours(a),
+                     b["reussite"], b["ic95"][0], b["ic95"][1],
+                     b["duree_med"], b["duree_p90"], SF.esperance_jours(b)))
+            if b["non_resolus"]:
+                print("%-24s   (dont %d challenges non termines avant la fin des donnees,"
+                      " comptes comme ECHECS)" % ("", b["non_resolus"]))
+        print()
+
+    print("=" * 100)
+    print("RAPPEL : avec ~16-20 challenges independants sur 11 ans, un ecart")
+    print("de moins de ~10 points de reussite ne veut RIEN dire. Ne comparer")
+    print("que ce qui sort des intervalles de confiance.")
+    print("=" * 100)
+
+
+if __name__ == "__main__":
+    main()

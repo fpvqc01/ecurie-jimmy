@@ -26,7 +26,10 @@ if not os.path.exists(chemin):
                   "c": q["close"]}).dropna().drop_duplicates("t").set_index("t").to_csv(chemin)
 dxy = pd.read_csv(chemin, index_col=0, parse_dates=True)["c"]
 dxy_e200 = dxy.ewm(span=200, adjust=False).mean()
-DOLLAR_FORT = set(dxy.index[(dxy > dxy_e200)].date)   # jours ou le dollar est fort
+DOLLAR_FORT = set(dxy.index[(dxy > dxy_e200).shift(1, fill_value=False)].date)
+# A5 (22 aout) : etat de la VEILLE. Meme correctif que FORT dans
+# tests_comite_B.py. Utilise seulement par int_or(), qui n'est pas branche
+# dans la chaine moderne — corrige quand meme pour ne pas laisser le piege.
 print("DXY : %d jours, dollar fort %d%% du temps" % (len(dxy), 100*len(DOLLAR_FORT)/len(dxy)))
 
 # ---------- donnees 10 ans ----------

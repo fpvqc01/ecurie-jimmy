@@ -25,7 +25,13 @@ ns = {"__file__": os.path.join(D, "test_l4_macro.py"), "DEBUT": "2015-08-21", "F
 exec(src, ns)
 ORIG = ns["sleeves_l4"]
 dxy = ns["dxy"]
-FORT = set(dxy.index[(dxy > dxy.ewm(span=200, adjust=False).mean())].date)
+FORT = set(dxy.index[(dxy > dxy.ewm(span=200, adjust=False).mean())
+                     .shift(1, fill_value=False)].date)
+# A5 (22 aout) : .shift(1) AJOUTE. Sans lui, la decision de bloquer l'or le
+# jour j utilisait la cloture du DXY du jour j — une cloture inconnue au
+# moment de decider. Mesure de l'ecart : CAGR -0,13 / -0,30 / +0,35 pt selon
+# la configuration, soit sous le seuil de 0,5 pt fixe d'avance. Les chiffres
+# publies avant cette date restent donc valables.
 f_or = lambda n, j: n == "Or" and j in FORT
 
 def porte_d1(x):

@@ -1,0 +1,118 @@
+CLASSEMENT DEFINITIF — 21 aout 2026
+Simulateur corrige (SIMULATEUR_FTMO.py) + donnees figees et auditees
+Empreinte du jeu de donnees : c5773cd694642d07975b0f1c4a81ffd00b29fbdf6eb2b95fa577bac8b7d786e9
+
+Correctifs par rapport a TOUS les bancs precedents :
+  - objectif valide au SOLDE FERME (regle FTMO) et non a l equite flottante
+  - aucun challenge jete du denominateur (piste garantie de 730 jours)
+  - jours de trading comptes sur les OUVERTURES de position
+  - intervalles de confiance calcules sur les challenges INDEPENDANTS
+  - donnees sans les ~7 200 barres de week-end synthetiques par marche
+
+FENETRE 10 ANS
+                           CAGR   creux | SANS R13  [IC95]     med   p90   esp | AVEC R13  [IC95]     med   p90   esp
+L6   (g2,50 sans BE)     +29.5%  -18.7% | 72.0% [45.9-88.6]   269   436   337 | 75.5% [52.5-89.6]   192   357   248
+L6++ (g2,50 + BE5%)      +29.5%  -14.6% | 83.0% [57.1-94.7]   266   461   314 | 88.8% [65.5-97.1]   218   404   242
+L8   (g1,75 + BE5%)      +28.4%  -13.9% | 79.9% [53.8-93.2]   272   496   338 | 91.5% [68.8-98.1]   217   438   235
+L9   (g2,50 + BE5%)      +29.5%  -14.6% | 83.0% [57.1-94.7]   266   461   314 | 88.8% [65.5-97.1]   218   404   242
+g2,00 + BE5%             +25.9%  -14.6% | 79.0% [51.9-92.9]   293   524   365 | 91.8% [68.2-98.3]   228   479   240
+g1,75 sans BE            +30.8%  -17.6% | 79.8% [54.6-92.9]   240   442   291 | 84.0% [60.8-94.7]   185   423   218
+g1,50 + BE5%             +25.7%  -14.7% | 83.6% [55.5-95.4]   270   592   316 | 87.6% [64.1-96.5]   212   469   249
+
+FENETRE 2021-2026
+                           CAGR   creux | SANS R13  [IC95]     med   p90   esp | AVEC R13  [IC95]     med   p90   esp
+L6   (g2,50 sans BE)     +19.1%  -19.1% | 78.3% [39.3-95.3]   311   423   362 | 79.0% [46.4-94.2]   192   337   239
+L6++ (g2,50 + BE5%)      +20.1%  -14.2% | 84.9% [45.1-97.5]   324   450   383 | 90.1% [55.6-98.5]   240   371   269
+L8   (g1,75 + BE5%)      +19.1%  -13.6% | 83.5% [43.8-97.1]   314   504   378 | 89.2% [54.7-98.3]   215   473   250
+L9   (g2,50 + BE5%)      +20.1%  -14.2% | 84.9% [45.1-97.5]   324   450   383 | 90.1% [55.6-98.5]   240   371   269
+g2,00 + BE5%             +18.4%  -15.0% | 76.3% [34.6-95.1]   334   581   454 | 90.5% [53.6-98.7]   258   571   285
+g1,75 sans BE            +20.1%  -17.4% | 78.3% [39.3-95.3]   299   471   360 | 84.0% [49.3-96.6]   191   456   224
+g1,50 + BE5%             +15.6%  -14.7% | 84.2% [36.9-98.0]   353   712   406 | 79.0% [39.8-95.5]   260   610   365
+
+CE QUI EST ROBUSTE (visible dans les 2 fenetres, hors intervalles)
+------------------------------------------------------------------
+1. R13 ameliore TOUT, partout, sur les deux axes.
+   Reussite +3 a +14 pts, duree -50 a -90 jours, esperance -70 a -130 j.
+   C est le seul mecanisme dont l effet ne change jamais de signe.
+2. Le breakeven 5 % reduit le creux de facon monotone et reproductible :
+   -18,7 % -> -14,6 % (10 ans), -19,1 % -> -14,2 % (2021-26).
+   C est un amortisseur de creux, PAS un accelerateur.
+3. « g1,75 sans BE » est la plus RAPIDE (185-191 j) et la plus rentable
+   (+30,8 % / +20,1 %), mais avec le pire creux (-17,6 / -17,4 %).
+   C est un troc explicite : vitesse contre marge de securite.
+
+CE QUI RESTE INDISCERNABLE
+--------------------------
+Le choix du gardien (1,75 vs 2,50 %) : les intervalles se recouvrent
+entierement sur les deux fenetres (L8 91,5 % [68,8-98,1] contre
+L9 88,8 % [65,5-97,1] sur 10 ans ; L9 90,1 % contre L8 89,2 % sur
+2021-26 — l ordre s inverse). Aucune des deux valeurs n est demontrable.
+L9 garde 2,50 % parce que c est la moitie exacte de la limite FTMO,
+donc un choix EXTERNE, alors que 1,75 % etait l argmax d un balayage.
+
+RESERVES QUI TIENNENT TOUJOURS
+------------------------------
+- frontiere de journee en UTC au lieu de minuit CE(S)T (biais modere)
+- regle -5 %/jour testee sur le total du jour, pas sur le minimum
+  intrajournalier -> les taux sont des BORNES SUPERIEURES
+- spread modelise en pourcentage constant : le vrai cout du BTC etait
+  5 a 50 fois plus eleve en 2018-2020
+- ~16-20 challenges independants -> tout ecart de moins de ~10 points
+  de reussite est du bruit
+
+
+================================================================================
+AJOUT DU 21 AOUT : TEST DE L6+ (TURBO-COUSSIN) ET CORRECTION DES BANCS
+================================================================================
+
+Le turbo-coussin = risque x1,33 tant que l equite de la phase n a pas
+atteint +4 %, puis x1,00. L6+ est EN SERVICE sur le MT5 original.
+
+AVERTISSEMENT DE METHODE : les lignes turbo sont une BORNE OPTIMISTE.
+Multiplier la serie de rendements apres coup ne tient pas compte du fait
+que des positions plus grosses touchent d autres stops. Le vrai L6+ est
+donc probablement MOINS bon que ce tableau. Le creux n est pas affiche
+(l ancien banc affichait celui de la base : c etait faux).
+
+AVEC R13, simulateur corrige, donnees auditees :
+
+  10 ANS                     reussite      med    esp
+  L6   (base, sans turbo)     75,5 %      192 j   248 j
+  L6+  turbo-coussin          74,3 %      174 j   220 j     -1,2 pt / -18 j
+  L6++ (BE 5 %)               88,8 %      218 j   242 j
+  L6++ 5 % + turbo            79,8 %      178 j   210 j     -9,0 pt / -40 j
+
+  2021-2026                  reussite      med    esp
+  L6   (base, sans turbo)     79,0 %      192 j   239 j
+  L6+  turbo-coussin          73,6 %      169 j   217 j     -5,4 pt / -23 j
+  L6++ (BE 5 %)               90,1 %      240 j   269 j
+  L6++ 5 % + turbo            71,8 %      182 j   254 j    -18,3 pt / -58 j
+
+LECTURE
+-------
+1. Le turbo est bien un ACCELERATEUR : -18 a -58 jours de mediane partout.
+2. Mais il se paie en reussite, et le prix monte sur la fenetre RECENTE :
+   -1,2 pt sur 10 ans mais -5,4 pt sur 2021-2026 en solo ; -9,0 pt puis
+   -18,3 pt combine au breakeven. Le turbo et le breakeven se marchent
+   dessus, exactement comme le gardien serre et le breakeven.
+3. L6+ est la config la plus RAPIDE du banc en mediane sur la fenetre
+   recente (169 j), et son esperance est bonne (217 j) parce que ses
+   echecs sont rapides - mais une esperance en JOURS ne compte pas le
+   COUT des challenges rachetes. A 73,6 % de reussite, on rachete un
+   challenge sur quatre.
+4. Rappel du Monte Carlo du 21 aout : le risque x1,33 sur un compte
+   FINANCE donne 47 a 52 % de probabilite de perdre le compte dans
+   l annee. Le turbo peut se discuter pour le CHALLENGE (on rachete),
+   jamais pour le compte finance (on ne rachete pas le capital).
+
+BOGUES CORRIGES DANS LES ANCIENS BANCS (21 aout)
+------------------------------------------------
+- banc_ecuries_L6_modes.py : les lignes turbo affichaient le creux de la
+  BASE (d0 / d5) alors que le turbo multiplie le risque par 1,33 ->
+  remplace par « n/d ».
+- Banniere OBSOLETE ajoutee en tete de banc_ecuries_L6_modes.py,
+  banc_ecuries_L6.py, classement_generations.py, verif_ftmo_l6.py et
+  banc_L8.py : leur simulateur valide l objectif au FLOTTANT, jette les
+  challenges non resolus, et compte mal les jours de trading.
+  Reference unique desormais : SIMULATEUR_FTMO.py.
+

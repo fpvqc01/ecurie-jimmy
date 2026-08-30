@@ -1,0 +1,48 @@
+OPTIMISATION POUR LES CHALLENGES FTMO (20 aout 2026)
+Scripts : test_ftmo_optimisation.py (1d) + test_ftmo_h4_confirm.py (H4).
+Base = L4 COMPLET 5 manches (FTMO offre la crypto). Objectif challenge :
+minimiser les echecs (+10 % avant -8 %) et le temps pour passer.
+Gardien -2,5 % actif partout (tient la limite quotidienne -5 % FTMO).
+Candidats ajoutes (recurrents des tests OANDA) : USD_JPY, AUD_JPY, Brent,
+JP225, tous offerts chez FTMO, Donchian 20/10 pyramide.
+
+=== MOTEUR 1d (5 ans + validation 2024-2026) ===
+Config                               | 5 ans: Ech MedJ  CAGR   | Val: Ech MedJ
+L4 complet (reference)               |   6%  120 j  +22.5%     |   3%  120 j
+L4 + 4 cand. 1,5% cap 2              |   5%   82 j  +33.3%     |   0%   98 j
+L4 + 4 cand. 1,5% cap 3              |  10%   82 j  +33.3%     |   8%   97 j
+L4 + 4 cand. 0,75% cap 3             |   6%  103 j  +34.9%     |   5%  110 j
+L4 throttle 0,5                      |   6%  146 j  +19.0%     |   0%  126 j
+L4 + frein DD 4%                     |   1%  152 j  +18.9%     |   0%  124 j
+L4 risque x0,75                      |   1%  150 j  +20.7%     |   0%  162 j
+L4 risque x1,25                      |  12%   99 j  +31.8%     |   8%   94 j
+L4 + 4 cand. 0,75% cap 3, thr 0,5    |   5%  122 j  +32.1%     |   0%  146 j
+
+=== CONFIRMATION MOTEUR H4 (2 ans) ===
+L4 complet (reference)               |   7%   91 j  +27.3%  DD -13.2%
+L4 + 4 cand. 1,5% cap 2              |   0%  118 j  +11.6%  DD -10.1%   <- CAGR s'effondre
+L4 + 4 cand. 0,75% cap 3             |   4%  142 j  +21.0%  DD -13.9%
+L4 + frein DD 4%                     |   0%  142 j  +19.4%  DD -10.0%   <- CONFIRME
+L4 risque x0,75                      |   0%  127 j  +19.4%  DD -10.0%   <- CONFIRME
+
+VERDICT
+1. L'ajout de paires (gagnant apparent du 1d : 82 j, +33 %) NE SE CONFIRME
+   PAS en H4 : 0 % d'echecs mais CAGR +11,6 % et passage PLUS LENT (118 j
+   vs 91). Incoherent entre moteurs = on n'y touche pas.
+2. Les DEUX variantes confirmees sur les 2 moteurs :
+   - FREIN DD 4 % (risque x0,5 quand le compte est a plus de 4 % sous son
+     sommet) : echecs 1 %/0 % (1d) et 0 % (H4), coute ~30-50 % de temps en
+     plus (124-152 j vs 91-120) et ~3-8 pts de CAGR.
+   - RISQUE GLOBAL x0,75 : quasi identique (echecs 0-1 %, 127-162 j).
+   Le frein DD est prefere : il ne ralentit que PENDANT les drawdowns.
+3. Risque x1,25 pour passer plus vite : NON (12 % d'echecs, 2x la ref).
+4. Rappel deja connu : mode challenge actif = -6,5 pts de CAGR mais
+   echecs divises par 2 ; une fois finance, le desactiver.
+
+STRATEGIE PROPOSEE POUR UN CHALLENGE
+Phase 1 (+10 %) : L4 complet + mode challenge + frein DD 4 %
+  -> ~0-1 % d'echec simule, mediane ~130-150 jours de bourse.
+Phase 2 (+5 %) : idem (cible moitie moindre, donc ~moitie du temps).
+Une fois finance : couper le frein et le mode challenge (garder le gardien).
+Limites : fenetres glissantes simulees, frais approximatifs pour les
+candidats, BTC spot vs CFD ; FTMO sans limite de temps en phase 1.

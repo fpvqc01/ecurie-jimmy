@@ -1,0 +1,50 @@
+ALTERNATIVES POUR AJOUTER DES PAIRES A L4.3 (20 aout 2026)
+Scripts : test_l43_alternatives.py + test_l43_robustesse.py.
+L4.3 = noyau OANDA (or 2,0 fib / petrole 1,5 donch / US100 1,5 fib),
+gardien 2,5 %, mode challenge, plafond correlation. Candidats = 20
+instruments OANDA + 12 versions SHORT forex (serie inversee), gabarit
+Donchian 20/10 pyramide 3. Toutes les methodes : selection sur 2021-2023,
+VALIDATION sur 2024-2026 (jamais vu). Moteur 1d, Yahoo.
+
+Selection un-a-un (delta CAGR vs noyau, 2021-2023) -- top :
+  AUD_JPY +14,3 | USD_JPY +9,7 | BCO_USD +9,7 | SPX500 +8,3 | NZD_USD_S +4,8
+
+=== VALIDATION 2024-2026 (l'unique colonne qui compte) ===
+                                        CAGR    MaxDD   Morts
+Noyau L4.3 seul (reference)            +19,7%   -8,4%    0%
+A.  noyau + TOP3 (cap 2)               +13,4%  -12,7%    7%
+A'. noyau + TOP5 (cap 2)               +14,3%   -9,6%    0%
+B.  noyau + TOP3, cap 3                +13,1%  -11,8%    3%
+B'. noyau + TOP5, cap 3                +13,3%  -11,1%    0%
+D.  noyau + TOP3 a 0,75 %, cap 2       +11,2%  -10,9%    7%
+D'. noyau + TOP3 a 0,75 %, cap 3       +12,2%  -11,1%    3%
+E.  noyau + 12 "robustes" (cap 2)       -3,0%  -21,3%   52%
+E'. noyau + 12 "robustes" (cap 3)      +16,9%  -18,1%   16%
+E''.noyau + robustes 0,75 % cap 3      +12,5%  -13,3%    7%
+
+(Les CAGR "pleine periode" des variantes paraissent meilleurs que le noyau
+-- normal : ils incluent la fenetre de selection, c'est biaise.)
+
+LECONS
+1. AUCUNE des 9 methodes ne bat le noyau L4.3 en validation. Ajouter des
+   paires N'A PAS augmente l'efficacite, meme un-a-un, meme avec cap 3,
+   meme a risque reduit, meme selection par robustesse.
+2. La "robustesse" naive se fait pieger aussi : USD_JPY long ET short
+   ressortaient tous les deux positifs (bruit du yen 2022). Cap 2 avec 15
+   manches = catastrophe (-3 %, 52 % morts) : la cohue tue.
+3. Candidats recurrents dans TOUTES les selections : USD_JPY, AUD_JPY,
+   BCO_USD (Brent), JP225. Leur avantage 2021-2023 (effondrement du yen,
+   crise energetique) ne s'est pas repete en 2024-2026.
+4. Le gabarit Donchian 20/10 long-only n'est pas concu pour le forex ;
+   frais approximatifs ; proxys Yahoo.
+
+CONCLUSION / PROPOSITIONS
+- Garder L4.3 tel quel sur OANDA : c'est la config la plus efficace testee
+  (+19,7 % validation, 0 % morts, -8,4 % DD).
+- Le chemin vers plus d'efficacite n'est pas d'ajouter des paires : c'est
+  (a) retrouver les manches BTC chez un courtier qui offre la crypto
+  (FTMO/FundingPips deja retenus) -- le L4 complet fait +22-27 %/an ;
+  (b) ameliorer les strategies existantes (ex. canal or H4 du
+  gold-news-bot, deja valide 2006-2026 separement).
+- Si Jimmy veut absolument diversifier sur OANDA : A' (TOP5 cap 2) est la
+  moins mauvaise (+14,3 %, 0 % morts) mais reste sous le noyau.

@@ -18,7 +18,10 @@ if not os.path.exists(chemin):
         start = k[-1][0] + 1
         if len(k) < 1000: break
         time.sleep(0.12)
-    df = pd.DataFrame(out, columns=list("tochlv") + ["ct","qv","n","tb","tq","x"])
+    # CORRIGE le 21 aout 2026 : Binance renvoie [t, open, HIGH, LOW, close, vol].
+    # L ancien "tochlv" mettait le BAS dans la colonne h et la CLOTURE dans l
+    # -> c est le bogue qui avait corrompu 81 %% des barres H1 du BTC.
+    df = pd.DataFrame(out, columns=list("tohlcv") + ["ct","qv","n","tb","tq","x"])
     df = df[["t","o","h","l","c","v"]].astype(float)
     df["t"] = pd.to_datetime(df["t"], unit="ms", utc=True).dt.tz_localize(None)
     b2 = df.drop_duplicates("t").set_index("t").sort_index()

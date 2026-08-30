@@ -1,0 +1,874 @@
+{
+ "10 ans ": [
+  {
+   "config": "L12 telle que PUBLIEE (moteur tel quel)",
+   "reussite": 100.0,
+   "ic95": [
+    80.63865817272801,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 121.2,
+   "p45": 0.0,
+   "p60": 1.6194331983805668,
+   "esp": 236.0,
+   "cagr": 25.132197119821885,
+   "dd": -10.988708261018365,
+   "trades": 283,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 247,
+   "n_independants": 16,
+   "giveback": {
+    "trades_pyr": 126,
+    "pic_total": 526.2996027178533,
+    "rendu_total": 299.67764014635827,
+    "part": 56.94050282363866
+   }
+  },
+  {
+   "config": "L12 telle que DEPLOYEE (3 magics)",
+   "reussite": 99.581589958159,
+   "ic95": [
+    79.97090601522561,
+    99.99295167070134
+   ],
+   "med": 191.5,
+   "p10": 130.7,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 193.40336134453779,
+   "cagr": 30.284974408715982,
+   "dd": -11.113107504327335,
+   "trades": 355,
+   "morts_jour": 0,
+   "morts_totale": 1,
+   "non_resolus": 0,
+   "n_departs": 239,
+   "n_independants": 16,
+   "giveback": {
+    "trades_pyr": 140,
+    "pic_total": 564.708483148292,
+    "rendu_total": 300.5495769681544,
+    "part": 53.2220758031769
+   }
+  },
+  {
+   "config": "  + ancre roulante seule (C1)",
+   "reussite": 93.15068493150685,
+   "ic95": [
+    67.73831910649139,
+    98.87754923257246
+   ],
+   "med": 200.5,
+   "p10": 131.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 223.66176470588238,
+   "cagr": 24.536985174481774,
+   "dd": -14.19184742777454,
+   "trades": 407,
+   "morts_jour": 0,
+   "morts_totale": 15,
+   "non_resolus": 0,
+   "n_departs": 219,
+   "n_independants": 13,
+   "giveback": {
+    "trades_pyr": 180,
+    "pic_total": 500.2139462632469,
+    "rendu_total": 292.47473020675,
+    "part": 58.46992719647799
+   }
+  },
+  {
+   "config": "  + plafonds repares seuls (C2/C3)",
+   "reussite": 100.0,
+   "ic95": [
+    80.63865817272801,
+    100.0
+   ],
+   "med": 240.0,
+   "p10": 141.6,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 240.0,
+   "cagr": 28.584917492439143,
+   "dd": -9.550628324254829,
+   "trades": 250,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 234,
+   "n_independants": 16,
+   "giveback": {
+    "trades_pyr": 98,
+    "pic_total": 466.45533049219273,
+    "rendu_total": 207.73183098605477,
+    "part": 44.53413165347709
+   }
+  },
+  {
+   "config": "L13 (C1 + C2 + C3)",
+   "reussite": 95.0,
+   "ic95": [
+    68.7815435286251,
+    99.39338829644305
+   ],
+   "med": 320.5,
+   "p10": 138.7,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 348.42105263157896,
+   "cagr": 22.49472791348652,
+   "dd": -11.522899985473167,
+   "trades": 274,
+   "morts_jour": 0,
+   "morts_totale": 12,
+   "non_resolus": 0,
+   "n_departs": 240,
+   "n_independants": 12,
+   "giveback": {
+    "trades_pyr": 118,
+    "pic_total": 392.28665230951566,
+    "rendu_total": 193.26838309543095,
+    "part": 49.26713207232488
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=1,8 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    74.11599827511859,
+    100.0
+   ],
+   "med": 327.5,
+   "p10": 138.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 327.5,
+   "cagr": 22.180355832777554,
+   "dd": -9.02012571740256,
+   "trades": 270,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 240,
+   "n_independants": 11,
+   "giveback": {
+    "trades_pyr": 117,
+    "pic_total": 402.54942185749803,
+    "rendu_total": 208.104999986712,
+    "part": 51.696757885390994
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,0 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    74.11599827511859,
+    100.0
+   ],
+   "med": 324.0,
+   "p10": 139.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 324.0,
+   "cagr": 20.996938404388075,
+   "dd": -9.020125717402527,
+   "trades": 271,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 236,
+   "n_independants": 11,
+   "giveback": {
+    "trades_pyr": 115,
+    "pic_total": 404.32784598173265,
+    "rendu_total": 219.9765530534921,
+    "part": 54.405491790795566
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,5 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    78.46829880728185,
+    100.0
+   ],
+   "med": 261.0,
+   "p10": 167.2,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 261.0,
+   "cagr": 23.75222455811812,
+   "dd": -12.676852521274196,
+   "trades": 263,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 227,
+   "n_independants": 14,
+   "giveback": {
+    "trades_pyr": 109,
+    "pic_total": 422.3248024283622,
+    "rendu_total": 209.56614269393805,
+    "part": 49.622030600366216
+   }
+  }
+ ],
+ "2021-26": [
+  {
+   "config": "L12 telle que PUBLIEE (moteur tel quel)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 139.4,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 236.0,
+   "cagr": 23.50593817228841,
+   "dd": -10.734233477301602,
+   "trades": 151,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 109,
+   "n_independants": 8,
+   "giveback": {
+    "trades_pyr": 64,
+    "pic_total": 256.83101437502074,
+    "rendu_total": 138.3839432925702,
+    "part": 53.88132100374141
+   }
+  },
+  {
+   "config": "L12 telle que DEPLOYEE (3 magics)",
+   "reussite": 100.0,
+   "ic95": [
+    64.56611570247934,
+    100.0
+   ],
+   "med": 196.5,
+   "p10": 119.5,
+   "p45": 0.0,
+   "p60": 1.0416666666666667,
+   "esp": 196.5,
+   "cagr": 24.33360549639534,
+   "dd": -11.113107504327392,
+   "trades": 184,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 96,
+   "n_independants": 7,
+   "giveback": {
+    "trades_pyr": 67,
+    "pic_total": 251.5579843254023,
+    "rendu_total": 141.53508844730382,
+    "part": 56.26340536431609
+   }
+  },
+  {
+   "config": "  + ancre roulante seule (C1)",
+   "reussite": 85.57692307692308,
+   "ic95": [
+    42.2760817069158,
+    97.96202347418617
+   ],
+   "med": 232.0,
+   "p10": 108.8,
+   "p45": 0.0,
+   "p60": 0.9615384615384616,
+   "esp": 287.44943820224717,
+   "cagr": 18.14066352083494,
+   "dd": -13.966402138405499,
+   "trades": 200,
+   "morts_jour": 0,
+   "morts_totale": 15,
+   "non_resolus": 0,
+   "n_departs": 104,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 84,
+    "pic_total": 224.30784853466724,
+    "rendu_total": 138.83022510989932,
+    "part": 61.892718429976306
+   }
+  },
+  {
+   "config": "  + plafonds repares seuls (C2/C3)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 215.0,
+   "p10": 128.60000000000002,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 215.0,
+   "cagr": 27.678092992941174,
+   "dd": -9.835426571644557,
+   "trades": 141,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 102,
+   "n_independants": 8,
+   "giveback": {
+    "trades_pyr": 53,
+    "pic_total": 232.5281323755234,
+    "rendu_total": 95.03411583417119,
+    "part": 40.86994328956936
+   }
+  },
+  {
+   "config": "L13 (C1 + C2 + C3)",
+   "reussite": 91.07142857142857,
+   "ic95": [
+    47.308060993547876,
+    99.14442336610261
+   ],
+   "med": 333.5,
+   "p10": 147.70000000000002,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 385.70588235294116,
+   "cagr": 19.261865935010782,
+   "dd": -11.522899985473112,
+   "trades": 152,
+   "morts_jour": 0,
+   "morts_totale": 10,
+   "non_resolus": 0,
+   "n_departs": 112,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 65,
+    "pic_total": 178.51059699211248,
+    "rendu_total": 83.1211889113173,
+    "part": 46.56372804298561
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=1,8 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    56.550850524791905,
+    100.0
+   ],
+   "med": 450.0,
+   "p10": 135.70000000000002,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 450.0,
+   "cagr": 19.155193731978315,
+   "dd": -8.732752220715378,
+   "trades": 149,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 112,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 63,
+    "pic_total": 197.9452776065169,
+    "rendu_total": 105.14280265199662,
+    "part": 53.11710586044061
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,0 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    56.550850524791905,
+    100.0
+   ],
+   "med": 346.0,
+   "p10": 134.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 346.0,
+   "cagr": 18.4902610499738,
+   "dd": -9.020125717402683,
+   "trades": 148,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 111,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 61,
+    "pic_total": 199.33033426649715,
+    "rendu_total": 109.67643954167742,
+    "part": 55.02245302766821
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,5 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    64.56611570247934,
+    100.0
+   ],
+   "med": 250.0,
+   "p10": 158.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 250.0,
+   "cagr": 20.8930770111591,
+   "dd": -12.40102934136128,
+   "trades": 147,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 105,
+   "n_independants": 7,
+   "giveback": {
+    "trades_pyr": 59,
+    "pic_total": 212.9473605674404,
+    "rendu_total": 106.14093796531121,
+    "part": 49.84374433309606
+   }
+  }
+ ],
+ "10 ans  +turbo": [
+  {
+   "config": "L12 telle que PUBLIEE (moteur tel quel)",
+   "reussite": 100.0,
+   "ic95": [
+    81.56763396284354,
+    100.0
+   ],
+   "med": 216.0,
+   "p10": 109.80000000000001,
+   "p45": 0.0,
+   "p60": 1.6194331983805668,
+   "esp": 216.0,
+   "cagr": 25.132197119821885,
+   "dd": -10.988708261018365,
+   "trades": 283,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 247,
+   "n_independants": 17,
+   "giveback": {
+    "trades_pyr": 126,
+    "pic_total": 526.2996027178533,
+    "rendu_total": 299.67764014635827,
+    "part": 56.94050282363866
+   }
+  },
+  {
+   "config": "L12 telle que DEPLOYEE (3 magics)",
+   "reussite": 100.0,
+   "ic95": [
+    81.56763396284354,
+    100.0
+   ],
+   "med": 177.0,
+   "p10": 119.8,
+   "p45": 0.0,
+   "p60": 0.41841004184100417,
+   "esp": 177.0,
+   "cagr": 30.284974408715982,
+   "dd": -11.113107504327335,
+   "trades": 355,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 239,
+   "n_independants": 17,
+   "giveback": {
+    "trades_pyr": 140,
+    "pic_total": 564.708483148292,
+    "rendu_total": 300.5495769681544,
+    "part": 53.2220758031769
+   }
+  },
+  {
+   "config": "  + ancre roulante seule (C1)",
+   "reussite": 90.8675799086758,
+   "ic95": [
+    66.06466367171069,
+    98.0715257643781
+   ],
+   "med": 188.0,
+   "p10": 102.4,
+   "p45": 0.91324200913242,
+   "p60": 2.73972602739726,
+   "esp": 217.1457286432161,
+   "cagr": 24.536985174481774,
+   "dd": -14.19184742777454,
+   "trades": 407,
+   "morts_jour": 0,
+   "morts_totale": 20,
+   "non_resolus": 0,
+   "n_departs": 219,
+   "n_independants": 14,
+   "giveback": {
+    "trades_pyr": 180,
+    "pic_total": 500.2139462632469,
+    "rendu_total": 292.47473020675,
+    "part": 58.46992719647799
+   }
+  },
+  {
+   "config": "  + plafonds repares seuls (C2/C3)",
+   "reussite": 100.0,
+   "ic95": [
+    81.56763396284354,
+    100.0
+   ],
+   "med": 202.0,
+   "p10": 126.6,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 202.0,
+   "cagr": 28.584917492439143,
+   "dd": -9.550628324254829,
+   "trades": 250,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 234,
+   "n_independants": 17,
+   "giveback": {
+    "trades_pyr": 98,
+    "pic_total": 466.45533049219273,
+    "rendu_total": 207.73183098605477,
+    "part": 44.53413165347709
+   }
+  },
+  {
+   "config": "L13 (C1 + C2 + C3)",
+   "reussite": 94.58333333333333,
+   "ic95": [
+    69.57188771044862,
+    99.25569795045455
+   ],
+   "med": 313.0,
+   "p10": 122.6,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 331.26872246696036,
+   "cagr": 22.49472791348652,
+   "dd": -11.522899985473167,
+   "trades": 274,
+   "morts_jour": 0,
+   "morts_totale": 13,
+   "non_resolus": 0,
+   "n_departs": 240,
+   "n_independants": 13,
+   "giveback": {
+    "trades_pyr": 118,
+    "pic_total": 392.28665230951566,
+    "rendu_total": 193.26838309543095,
+    "part": 49.26713207232488
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=1,8 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    75.74992425007574,
+    100.0
+   ],
+   "med": 297.0,
+   "p10": 123.9,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 297.0,
+   "cagr": 22.180355832777554,
+   "dd": -9.02012571740256,
+   "trades": 270,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 240,
+   "n_independants": 12,
+   "giveback": {
+    "trades_pyr": 117,
+    "pic_total": 402.54942185749803,
+    "rendu_total": 208.104999986712,
+    "part": 51.696757885390994
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,0 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    75.74992425007574,
+    100.0
+   ],
+   "med": 317.0,
+   "p10": 124.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 317.0,
+   "cagr": 20.996938404388075,
+   "dd": -9.020125717402527,
+   "trades": 271,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 236,
+   "n_independants": 12,
+   "giveback": {
+    "trades_pyr": 115,
+    "pic_total": 404.32784598173265,
+    "rendu_total": 219.9765530534921,
+    "part": 54.405491790795566
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,5 + C2/C3",
+   "reussite": 99.11894273127753,
+   "ic95": [
+    79.24787666102914,
+    99.96983599323669
+   ],
+   "med": 237.0,
+   "p10": 135.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 239.20000000000002,
+   "cagr": 23.75222455811812,
+   "dd": -12.676852521274196,
+   "trades": 263,
+   "morts_jour": 0,
+   "morts_totale": 2,
+   "non_resolus": 0,
+   "n_departs": 227,
+   "n_independants": 16,
+   "giveback": {
+    "trades_pyr": 109,
+    "pic_total": 422.3248024283622,
+    "rendu_total": 209.56614269393805,
+    "part": 49.622030600366216
+   }
+  }
+ ],
+ "2021-26 +turbo": [
+  {
+   "config": "L12 telle que PUBLIEE (moteur tel quel)",
+   "reussite": 100.0,
+   "ic95": [
+    70.08472464490407,
+    100.0
+   ],
+   "med": 215.0,
+   "p10": 121.4,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 215.0,
+   "cagr": 23.50593817228841,
+   "dd": -10.734233477301602,
+   "trades": 151,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 109,
+   "n_independants": 9,
+   "giveback": {
+    "trades_pyr": 64,
+    "pic_total": 256.83101437502074,
+    "rendu_total": 138.3839432925702,
+    "part": 53.88132100374141
+   }
+  },
+  {
+   "config": "L12 telle que DEPLOYEE (3 magics)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 189.0,
+   "p10": 118.0,
+   "p45": 0.0,
+   "p60": 1.0416666666666667,
+   "esp": 189.0,
+   "cagr": 24.33360549639534,
+   "dd": -11.113107504327392,
+   "trades": 184,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 96,
+   "n_independants": 8,
+   "giveback": {
+    "trades_pyr": 67,
+    "pic_total": 251.5579843254023,
+    "rendu_total": 141.53508844730382,
+    "part": 56.26340536431609
+   }
+  },
+  {
+   "config": "  + ancre roulante seule (C1)",
+   "reussite": 82.6923076923077,
+   "ic95": [
+    39.78902293378945,
+    97.18653317857448
+   ],
+   "med": 226.5,
+   "p10": 108.0,
+   "p45": 0.0,
+   "p60": 0.9615384615384616,
+   "esp": 287.6162790697674,
+   "cagr": 18.14066352083494,
+   "dd": -13.966402138405499,
+   "trades": 200,
+   "morts_jour": 0,
+   "morts_totale": 18,
+   "non_resolus": 0,
+   "n_departs": 104,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 84,
+    "pic_total": 224.30784853466724,
+    "rendu_total": 138.83022510989932,
+    "part": 61.892718429976306
+   }
+  },
+  {
+   "config": "  + plafonds repares seuls (C2/C3)",
+   "reussite": 100.0,
+   "ic95": [
+    70.08472464490407,
+    100.0
+   ],
+   "med": 197.0,
+   "p10": 125.30000000000001,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 197.0,
+   "cagr": 27.678092992941174,
+   "dd": -9.835426571644557,
+   "trades": 141,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 102,
+   "n_independants": 9,
+   "giveback": {
+    "trades_pyr": 53,
+    "pic_total": 232.5281323755234,
+    "rendu_total": 95.03411583417119,
+    "part": 40.86994328956936
+   }
+  },
+  {
+   "config": "L13 (C1 + C2 + C3)",
+   "reussite": 89.28571428571429,
+   "ic95": [
+    45.62674494836662,
+    98.80606617825558
+   ],
+   "med": 326.0,
+   "p10": 132.7,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 364.34,
+   "cagr": 19.261865935010782,
+   "dd": -11.522899985473112,
+   "trades": 152,
+   "morts_jour": 0,
+   "morts_totale": 12,
+   "non_resolus": 0,
+   "n_departs": 112,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 65,
+    "pic_total": 178.51059699211248,
+    "rendu_total": 83.1211889113173,
+    "part": 46.56372804298561
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=1,8 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    56.550850524791905,
+    100.0
+   ],
+   "med": 368.5,
+   "p10": 131.3,
+   "p45": 0.0,
+   "p60": 0.8928571428571429,
+   "esp": 368.5,
+   "cagr": 19.155193731978315,
+   "dd": -8.732752220715378,
+   "trades": 149,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 112,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 63,
+    "pic_total": 197.9452776065169,
+    "rendu_total": 105.14280265199662,
+    "part": 53.11710586044061
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,0 + C2/C3",
+   "reussite": 100.0,
+   "ic95": [
+    56.550850524791905,
+    100.0
+   ],
+   "med": 336.0,
+   "p10": 131.0,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 336.0,
+   "cagr": 18.4902610499738,
+   "dd": -9.020125717402683,
+   "trades": 148,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 111,
+   "n_independants": 5,
+   "giveback": {
+    "trades_pyr": 61,
+    "pic_total": 199.33033426649715,
+    "rendu_total": 109.67643954167742,
+    "part": 55.02245302766821
+   }
+  },
+  {
+   "config": "VARIANTE pile pleine K=2,5 + C2/C3",
+   "reussite": 98.0952380952381,
+   "ic95": [
+    65.05492476032282,
+    99.92985850577381
+   ],
+   "med": 213.0,
+   "p10": 140.6,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 217.96116504854368,
+   "cagr": 20.8930770111591,
+   "dd": -12.40102934136128,
+   "trades": 147,
+   "morts_jour": 0,
+   "morts_totale": 2,
+   "non_resolus": 0,
+   "n_departs": 105,
+   "n_independants": 8,
+   "giveback": {
+    "trades_pyr": 59,
+    "pic_total": 212.9473605674404,
+    "rendu_total": 106.14093796531121,
+    "part": 49.84374433309606
+   }
+  }
+ ]
+}

@@ -1,0 +1,264 @@
+MANIFESTE DU JEU DE DONNEES DE REFERENCE
+==============================================================================
+
+Genere par backtests/FIGER_donnees.py
+Toute publication de chiffres doit citer l'empreinte globale ci-dessous.
+
+btc_4h.csv
+  sha256   : 364e11bbe349d2ccc86ec39b4486b887a6234344acfa361a5acc176661e38ed7
+  lignes   : 19727
+  periode  : 2017-08-17 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 1  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            n/a (cote 7 j/7)
+  8. trous > 20x l'ecart median    0
+
+cl_4h.csv
+  sha256   : c04f17be7df9748523009c9dc873d761ab47c5dc114be3b85df43d1fb10cafb7
+  lignes   : 3075
+  periode  : 2024-08-21 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0 (WTI avril 2020, reel)
+  6. barres plates                 2  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            97  (informatif)
+  8. trous > 20x l'ecart median    0
+
+d10_btc.csv
+  sha256   : 63924312d7968b1b7750a4000e2fc52ec7a1273288930bb0fed6c057c20e0c24
+  lignes   : 4019
+  periode  : 2015-08-20 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 0
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            n/a (cote 7 j/7)
+  8. trous > 20x l'ecart median    0
+
+d10_cl.csv
+  sha256   : 06d37342ae9a04ae21902ac793773c3c88972160ccd1cb5c6d9ac9ccf413743e
+  lignes   : 2766
+  periode  : 2015-08-20 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           2 (WTI avril 2020, reel)
+  6. barres plates                 0
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            0
+  8. trous > 20x l'ecart median    0
+
+d10_dxy.csv
+  sha256   : 23183731b87a8afe7eb8c01c0aa5c34c79ac04495f3076efa49760c383073884
+  lignes   : 2764
+  periode  : 2015-08-20 -> 2026-08-20
+  1-3, 6. controles OHLC           n/a (pas de colonnes OHLC)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            0
+  8. trous > 20x l'ecart median    0
+
+d10_gc.csv
+  sha256   : 21db190b9908f7381b318eadf0f1a3a5d5a69c3add647ceac717c575543eeff5
+  lignes   : 2765
+  periode  : 2015-08-20 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 145  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            0
+  8. trous > 20x l'ecart median    0
+
+d10_nq.csv
+  sha256   : 2145d0cd05009093c42b6f47803f845734a788620710f358ac271f11e420910b
+  lignes   : 2767
+  periode  : 2015-08-20 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 0
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            0
+  8. trous > 20x l'ecart median    0
+
+d10h1_btc.csv
+  sha256   : 0ad4691288bd84b1e71d1715b0c8944cf152bbcaea677da456fd836b7d1ebdd6
+  lignes   : 96778
+  periode  : 2015-08-01 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 4  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            n/a (cote 7 j/7)
+  8. trous > 20x l'ecart median    1  (informatif)
+
+d10h1v_btc.csv
+  sha256   : b64164ab2e51fe712ca513f436525cd5a5764d0ef049f296adaa2a66c7f00dee
+  lignes   : 96779
+  periode  : 2015-08-01 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 4  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            n/a (cote 7 j/7)
+  8. trous > 20x l'ecart median    1  (informatif)
+
+d10h4_btc.csv
+  sha256   : f0d6f0031f604a7cacb43638e99b1d7649331f0294eae6006a69cfe39d4add4a
+  lignes   : 24210
+  periode  : 2015-08-01 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 1  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            n/a (cote 7 j/7)
+  8. trous > 20x l'ecart median    0
+
+d10h4_cl.csv
+  sha256   : 1da53935eacc1ed74180883f4a757f1bc50725244f73242bd76495aeb024fd91
+  lignes   : 17768
+  periode  : 2015-02-02 -> 2026-07-31
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0 (WTI avril 2020, reel)
+  6. barres plates                 0
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            0
+  8. trous > 20x l'ecart median    0
+
+d10h4_cl_brut.csv
+  sha256   : 147f998126f2dd56cfdcd020b52c07646a9e2f8656d52e9dcec1839207a96b7a
+  lignes   : 25194
+  periode  : 2015-02-01 -> 2026-07-31
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0 (WTI avril 2020, reel)
+  6. barres plates                 6839  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            7194  (informatif)
+  8. trous > 20x l'ecart median    0
+
+d10h4_gc.csv
+  sha256   : f5028cdeb894577d1783977a24e85ed1609f94a7489bc7d37f1a37126023f234
+  lignes   : 17923
+  periode  : 2015-01-01 -> 2026-07-31
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 0
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            0
+  8. trous > 20x l'ecart median    0
+
+d10h4_gc_brut.csv
+  sha256   : eee5f7bf94a85862cf7f318806cc5dd1741a293e39da64768223cd936f13d5ad
+  lignes   : 25380
+  periode  : 2015-01-01 -> 2026-07-31
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 6861  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            7248  (informatif)
+  8. trous > 20x l'ecart median    0
+
+d10h4_nq.csv
+  sha256   : 79eefb413add4c88b25b3873f9c7cfb9e15b60ece0ab25e79a9de3a2c543f984
+  lignes   : 17017
+  periode  : 2015-01-02 -> 2026-07-31
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 0
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            0
+  8. trous > 20x l'ecart median    3  (informatif)
+
+d10h4_nq_brut.csv
+  sha256   : 6732c250e6c5d32ec309bddc0a58c71892b51291ed2537910ab3bd76dcb6c28b
+  lignes   : 25380
+  periode  : 2015-01-01 -> 2026-07-31
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 7920  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            7248  (informatif)
+  8. trous > 20x l'ecart median    0
+
+fng.csv
+  sha256   : a8b0a29870fd3caf7518f07881041a303a17da813a647c84c55ee4eecfe15608
+  lignes   : 3119
+  periode  : 2018-02-01 -> 2026-08-20
+  1-3, 6. controles OHLC           n/a (pas de colonnes OHLC)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            n/a (cote 7 j/7)
+  8. trous > 20x l'ecart median    0
+
+funding_btc.csv
+  sha256   : d5f319777e41bb053a6133c338e5b94c201167b7ad4248770fca3090f33daccd
+  lignes   : 7610
+  periode  : 2019-09-10 -> 2026-08-20
+  1-3, 6. controles OHLC           n/a (pas de colonnes OHLC)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            n/a (cote 7 j/7)
+  8. trous > 20x l'ecart median    0
+
+gc_4h.csv
+  sha256   : 66a5daa68d51ebe566073a79a96c4845418cfb5fb7afe5f2b8a665eed9550a17
+  lignes   : 3100
+  periode  : 2024-08-21 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 0
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            98  (informatif)
+  8. trous > 20x l'ecart median    0
+
+nq_4h.csv
+  sha256   : ab9dec2ffadef3c68ca0238c6117f5dcdd78321d9f934ac265589ddca0757a4b
+  lignes   : 3092
+  periode  : 2024-08-21 -> 2026-08-20
+  1. haut < bas                    0
+  2. o/c hors [bas, haut]          0
+  3. prix nul ou negatif           0
+  6. barres plates                 1  (informatif)
+  4. horodatages en double         0
+  5. horodatages non tries         0
+  7. barres de week-end            97  (informatif)
+  8. trous > 20x l'ecart median    0
+
+==============================================================================
+FICHIERS            : 20
+ANOMALIES BLOQUANTES: 0
+EMPREINTE GLOBALE   : c5773cd694642d07975b0f1c4a81ffd00b29fbdf6eb2b95fa577bac8b7d786e9
+==============================================================================
+
+JEU DE DONNEES SAIN - utilisable comme reference.

@@ -1,0 +1,72 @@
+Calcul : R1 reference (telle que compilee)
+   . serie calculee en    5 s  (CAGR +20.0%, creux -14.2%)
+Calcul : R2 = R1 + A4 (un robot par symbole)
+   . serie calculee en    5 s  (CAGR +18.4%, creux -13.6%)
+Calcul : R1 + allocation deconcentree (L11)
+   . serie calculee en    5 s  (CAGR +20.6%, creux -13.4%)
+Calcul : R2 deconcentree (alloc L11 + A4)
+   . serie calculee en    5 s  (CAGR +19.6%, creux -12.1%)
+Calcul : R1 + regle siege/risque 2,5 %
+   . serie calculee en    5 s  (CAGR +22.5%, creux -14.2%)
+Calcul : R1 risque x1,15
+   . serie calculee en    5 s  (CAGR +21.7%, creux -17.1%)
+Calcul : R1 risque x1,33
+   . serie calculee en    4 s  (CAGR +23.4%, creux -18.2%)
+Calcul : R1 risque x1,33 + regle siege 2,5 %
+   . serie calculee en    4 s  (CAGR +16.8%, creux -14.8%)
+Calcul : R2 deconcentree x1,33
+   . serie calculee en    5 s  (CAGR +17.7%, creux -15.4%)
+Calcul : R2 deconcentree x1,33 + siege 3,0 %
+   . serie calculee en    5 s  (CAGR +13.4%, creux -15.5%)
+EMPREINTE GLOBALE   : c5773cd694642d07975b0f1c4a81ffd00b29fbdf6eb2b95fa577bac8b7d786e9
+Fenetre 2021-01-01 -> 2026-08-20 | simulateur v2 | departs a plat | R13 actif
+
+======================================================================================================================
+FTMO 2-Step (10 % + 5 %) — le produit Swing achetable
+======================================================================================================================
+configuration                               reuss   med   p10  <=45j  <=60j    esp |   CAGR   creux
+----------------------------------------------------------------------------------------------------------------------
+R1 reference (telle que compilee)           89.6%  218j  131j   0.0%   0.0%   246j | +20.0%  -14.2%
+R2 = R1 + A4 (un robot par symbole)         89.3%  222j  130j   0.0%   0.0%   250j | +18.4%  -13.6%
+R1 + allocation deconcentree (L11)          95.4%  274j  124j   0.0%   0.0%   288j | +20.6%  -13.4%
+R2 deconcentree (alloc L11 + A4)           100.0%  288j  127j   0.0%   0.0%   288j | +19.6%  -12.1%
+R1 + regle siege/risque 2,5 %               88.4%  211j   75j   5.0%   6.6%   242j | +22.5%  -14.2%
+R1 risque x1,15                             83.0%  186j  125j   0.0%   1.8%   224j | +21.7%  -17.1%
+R1 risque x1,33                             77.5%  171j  105j   0.0%   3.3%   227j | +23.4%  -18.2%
+R1 risque x1,33 + regle siege 2,5 %         89.9%  314j  160j   0.0%   0.0%   340j | +16.8%  -14.8%
+R2 deconcentree x1,33                       89.0%  234j  125j   0.0%   0.0%   263j | +17.7%  -15.4%
+R2 deconcentree x1,33 + siege 3,0 %         89.7%  314j  142j   0.0%   0.0%   341j | +13.4%  -15.5%
+
+======================================================================================================================
+FTMO 2-Step SANS la regle des 4 jours (sensibilite)
+======================================================================================================================
+configuration                               reuss   med   p10  <=45j  <=60j    esp |   CAGR   creux
+----------------------------------------------------------------------------------------------------------------------
+R1 reference (telle que compilee)           89.6%  191j   64j   5.6%   8.0%   218j | +20.0%  -14.2%
+R2 = R1 + A4 (un robot par symbole)         89.3%  193j   63j   5.8%   8.3%   222j | +18.4%  -13.6%
+R1 + allocation deconcentree (L11)          95.4%  198j   50j   9.2%  11.9%   211j | +20.6%  -13.4%
+R2 deconcentree (alloc L11 + A4)           100.0%  226j   57j   8.7%  11.3%   226j | +19.6%  -12.1%
+R1 + regle siege/risque 2,5 %               88.4%  190j   71j   6.6%   7.4%   221j | +22.5%  -14.2%
+R1 risque x1,15                             83.0%  157j   62j   6.2%   8.0%   195j | +21.7%  -17.1%
+R1 risque x1,33                             77.5%  126j   49j   7.5%   9.2%   182j | +23.4%  -18.2%
+R1 risque x1,33 + regle siege 2,5 %         89.9%  296j   92j   3.9%   3.9%   322j | +16.8%  -14.8%
+R2 deconcentree x1,33                       89.0%  207j   65j   6.8%   8.5%   236j | +17.7%  -15.4%
+R2 deconcentree x1,33 + siege 3,0 %         89.7%  242j   63j   7.1%   8.7%   269j | +13.4%  -15.5%
+
+======================================================================================================================
+PRODUIT 1 PHASE (+10 %, mort -12 %) — autre firme
+======================================================================================================================
+configuration                               reuss   med   p10  <=45j  <=60j    esp |   CAGR   creux
+----------------------------------------------------------------------------------------------------------------------
+R1 reference (telle que compilee)          100.0%  130j   36j  12.8%  15.2%   130j | +20.0%  -14.2%
+R2 = R1 + A4 (un robot par symbole)        100.0%  157j   47j   9.9%  12.4%   157j | +18.4%  -13.6%
+R1 + allocation deconcentree (L11)         100.0%  147j   27j  14.7%  17.4%   147j | +20.6%  -13.4%
+R2 deconcentree (alloc L11 + A4)           100.0%  165j   44j  10.4%  13.0%   165j | +19.6%  -12.1%
+R1 + regle siege/risque 2,5 %              100.0%  158j   47j   9.9%  12.4%   158j | +22.5%  -14.2%
+R1 risque x1,15                             88.4%  101j   36j  11.6%  14.3%   132j | +21.7%  -17.1%
+R1 risque x1,33                             84.2%  101j   28j  15.0%  16.7%   143j | +23.4%  -18.2%
+R1 risque x1,33 + regle siege 2,5 %        100.0%  175j   70j   8.5%   8.5%   175j | +16.8%  -14.8%
+R2 deconcentree x1,33                      100.0%  148j   64j   7.6%   9.3%   148j | +17.7%  -15.4%
+R2 deconcentree x1,33 + siege 3,0 %        100.0%  156j   62j   7.9%   9.5%   156j | +13.4%  -15.5%
+
+resultats_banc_R2.json ecrit

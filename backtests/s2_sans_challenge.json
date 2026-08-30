@@ -1,0 +1,158 @@
+{
+ "10ans|S2 AVEC mode challenge|sans turbo": {
+  "cagr": 26.4,
+  "creux": -11.2,
+  "reussite": 100.0,
+  "ic": [
+   77.2,
+   100.0
+  ],
+  "med": 238,
+  "esp": 238,
+  "morts": 0,
+  "departs": 228
+ },
+ "10ans|S2 AVEC mode challenge|turbo 1,33/6%": {
+  "cagr": 26.4,
+  "creux": -11.2,
+  "reussite": 92.5,
+  "ic": [
+   71.7,
+   98.4
+  ],
+  "med": 156,
+  "esp": 175,
+  "morts": 17,
+  "departs": 228
+ },
+ "10ans|S2 SANS mode challenge|sans turbo": {
+  "cagr": 31.5,
+  "creux": -15.4,
+  "reussite": 93.4,
+  "ic": [
+   70.2,
+   98.8
+  ],
+  "med": 192,
+  "esp": 212,
+  "morts": 18,
+  "departs": 272
+ },
+ "10ans|S2 SANS mode challenge|turbo 1,33/6%": {
+  "cagr": 31.5,
+  "creux": -15.4,
+  "reussite": 87.1,
+  "ic": [
+   66.4,
+   95.9
+  ],
+  "med": 150,
+  "esp": 184,
+  "morts": 35,
+  "departs": 272
+ },
+ "2021-26|S2 AVEC mode challenge|sans turbo": {
+  "cagr": 18.2,
+  "creux": -11.2,
+  "reussite": 100.0,
+  "ic": [
+   56.6,
+   100.0
+  ],
+  "med": 365,
+  "esp": 365,
+  "morts": 0,
+  "departs": 109
+ },
+ "2021-26|S2 AVEC mode challenge|turbo 1,33/6%": {
+  "cagr": 18.2,
+  "creux": -11.2,
+  "reussite": 90.8,
+  "ic": [
+   53.9,
+   98.8
+  ],
+  "med": 182,
+  "esp": 205,
+  "morts": 10,
+  "departs": 109
+ },
+ "2021-26|S2 SANS mode challenge|sans turbo": {
+  "cagr": 20.6,
+  "creux": -15.4,
+  "reussite": 86.2,
+  "ic": [
+   42.8,
+   98.1
+  ],
+  "med": 270,
+  "esp": 324,
+  "morts": 18,
+  "departs": 130
+ },
+ "2021-26|S2 SANS mode challenge|turbo 1,33/6%": {
+  "cagr": 20.6,
+  "creux": -15.4,
+  "reussite": 76.2,
+  "ic": [
+   42.0,
+   93.4
+  ],
+  "med": 174,
+  "esp": 246,
+  "morts": 31,
+  "departs": 130
+ },
+ "3ans|S2 AVEC mode challenge|sans turbo": {
+  "cagr": 16.2,
+  "creux": -8.1,
+  "reussite": 100.0,
+  "ic": [
+   34.2,
+   100.0
+  ],
+  "med": 444,
+  "esp": 444,
+  "morts": 0,
+  "departs": 64
+ },
+ "3ans|S2 AVEC mode challenge|turbo 1,33/6%": {
+  "cagr": 16.2,
+  "creux": -8.1,
+  "reussite": 100.0,
+  "ic": [
+   43.8,
+   100.0
+  ],
+  "med": 406,
+  "esp": 406,
+  "morts": 0,
+  "departs": 64
+ },
+ "3ans|S2 SANS mode challenge|sans turbo": {
+  "cagr": 20.3,
+  "creux": -10.1,
+  "reussite": 98.5,
+  "ic": [
+   33.2,
+   100.0
+  ],
+  "med": 446,
+  "esp": 453,
+  "morts": 1,
+  "departs": 67
+ },
+ "3ans|S2 SANS mode challenge|turbo 1,33/6%": {
+  "cagr": 20.3,
+  "creux": -10.1,
+  "reussite": 86.6,
+  "ic": [
+   33.3,
+   98.8
+  ],
+  "med": 386,
+  "esp": 440,
+  "morts": 9,
+  "departs": 67
+ }
+}

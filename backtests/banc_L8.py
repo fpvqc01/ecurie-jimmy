@@ -1,4 +1,23 @@
 # -*- coding: utf-8 -*-
+# ############################################################### #
+# !! FICHIER OBSOLETE - CORRIGE LE 21 AOUT 2026                    #
+#                                                                 #
+# Son simulateur FTMO contient 3 defauts demontres par le comite : #
+#   1. l objectif de phase est valide sur l EQUITE FLOTTANTE alors #
+#      que FTMO exige le SOLDE FERME (biais tres optimiste :       #
+#      quand l equite touche +10 %%, le solde n est qu a +0,1 a    #
+#      +2,3 %%) ;                                                  #
+#   2. les challenges non resolus sont JETES du denominateur       #
+#      (`if v == -1: continue`) - ce sont les LENTS, et le tri est #
+#      ASYMETRIQUE entre variantes (jusqu a 23 %% des departs) ;    #
+#   3. les jours de trading comptent les jours ou le P&L bouge au  #
+#      lieu des jours ou une position est OUVERTE.                 #
+#                                                                 #
+# NE PLUS UTILISER POUR PRODUIRE DES CHIFFRES.                     #
+# Reference : backtests/SIMULATEUR_FTMO.py                         #
+# Classement a jour : backtests/CLASSEMENT_DEFINITIF.py            #
+# ############################################################### #
+
 """BANC L8 — sur DONNEES REPAREES (21 aout 2026).
 Teste les correctifs recommandes par le groupe de verification :
   - gardien quotidien resserre (-2,5 % -> -2,0 / -1,75 / -1,5 / -1,25)
@@ -86,16 +105,21 @@ def mesure(ns0, be, debut, fin):
 
 FEN = (("10 ANS ", "2015-08-21", "2026-12-31"), ("2021-26", "2021-01-01", "2026-08-20"))
 
-print("=== BANC L8 : GARDIEN QUOTIDIEN (donnees REPAREES) ===")
-print("%-34s | %-30s | %s" % ("", "10 ANS", "2021-2026"))
-print("%-34s | %8s %8s %6s %7s | %8s %8s %6s %7s"
-      % ("configuration", "CAGR", "reussite", "duree", "DD", "CAGR", "reussite", "duree", "DD"))
-print("-" * 118)
-for garde in (0.025, 0.020, 0.0175, 0.015, 0.0125):
-    ns0 = charger(garde)
-    for be, nom_be in ((None, ""), (0.05, " + breakeven 5 %")):
-        ligne = "%-34s |" % ("gardien -%.2f %%%s" % (garde * 100, nom_be))
-        for _, d, f in FEN:
-            c, o, m, dd = mesure(ns0, be, d, f)
-            ligne += " %+7.1f %% %6.0f %% %4.0f j %+6.1f %% |" % (c, o, m, dd)
-        print(ligne)
+# Correctif du 30 aout 2026 : le banc complet (20 simulations 10 ans) tournait
+# AU NIVEAU MODULE et se declenchait a chaque import (CLASSEMENT_DEFINITIF,
+# serie_flottant) — ~2 min de calcul obsolete et une sortie parasite a chaque
+# lancement. Les importeurs n'utilisent que charger/ALLOC/PYR/breakeven.
+if __name__ == "__main__":
+    print("=== BANC L8 : GARDIEN QUOTIDIEN (donnees REPAREES) ===")
+    print("%-34s | %-30s | %s" % ("", "10 ANS", "2021-2026"))
+    print("%-34s | %8s %8s %6s %7s | %8s %8s %6s %7s"
+          % ("configuration", "CAGR", "reussite", "duree", "DD", "CAGR", "reussite", "duree", "DD"))
+    print("-" * 118)
+    for garde in (0.025, 0.020, 0.0175, 0.015, 0.0125):
+        ns0 = charger(garde)
+        for be, nom_be in ((None, ""), (0.05, " + breakeven 5 %")):
+            ligne = "%-34s |" % ("gardien -%.2f %%%s" % (garde * 100, nom_be))
+            for _, d, f in FEN:
+                c, o, m, dd = mesure(ns0, be, d, f)
+                ligne += " %+7.1f %% %6.0f %% %4.0f j %+6.1f %% |" % (c, o, m, dd)
+            print(ligne)

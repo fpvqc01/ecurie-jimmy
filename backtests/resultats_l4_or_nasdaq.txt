@@ -1,0 +1,34 @@
+L4 REDUIT : OR + NASDAQ (US100), ET SANS CRYPTO (20 aout 2026)
+Scripts : test_l4_or_nasdaq.py, test_l4_sans_crypto.py (builders de combo_l4.py).
+Contexte : OANDA Canada n'offre pas de CFD crypto ; or, US100 et petrole y sont.
+
+=== L4 OR + NASDAQ SEULEMENT ===
+Variante                        | 1d 5 ans               | H4 2 ans
+                                | CAGR   MaxDD   Morts  | CAGR   MaxDD   Morts
+------------------------------------------------------------------------------
+AVEC protections (= L4)         |  +5.9%  -11.0%   15%  |  +8.5%   -9.0%    6%
+SANS protections                |  +5.9%  -13.0%   17%  |  +7.8%  -10.4%   11%
+AVEC prot., SANS plafond corr   |  +4.1%  -12.1%   17%  |  +4.1%  -12.4%   26%
+Reference L4 COMPLET (5 manches)|  +22.4% -11.9%    6%  |  +27.3% -13.2%    7%
+
+Par annee (1d, avec prot.) : 2021 -1,2 / 2022 -2,6 / 2023 -2,3 / 2024 +11,8
+/ 2025 +22,5 / 2026 +3,7 %. Trois annees de suite dans le rouge (2021-2023).
+5 000 $ -> 6 673 $ en 5 ans (L4 complet : ~17 800 $).
+Sans protections : pire jour -2,4 %, zero jour sous -2,5 % (pas de
+pyramidage sur ces 2 manches, donc les protections ne changent presque rien).
+Sans plafond de correlation : PIRE (+4,1 %) -- or et nasdaq ouverts ensemble
+= double exposition au meme facteur, ca n'aide pas.
+
+=== L4 SANS CRYPTO : OR + PETROLE + NASDAQ (config L4 complete) ===
+1d 5 ans : CAGR +11,0 % | MaxDD -11,9 % | Morts 11 % | moities +1,7/+33,2 %
+H4 2 ans : CAGR +23,6 % | MaxDD -10,9 % | Morts 0 %
+Par annee (1d) : 2021 -1,2 / 2022 +9,8 / 2023 -2,7 / 2024 +14,4 / 2025 +23,7
+/ 2026 +13,0 %.
+
+LECTURE
+- Or + US100 seuls, ca ne vaut pas la peine : +6 %/an, 15 % d'echecs, et
+  3 annees perdantes de suite. Les 2 manches sont des replis fib correles ;
+  le gros du rendement de L4 vient des cassures pyramidees (petrole, BTC).
+- Ajouter le PETROLE (dispo chez OANDA) double le rendement : +11 %/an en
+  1d, +23,6 % en H4 avec 0 % d'echecs -- la moitie recente (+33 %) porte.
+- Le plafond de correlation garde sa raison d'etre meme a 2 marches.

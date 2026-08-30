@@ -1,0 +1,40 @@
+UNIVERS OANDA : AJOUT DE ~20 INSTRUMENTS PUIS ELIMINATION (20 aout 2026)
+Scripts : test_oanda_univers.py + test_oanda_validation.py.
+Chassis L4 (gardien 2,5 %, mode challenge 0,75, max 2 positions, plafond
+correlation metal/indice). Noyau : or 2,0 / petrole 1,5 / US100 1,5.
+Candidats : 12 paires forex + argent + cuivre + Brent + gaz nat + SPX500
++ US30 + JP225 + DE30, en cassure Donchian 20/10 pyramidee 3 a 1,5 %,
+LONG seulement. Moteur 1d 5 ans, Yahoo, frais/swaps approximatifs.
+
+=== RONDES D'ELIMINATION (pleine periode 2021-2026) ===
+  Ronde 1 (23 manches) : CAGR  +8.5% | MaxDD -15.0% | Morts 37%
+  Ronde 2 (12 manches) : CAGR +15.8% | MaxDD -15.3% | Morts 17%
+  Ronde 3 ( 8 manches) : CAGR +20.2% | MaxDD -14.0% | Morts 10%
+  Finales : Or, Petrole, EUR_USD, USD_JPY, AUD_JPY, BCO_USD, NATGAS, JP225
+  (reference noyau seul or+pet+nas : +11,0 %/an, 11 % morts)
+  Ronde 1 : ajouter TOUT est destructeur (crowding du cap 2 positions,
+  37 % d'echecs). Nasdaq elimine des la ronde 1 (contribution negative
+  dans la cohue).
+
+=== VALIDATION HORS ECHANTILLON (selection 2021-2023, test 2024-2026) ===
+  Selection 2021-2023 "honnete"   ( 8) : CAGR +15.2% | MaxDD -11.8% | 10%
+  NOYAU or+pet+nas                ( 3) : CAGR +19.7% | MaxDD  -8.4% |  0%
+  Selection pleine periode biaisee( 8) : CAGR +13.8% | MaxDD  -7.0% |  0%
+  Les 23 manches                  (23) : CAGR  +1.9% | MaxDD -14.9% | 45%
+  La selection 2021-2023 avait ELIMINE L'OR (negatif sur cette fenetre) --
+  qui fut ensuite le meilleur marche 2024-2026. Les gagnants tournent.
+
+LECON (la plus importante)
+- "Eliminer les paires les moins profitables" = courir apres le passe.
+  Les deux selections (honnete ET biaisee) font MOINS bien que le simple
+  noyau or+petrole+US100 sur la periode de validation (+15,2 et +13,8
+  contre +19,7 %). Le +20,2 % de la ronde 3 est un artefact de selection.
+- Tout ajouter est pire que tout : +1,9 %/an et 45 % d'echecs.
+- Seuls candidats presents dans LES DEUX selections : USD_JPY, AUD_JPY,
+  BCO_USD (Brent), JP225, EUR_USD. S'il fallait creuser, ce serait eux --
+  avec un vrai walk-forward et une validation H4 AVANT d'y croire.
+- Limites : Donchian long seulement (arbitraire sur le forex), frais
+  approximatifs, proxys Yahoo (futures/indices, pas les CFD OANDA).
+
+CONCLUSION : garder le noyau L4 sans crypto (or+petrole+US100). Ne pas
+elargir a l'univers OANDA sur la base de ces tests.

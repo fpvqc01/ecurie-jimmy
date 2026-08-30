@@ -1,0 +1,43 @@
+COMPTE PERSO TYPE OANDA -- AUCUNE REGLE FTMO (20 aout 2026)
+Script : test_compte_perso.py (moteur 1d, 5 ans, Yahoo 2021-2026).
+"Sans protections" = gardien + mode challenge coupes.
+"Avec le gardien" = gardien du robot actif, mode challenge coupe
+(inutile hors challenge). Seul risque = le capital du compte.
+
+=== SANS PROTECTIONS : RENDEMENT PAR ANNEE ===
+  Annee  | I2+      | I2++     | L3       | L3+      | L4
+  --------------------------------------------------------------
+  2021   |    -1.9% |    -0.7% |    -0.7% |    -0.0% |    +0.1%
+  2022   |    +3.4% |    -2.3% |    +4.6% |    -4.4% |    -4.2%
+  2023   |   +15.0% |   +27.9% |   +38.5% |   +71.5% |   +70.2%
+  2024   |   +33.9% |   +37.0% |   +50.2% |   +43.1% |   +47.2%
+  2025   |   +34.4% |   +38.8% |   +38.6% |   +22.6% |   +28.5%
+  2026   |   +10.0% |   +25.2% |   +20.0% |   +30.3% |   +32.5%
+  --------------------------------------------------------------
+  CAGR   |   +18.2% |   +24.2% |   +29.2% |   +30.2% |   +32.5%
+  MaxDD  |   -14.5% |   -18.0% |   -18.8% |   -29.0% |   -29.5%
+  (2021 = 4 mois, 2026 = 8 mois)
+
+=== EXEMPLE : 5 000 $ DE DEPART ===
+L3+ sans protections : fin 2022  4780 $ | 2023  8197 $ | 2024 11728 $ | 2025 14378 $ | 2026 18731 $
+    pire creux -29,0 % (5 000 $ -> 3 549 $)
+L3+ avec le gardien  : fin 2022  5371 $ | 2023  8128 $ | 2024 12136 $ | 2025 14192 $ | 2026 15706 $
+    pire creux -13,2 % (5 000 $ -> 4 339 $)
+L4  sans protections : fin 2022  4794 $ | 2023  8158 $ | 2024 12005 $ | 2025 15423 $ | 2026 20440 $
+    pire creux -29,5 % (5 000 $ -> 3 527 $)
+L4  avec le gardien  : fin 2022  5395 $ | 2023  8117 $ | 2024 12327 $ | 2025 15941 $ | 2026 17834 $
+    pire creux -14,2 % (5 000 $ -> 4 289 $)
+
+LECTURE
+- Enlever le risque d'echec FTMO ne change pas le rendement : ce sont les
+  memes courbes. Ce qui change : un creux de -29 % ne "tue" plus le compte,
+  il faut juste le vivre. En dollars : voir 5 000 $ fondre a ~3 500 $.
+- Garder le gardien meme en perso coute peu (L4 : 17 834 $ vs 20 440 $ au
+  bout de 5 ans) et coupe le creux de moitie (-14 % vs -30 %). Les annees
+  2021-2022 sont a peu pres nulles dans les deux cas : il faut etre pret
+  a 18 mois sans profit.
+- ATTENTION OANDA : pas de CFD crypto chez OANDA Canada -- les 2 manches
+  BTC (cassure + EMA) ne peuvent pas y tourner telles quelles. Ces chiffres
+  supposent les 5 manches. A valider avant de transposer.
+- Backtest : frais/swap du moteur, pas les spreads reels OANDA ; 2023-2025
+  furent des annees exceptionnelles (or, BTC). Le passe ne garantit rien.

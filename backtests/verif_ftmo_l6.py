@@ -1,4 +1,23 @@
 # -*- coding: utf-8 -*-
+# ############################################################### #
+# !! FICHIER OBSOLETE - CORRIGE LE 21 AOUT 2026                    #
+#                                                                 #
+# Son simulateur FTMO contient 3 defauts demontres par le comite : #
+#   1. l objectif de phase est valide sur l EQUITE FLOTTANTE alors #
+#      que FTMO exige le SOLDE FERME (biais tres optimiste :       #
+#      quand l equite touche +10 %%, le solde n est qu a +0,1 a    #
+#      +2,3 %%) ;                                                  #
+#   2. les challenges non resolus sont JETES du denominateur       #
+#      (`if v == -1: continue`) - ce sont les LENTS, et le tri est #
+#      ASYMETRIQUE entre variantes (jusqu a 23 %% des departs) ;    #
+#   3. les jours de trading comptent les jours ou le P&L bouge au  #
+#      lieu des jours ou une position est OUVERTE.                 #
+#                                                                 #
+# NE PLUS UTILISER POUR PRODUIRE DES CHIFFRES.                     #
+# Reference : backtests/SIMULATEUR_FTMO.py                         #
+# Classement a jour : backtests/CLASSEMENT_DEFINITIF.py            #
+# ############################################################### #
+
 """SIMULATEUR FTMO EXACT sur L6 (allocation a x0,75) vs L5 :
 phase 1 : +10 % ; phase 2 : +5 % ; regles communes : -5 %/jour sur
 l'equite de debut de jour, -10 % sous le capital initial de la phase,

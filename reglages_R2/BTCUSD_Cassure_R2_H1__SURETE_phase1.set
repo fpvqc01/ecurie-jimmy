@@ -1,0 +1,18 @@
+; ecurie R2 - SURETE - phase1 - compte 100000 $
+; genere le 22 aout 2026 - a charger via Proprietes > Charger
+; NE CONTIENT QUE LES REGLAGES A CHANGER : tout le reste
+; garde la valeur compilee (= la configuration mesuree).
+
+RisqueParTradePct=1.15
+FacteurRisqueGlobal=1.0
+LimitePerteJourPct=2.50
+HeatMaxEcuriePct=8.0
+UnRobotParSymbole=true
+ChallengeInitialBalance=100000.00
+CapitalInitialFTMO=100000.00
+PerteJourFTMOPct=5.0
+CoussinJourFTMOPct=1.0
+ObjectifPhasePct=10.0
+MargeObjectifPct=0.25
+MaxPositionsEcurie=2
+ModeChallengeActif=true

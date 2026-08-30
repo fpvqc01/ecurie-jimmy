@@ -55,6 +55,12 @@ def main() -> None:
     base = os.path.join(os.environ["APPDATA"], "MetaQuotes", "Terminal")
     dossiers = glob.glob(os.path.join(base, "*", "MQL5", "Files"))
     dossiers += glob.glob(os.path.join(base, "*", "MQL4", "Files"))  # MT4 : ecurie L3
+
+    # --- P0-1 (22 aout 2026) : installations PORTABLES, invisibles au glob %APPDATA% ---
+    for _p in (r'C:\MT6\MQL5\Files', r'C:\NouveauMT5\MQL5\Files'):
+        if os.path.isdir(_p) and _p not in dossiers:
+            dossiers.append(_p)
+    # --- fin P0-1 ---
     for t in dossiers:
         path = os.path.join(t, "macrobot_vol.txt")
         with open(path, "w", encoding="ascii") as f:

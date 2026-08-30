@@ -1,0 +1,56 @@
+TEST DES 5 GENERATIONS SANS LES PROTECTIONS FTMO (20 aout 2026)
+Scripts : test_sans_protections.py + test_sans_protections_jours.py
+AVEC = gardien quotidien (-2,5 %, -3,5 % I2+) + mode challenge (L3+/L4).
+SANS = aucun coupe-circuit ; strategie et sizing identiques.
+I2+ approxime par pyramide max = 1 dans le moteur parametrique.
+Morts = % de challenges FTMO simules (fenetres glissantes) qui touchent
+-8 % avant +10 %. La limite QUOTIDIENNE de -5 % n'est PAS comptee dans
+"morts" -- voir la 3e table.
+
+=== MOTEUR 1d, 5 ANS ===
+Gen   | AVEC protections         | SANS protections
+      | CAGR    MaxDD   Morts  | CAGR    MaxDD   Morts
+--------------------------------------------------------------
+I2+   |  +17.9%  -14.5%   14%  |  +18.2%  -14.5%   14%
+I2++  |  +25.9%  -12.2%   14%  |  +24.1%  -18.0%   22%
+L3    |  +31.4%  -11.8%   16%  |  +29.2%  -18.8%   15%
+L3+   |  +21.7%  -11.7%    6%  |  +30.1%  -29.0%   13%
+L4    |  +22.4%  -11.9%    6%  |  +32.4%  -29.5%   15%
+
+=== MOTEUR H4, 2 ANS (fenetre commune) ===
+Gen   | AVEC protections         | SANS protections
+      | CAGR    MaxDD   Morts  | CAGR    MaxDD   Morts
+--------------------------------------------------------------
+I2+   |  +16.2%  -18.2%   22%  |  +17.1%  -18.2%   22%
+I2++  |  +25.5%  -13.8%   16%  |  +25.2%  -21.8%   16%
+L3    |  +15.2%  -18.8%   38%  |  +22.2%  -24.3%   16%
+L3+   |  +23.8%  -12.6%    4%  |  +22.1%  -29.1%    9%
+L4    |  +27.3%  -13.2%    7%  |  +25.5%  -30.3%    9%
+
+=== SANS PROTECTIONS : journees sous les seuils FTMO (1d, 5 ans) ===
+Gen   | Pire jour | Jours <-2,5% | Jours <-5%
+--------------------------------------------------
+I2+   |    -4.0%  |          7   |          0
+I2++  |   -10.6%  |         15   |          3
+L3    |   -10.6%  |         16   |          4
+L3+   |   -21.2%  |         29   |         10
+L4    |   -21.2%  |         30   |         10
+
+LECTURE
+- Sans le gardien, L3+ et L4 auraient eu 10 journees sous -5 % en 5 ans
+  (pire : -21 %). Chez FTMO, UNE seule de ces journees = challenge echoue,
+  meme en profit. Le vrai taux d'echec sans protections est donc bien pire
+  que la colonne "Morts" (qui ne compte que la limite totale de -8 %).
+- Le gain de CAGR sans protections (L4 : +32,4 % vs +22,4 % en 1d) est un
+  mirage pour FTMO : il vient des drawdowns de -29/-30 % qu'un compte FTMO
+  (limite -10 %) ne survivrait jamais.
+- I2+ change a peine : son gardien -3,5 % ne se declenchait presque jamais
+  (pire jour -4,0 %), c'est le pyramidage des generations L qui cree les
+  grosses journees.
+- Conclusion : les protections coutent ~6-10 pts de CAGR aux generations
+  recentes mais divisent les echecs par 2 et sont la seule chose qui tient
+  la limite quotidienne FTMO. Ne jamais deployer sans.
+
+NOTE TECHNIQUE : test_feries.py (chainon exec de moteur_1d via
+test_marche_us_ferme) avait ete perdu (jamais commite) ; recree comme copie
+de test_jours_feries.py.

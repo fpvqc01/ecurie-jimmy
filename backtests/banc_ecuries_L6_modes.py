@@ -1,4 +1,23 @@
 # -*- coding: utf-8 -*-
+# ############################################################### #
+# !! FICHIER OBSOLETE - CORRIGE LE 21 AOUT 2026                    #
+#                                                                 #
+# Son simulateur FTMO contient 3 defauts demontres par le comite : #
+#   1. l objectif de phase est valide sur l EQUITE FLOTTANTE alors #
+#      que FTMO exige le SOLDE FERME (biais tres optimiste :       #
+#      quand l equite touche +10 %%, le solde n est qu a +0,1 a    #
+#      +2,3 %%) ;                                                  #
+#   2. les challenges non resolus sont JETES du denominateur       #
+#      (`if v == -1: continue`) - ce sont les LENTS, et le tri est #
+#      ASYMETRIQUE entre variantes (jusqu a 23 %% des departs) ;    #
+#   3. les jours de trading comptent les jours ou le P&L bouge au  #
+#      lieu des jours ou une position est OUVERTE.                 #
+#                                                                 #
+# NE PLUS UTILISER POUR PRODUIRE DES CHIFFRES.                     #
+# Reference : backtests/SIMULATEUR_FTMO.py                         #
+# Classement a jour : backtests/CLASSEMENT_DEFINITIF.py            #
+# ############################################################### #
+
 """COMPARATIF COMPLET DES ECURIES L6 x MODE CHALLENGE ON/OFF
 (demande Jimmy, 21 aout). Rendement annuel + reussite du challenge.
 
@@ -108,4 +127,13 @@ for mode_on in (True, False):
                 ("L6++ 5 % + turbo",        c5, d5, t5, 1.33, 0.04),
         ):
             ok, med = ftmo(tj, mult, turbo)
-            print("%-30s | %+7.1f %% | %7.0f %% | %4.0f j | %+6.1f %%" % (nom, cagr, ok, med, dd))
+            # CORRIGE 21 aout : les lignes turbo affichaient le creux de la
+            # BASE (d0 / d5), alors que le turbo multiplie le risque par 1,33
+            # -> le creux reel est plus grand. Afficher un chiffre faux est
+            # pire que ne rien afficher.
+            if turbo:
+                print("%-30s | %+7.1f %% | %7.0f %% | %4.0f j | %8s"
+                      % (nom, cagr, ok, med, "n/d"))
+            else:
+                print("%-30s | %+7.1f %% | %7.0f %% | %4.0f j | %+6.1f %%"
+                      % (nom, cagr, ok, med, dd))

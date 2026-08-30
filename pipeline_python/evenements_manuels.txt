@@ -1,0 +1,11 @@
+# Evenements ajoutes A LA MAIN au calendrier des resultats US100.
+# Ces lignes survivent a toutes les mises a jour automatiques.
+#
+# Format (heure en UTC ; New York = UTC-4 en ete, UTC-5 en hiver) :
+#   RESULTATS=2026-08-26 20:00;NVDA
+#   RESULTATS=1787961600;LIBELLE
+#
+# Exemple : pour bloquer les entrees du robot Nasdaq autour d'un
+# evenement special (discours de la Fed, compagnie hors liste...),
+# enlever le # de la ligne et ajuster la date :
+# RESULTATS=2026-08-28 14:00;Warsh Jackson Hole

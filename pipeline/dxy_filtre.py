@@ -9,6 +9,7 @@ import time, datetime, requests
 
 CIBLES = [
     r"C:\MT6\MQL5\Files",
+    r"C:\NouveauMT5\MQL5\Files",   # P0-1 (22 aout 2026) : 2e portable, etait absent
     r"C:\Users\jplou\AppData\Roaming\MetaQuotes\Terminal\4091F7F60940A975FCB8650EE9CE5521\MQL5\Files",
     r"C:\Users\jplou\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Files",
     r"C:\Users\jplou\AppData\Roaming\MetaQuotes\Terminal\2C68BEE3A904BDCEE3EEF5A5A77EC162\MQL4\Files",

@@ -1,0 +1,1730 @@
+{
+ "radiographie": {
+  "evenements_total": 414,
+  "evenements_couverts": 366,
+  "evenement": {
+   "barre": {
+    "n": 366,
+    "mediane": 6.529634161112075e-05,
+    "p10": -0.0068177412768864465,
+    "p90": 0.009710973426597769,
+    "pire": -0.02190358960974781,
+    "pct_adverse": 45.08196721311475,
+    "mediane_abs": 0.0029737557837731243
+   },
+   "gap_soir": {
+    "n": 366,
+    "mediane": 0.0,
+    "p10": -1.9955351634015628e-05,
+    "p90": 3.7247806798368366e-05,
+    "pire": -0.00026138389409935403,
+    "pct_adverse": 26.229508196721312,
+    "mediane_abs": 7.305649217193011e-06
+   },
+   "lendemain": {
+    "n": 366,
+    "mediane": -0.00020420204222931782,
+    "p10": -0.014472796580580594,
+    "p90": 0.013049182275006732,
+    "pire": -0.028176549100825787,
+    "pct_adverse": 51.36612021857923,
+    "mediane_abs": 0.005994180882632927
+   }
+  },
+  "controle": {
+   "barre": {
+    "n": 2059,
+    "mediane": 9.353682939772234e-05,
+    "p10": -0.00281652759757629,
+    "p90": 0.0033438067396929674,
+    "pire": -0.044337707920972136,
+    "pct_adverse": 44.92472073822244,
+    "mediane_abs": 0.0011717759791023408
+   },
+   "gap_soir": {
+    "n": 2059,
+    "mediane": 0.0,
+    "p10": -4.532094836382504e-05,
+    "p90": 9.052741505146685e-05,
+    "pire": -0.04602535049694867,
+    "pct_adverse": 30.451675570665373,
+    "mediane_abs": 9.595555578556514e-06
+   },
+   "lendemain": {
+    "n": 2059,
+    "mediane": 0.0009753010778232873,
+    "p10": -0.01177649066756854,
+    "p90": 0.011707336017046188,
+    "pire": -0.05336327712374689,
+    "pct_adverse": 44.05050995628946,
+    "mediane_abs": 0.004959635884769331
+   }
+  }
+ },
+ "10 ans ": [
+  {
+   "config": "REFERENCE (moteur tel quel)",
+   "reussite": 100.0,
+   "ic95": [
+    80.63865817272801,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 121.2,
+   "p45": 0.0,
+   "p60": 1.6194331983805668,
+   "esp": 236.0,
+   "cagr": 25.132197119821885,
+   "dd": -10.988708261018365,
+   "trades": 283,
+   "serrages": 0,
+   "gaps_anyway": 0,
+   "cout_gaps_anyway_pct": 0.0,
+   "sorties_serrage": [],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 247,
+   "n_independants": 16
+  },
+  {
+   "config": "REFERENCE + gaps pessimistes",
+   "reussite": 100.0,
+   "ic95": [
+    80.63865817272801,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 121.2,
+   "p45": 0.0,
+   "p60": 1.6194331983805668,
+   "esp": 236.0,
+   "cagr": 25.132197119821885,
+   "dd": -10.988708261018365,
+   "trades": 283,
+   "serrages": 0,
+   "gaps_anyway": 0,
+   "cout_gaps_anyway_pct": 0.0,
+   "sorties_serrage": [],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 247,
+   "n_independants": 16
+  },
+  {
+   "config": "SERRAGE 0,5 ATR (+ gaps)",
+   "reussite": 100.0,
+   "ic95": [
+    80.63865817272801,
+    100.0
+   ],
+   "med": 216.0,
+   "p10": 99.2,
+   "p45": 0.0,
+   "p60": 1.4981273408239701,
+   "esp": 216.0,
+   "cagr": 25.70112472391697,
+   "dd": -9.977723630226198,
+   "trades": 305,
+   "serrages": 169,
+   "gaps_anyway": 1,
+   "cout_gaps_anyway_pct": -0.09724931725046493,
+   "sorties_serrage": [
+    {
+     "t": "2015-12-02 20:00:00",
+     "cause": "stop_serre",
+     "prix": 4681.167,
+     "stop_origine": 4565.293785768241,
+     "prix_contrefactuel": 4565.293785768241,
+     "barres_avant_sortie_naturelle": 34,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2015-12-03 12:00:00",
+     "cause": "stop_serre",
+     "prix": 4704.388,
+     "stop_origine": 4600.276299332849,
+     "prix_contrefactuel": 4600.276299332849,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.7650000000000001
+    },
+    {
+     "t": "2016-01-28 12:00:00",
+     "cause": "stop_serre",
+     "prix": 4129.321503674849,
+     "stop_origine": 3972.650871842255,
+     "prix_contrefactuel": 3972.650871842255,
+     "barres_avant_sortie_naturelle": 34,
+     "delta_pct": 0.7624015856491607
+    },
+    {
+     "t": "2016-02-02 12:00:00",
+     "cause": "stop_serre",
+     "prix": 4234.247775250703,
+     "stop_origine": 3940.0231575565413,
+     "prix_contrefactuel": 3940.0231575565413,
+     "barres_avant_sortie_naturelle": 20,
+     "delta_pct": 1.0475702784013083
+    },
+    {
+     "t": "2016-03-04 08:00:00",
+     "cause": "stop_serre",
+     "prix": 4320.568,
+     "stop_origine": 4141.293837179489,
+     "prix_contrefactuel": 4499.8421628205115,
+     "barres_avant_sortie_naturelle": 85,
+     "delta_pct": -1.02
+    },
+    {
+     "t": "2016-10-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 4863.096,
+     "stop_origine": 4772.364379799853,
+     "prix_contrefactuel": 4772.364379799853,
+     "barres_avant_sortie_naturelle": 16,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2016-10-27 16:00:00",
+     "cause": "stop_serre",
+     "prix": 4836.8574520928205,
+     "stop_origine": 4766.55423694271,
+     "prix_contrefactuel": 4766.55423694271,
+     "barres_avant_sortie_naturelle": 15,
+     "delta_pct": 0.7590230248749449
+    },
+    {
+     "t": "2017-01-30 12:00:00",
+     "cause": "stop_serre",
+     "prix": 5139.295624275914,
+     "stop_origine": 5021.272644992574,
+     "prix_contrefactuel": 5183.733355007425,
+     "barres_avant_sortie_naturelle": 30,
+     "delta_pct": -0.5579993506368203
+    },
+    {
+     "t": "2017-11-02 04:00:00",
+     "cause": "stop_serre",
+     "prix": 6220.938959696491,
+     "stop_origine": 6089.659635344955,
+     "prix_contrefactuel": 6303.4803646550445,
+     "barres_avant_sortie_naturelle": 10,
+     "delta_pct": -0.7875030015039021
+    },
+    {
+     "t": "2018-03-15 16:00:00",
+     "cause": "stop_serre",
+     "prix": 7045.26,
+     "stop_origine": 6801.87572142566,
+     "prix_contrefactuel": 6801.87572142566,
+     "barres_avant_sortie_naturelle": 17,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2018-03-19 04:00:00",
+     "cause": "stop_serre",
+     "prix": 6979.067275063104,
+     "stop_origine": 6815.317671680986,
+     "prix_contrefactuel": 6815.317671680986,
+     "barres_avant_sortie_naturelle": 3,
+     "delta_pct": 0.7607853880781444
+    },
+    {
+     "t": "2018-07-23 00:00:00",
+     "cause": "stop_serre",
+     "prix": 7332.396800906825,
+     "stop_origine": 7031.53597369514,
+     "prix_contrefactuel": 7439.78402630486,
+     "barres_avant_sortie_naturelle": 9,
+     "delta_pct": -0.5366098831619408
+    },
+    {
+     "t": "2018-07-24 16:00:00",
+     "cause": "stop_serre",
+     "prix": 7384.046094003479,
+     "stop_origine": 7173.042097245756,
+     "prix_contrefactuel": 7173.042097245756,
+     "barres_avant_sortie_naturelle": 24,
+     "delta_pct": 1.167678632822998
+    },
+    {
+     "t": "2018-08-16 16:00:00",
+     "cause": "stop_serre",
+     "prix": 7368.549066820922,
+     "stop_origine": 7243.865822224145,
+     "prix_contrefactuel": 7598.874177775855,
+     "barres_avant_sortie_naturelle": 53,
+     "delta_pct": -0.9926454243968272
+    },
+    {
+     "t": "2019-02-15 04:00:00",
+     "cause": "stop_serre",
+     "prix": 6971.684059774142,
+     "stop_origine": 6601.254877374922,
+     "prix_contrefactuel": 7086.885122625077,
+     "barres_avant_sortie_naturelle": 2,
+     "delta_pct": -0.3629461465505263
+    },
+    {
+     "t": "2019-06-13 16:00:00",
+     "cause": "stop_serre",
+     "prix": 7507.77,
+     "stop_origine": 7248.50284483562,
+     "prix_contrefactuel": 7767.037155164381,
+     "barres_avant_sortie_naturelle": 28,
+     "delta_pct": -0.7650000000000001
+    },
+    {
+     "t": "2019-06-14 08:00:00",
+     "cause": "stop_serre",
+     "prix": 7451.651016297474,
+     "stop_origine": 7264.994065189896,
+     "prix_contrefactuel": 7762.745934810104,
+     "barres_avant_sortie_naturelle": 24,
+     "delta_pct": -0.9562500000000007
+    },
+    {
+     "t": "2019-07-19 12:00:00",
+     "cause": "stop_serre",
+     "prix": 7900.113807705013,
+     "stop_origine": 7613.353241368364,
+     "prix_contrefactuel": 8002.764758631636,
+     "barres_avant_sortie_naturelle": 19,
+     "delta_pct": -0.5377548701230015
+    },
+    {
+     "t": "2019-08-23 12:00:00",
+     "cause": "stop_serre",
+     "prix": 7518.97,
+     "stop_origine": 7180.994076399775,
+     "prix_contrefactuel": 7856.945923600226,
+     "barres_avant_sortie_naturelle": 54,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2019-10-29 12:00:00",
+     "cause": "stop_serre",
+     "prix": 8049.704830999455,
+     "stop_origine": 7570.528694914614,
+     "prix_contrefactuel": 8133.391305085386,
+     "barres_avant_sortie_naturelle": 18,
+     "delta_pct": -0.22748056637236397
+    },
+    {
+     "t": "2019-12-13 12:00:00",
+     "cause": "stop_serre",
+     "prix": 8475.66,
+     "stop_origine": 8295.682905256903,
+     "prix_contrefactuel": 8655.637094743097,
+     "barres_avant_sortie_naturelle": 30,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2020-04-30 12:00:00",
+     "cause": "stop_serre",
+     "prix": 8966.709690436095,
+     "stop_origine": 7808.3648714903065,
+     "prix_contrefactuel": 9290.835128509694,
+     "barres_avant_sortie_naturelle": 43,
+     "delta_pct": -0.4460230419729053
+    },
+    {
+     "t": "2020-05-22 00:00:00",
+     "cause": "stop_serre",
+     "prix": 9321.59,
+     "stop_origine": 8781.219558973591,
+     "prix_contrefactuel": 9861.96044102641,
+     "barres_avant_sortie_naturelle": 66,
+     "delta_pct": -0.7650000000000001
+    },
+    {
+     "t": "2020-07-23 12:00:00",
+     "cause": "stop_serre",
+     "prix": 10807.09013443861,
+     "stop_origine": 10061.184625786042,
+     "prix_contrefactuel": 11081.71537421396,
+     "barres_avant_sortie_naturelle": 43,
+     "delta_pct": -0.5489648303147483
+    },
+    {
+     "t": "2021-04-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 13935.844842959243,
+     "stop_origine": 12983.50336699721,
+     "prix_contrefactuel": 12983.50336699721,
+     "barres_avant_sortie_naturelle": 67,
+     "delta_pct": 1.71664128165296
+    },
+    {
+     "t": "2021-08-18 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14896.393944793685,
+     "stop_origine": 14511.564040330039,
+     "prix_contrefactuel": 15250.333959669962,
+     "barres_avant_sortie_naturelle": 17,
+     "delta_pct": -0.9773511501290324
+    },
+    {
+     "t": "2021-12-10 12:00:00",
+     "cause": "stop_serre",
+     "prix": 16174.919,
+     "stop_origine": 15599.92284589004,
+     "prix_contrefactuel": 15599.92284589004,
+     "barres_avant_sortie_naturelle": 33,
+     "delta_pct": 0.7650000000000001
+    },
+    {
+     "t": "2022-02-03 08:00:00",
+     "cause": "stop_serre",
+     "prix": 14802.099,
+     "stop_origine": 13948.658054207004,
+     "prix_contrefactuel": 13948.658054207004,
+     "barres_avant_sortie_naturelle": 68,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2022-02-03 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14595.111334980322,
+     "stop_origine": 13949.731197064146,
+     "prix_contrefactuel": 13949.731197064146,
+     "barres_avant_sortie_naturelle": 66,
+     "delta_pct": 0.7619884187148365
+    },
+    {
+     "t": "2022-02-17 12:00:00",
+     "cause": "stop_serre",
+     "prix": 14387.036134675851,
+     "stop_origine": 13879.504371083738,
+     "prix_contrefactuel": 13861.486,
+     "barres_avant_sortie_naturelle": 9,
+     "delta_pct": 0.6220360857949985
+    },
+    {
+     "t": "2022-03-04 00:00:00",
+     "cause": "stop_serre",
+     "prix": 13851.966533197243,
+     "stop_origine": 13185.896628221863,
+     "prix_contrefactuel": 13185.896628221863,
+     "barres_avant_sortie_naturelle": 13,
+     "delta_pct": 0.7357080059978599
+    },
+    {
+     "t": "2022-04-21 12:00:00",
+     "cause": "stop_serre",
+     "prix": 13995.132479705891,
+     "stop_origine": 13673.315874035508,
+     "prix_contrefactuel": 13673.315874035508,
+     "barres_avant_sortie_naturelle": 2,
+     "delta_pct": 0.39243434879305517
+    },
+    {
+     "t": "2022-05-25 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11933.599,
+     "stop_origine": 11048.576839589772,
+     "prix_contrefactuel": 12818.621160410228,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2022-07-25 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12272.73138801688,
+     "stop_origine": 11300.392295683698,
+     "prix_contrefactuel": 12783.825704316303,
+     "barres_avant_sortie_naturelle": 20,
+     "delta_pct": -0.5271381238871535
+    },
+    {
+     "t": "2022-08-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12918.49038798639,
+     "stop_origine": 12734.717261915192,
+     "prix_contrefactuel": 12734.717261915192,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.29525426530733817
+    },
+    {
+     "t": "2022-10-21 08:00:00",
+     "cause": "stop_serre",
+     "prix": 10926.518310286714,
+     "stop_origine": 10400.741955432572,
+     "prix_contrefactuel": 11816.35604456743,
+     "barres_avant_sortie_naturelle": 92,
+     "delta_pct": -0.9617393214004645
+    },
+    {
+     "t": "2022-10-25 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11485.420816841908,
+     "stop_origine": 10449.71235657514,
+     "prix_contrefactuel": 11886.605643424858,
+     "barres_avant_sortie_naturelle": 88,
+     "delta_pct": -0.4271804943968061
+    },
+    {
+     "t": "2022-10-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11446.619,
+     "stop_origine": 10765.708891127088,
+     "prix_contrefactuel": 10765.708891127088,
+     "barres_avant_sortie_naturelle": 36,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2022-10-27 04:00:00",
+     "cause": "stop_serre",
+     "prix": 11450.859,
+     "stop_origine": 10738.92003398423,
+     "prix_contrefactuel": 10738.92003398423,
+     "barres_avant_sortie_naturelle": 32,
+     "delta_pct": 1.0200000000000002
+    },
+    {
+     "t": "2022-11-02 16:00:00",
+     "cause": "stop_serre",
+     "prix": 10941.195972886908,
+     "stop_origine": 10426.682605833343,
+     "prix_contrefactuel": 11804.575394166659,
+     "barres_avant_sortie_naturelle": 42,
+     "delta_pct": -0.9586888949145675
+    },
+    {
+     "t": "2022-11-17 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11589.711091051813,
+     "stop_origine": 11203.373502113307,
+     "prix_contrefactuel": 11203.373502113307,
+     "barres_avant_sortie_naturelle": 126,
+     "delta_pct": 0.41808736305136107
+    },
+    {
+     "t": "2022-12-09 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11554.221060571557,
+     "stop_origine": 11031.51184839653,
+     "prix_contrefactuel": 11031.51184839653,
+     "barres_avant_sortie_naturelle": 38,
+     "delta_pct": 0.5966313251715741
+    },
+    {
+     "t": "2023-01-24 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11808.539,
+     "stop_origine": 11310.292476367222,
+     "prix_contrefactuel": 12306.78552363278,
+     "barres_avant_sortie_naturelle": 35,
+     "delta_pct": -1.02
+    },
+    {
+     "t": "2023-02-23 16:00:00",
+     "cause": "stop_serre",
+     "prix": 12047.67580322674,
+     "stop_origine": 11824.716211490797,
+     "prix_contrefactuel": 11824.716211490797,
+     "barres_avant_sortie_naturelle": 28,
+     "delta_pct": 0.321302047140024
+    },
+    {
+     "t": "2023-04-20 04:00:00",
+     "cause": "stop_serre",
+     "prix": 12978.797288435664,
+     "stop_origine": 12588.979936044903,
+     "prix_contrefactuel": 13593.578063955098,
+     "barres_avant_sortie_naturelle": 117,
+     "delta_pct": -1.2484124220583448
+    },
+    {
+     "t": "2023-04-25 16:00:00",
+     "cause": "stop_serre",
+     "prix": 12733.155334626483,
+     "stop_origine": 12624.65121418961,
+     "prix_contrefactuel": 13469.14678581039,
+     "barres_avant_sortie_naturelle": 89,
+     "delta_pct": -1.3334195680270975
+    },
+    {
+     "t": "2023-10-18 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14884.122144617191,
+     "stop_origine": 14513.820190635051,
+     "prix_contrefactuel": 14513.820190635051,
+     "barres_avant_sortie_naturelle": 16,
+     "delta_pct": 0.5307682431754686
+    },
+    {
+     "t": "2023-11-30 12:00:00",
+     "cause": "stop_serre",
+     "prix": 15858.836564907255,
+     "stop_origine": 15287.205118569145,
+     "prix_contrefactuel": 16320.272881430854,
+     "barres_avant_sortie_naturelle": 49,
+     "delta_pct": -0.91119878051422
+    },
+    {
+     "t": "2024-05-02 16:00:00",
+     "cause": "stop_serre",
+     "prix": 17405.642,
+     "stop_origine": 16807.198554671064,
+     "prix_contrefactuel": 18004.085445328936,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2024-10-23 16:00:00",
+     "cause": "stop_serre",
+     "prix": 20056.38468160078,
+     "stop_origine": 19698.408991985903,
+     "prix_contrefactuel": 20880.253008014093,
+     "barres_avant_sortie_naturelle": 65,
+     "delta_pct": -1.4220923938265917
+    },
+    {
+     "t": "2024-10-29 16:00:00",
+     "cause": "stop_serre",
+     "prix": 20469.198,
+     "stop_origine": 19895.044618771015,
+     "prix_contrefactuel": 19895.044618771015,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2025-02-07 12:00:00",
+     "cause": "stop_serre",
+     "prix": 21588.897520289254,
+     "stop_origine": 20692.091187952177,
+     "prix_contrefactuel": 20692.091187952177,
+     "barres_avant_sortie_naturelle": 86,
+     "delta_pct": 0.8582546421947117
+    },
+    {
+     "t": "2025-02-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 21106.519506398785,
+     "stop_origine": 20845.161861074368,
+     "prix_contrefactuel": 20845.161861074368,
+     "barres_avant_sortie_naturelle": 0,
+     "delta_pct": 0.2663709418139409
+    },
+    {
+     "t": "2025-10-23 08:00:00",
+     "cause": "stop_serre",
+     "prix": 24932.511,
+     "stop_origine": 24189.041379022405,
+     "prix_contrefactuel": 25675.980620977592,
+     "barres_avant_sortie_naturelle": 12,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2026-02-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 25093.881480634114,
+     "stop_origine": 23819.323066393434,
+     "prix_contrefactuel": 23819.323066393434,
+     "barres_avant_sortie_naturelle": 97,
+     "delta_pct": 1.0409168857001285
+    },
+    {
+     "t": "2026-03-05 04:00:00",
+     "cause": "stop_serre",
+     "prix": 24982.372,
+     "stop_origine": 24123.594198513572,
+     "prix_contrefactuel": 24123.594198513572,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2026-07-23 04:00:00",
+     "cause": "stop_serre",
+     "prix": 28846.62766134924,
+     "stop_origine": 27967.275189931308,
+     "prix_contrefactuel": 27967.275189931308,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": 0.5374221515972047
+    }
+   ],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 267,
+   "n_independants": 16
+  },
+  {
+   "config": "SERRAGE PRUDENT 1,0 ATR (+ gaps)",
+   "reussite": 100.0,
+   "ic95": [
+    80.63865817272801,
+    100.0
+   ],
+   "med": 216.0,
+   "p10": 101.0,
+   "p45": 0.0,
+   "p60": 1.520912547528517,
+   "esp": 216.0,
+   "cagr": 25.71171974133084,
+   "dd": -10.884049817642527,
+   "trades": 297,
+   "serrages": 142,
+   "gaps_anyway": 1,
+   "cout_gaps_anyway_pct": -0.09724931725046493,
+   "sorties_serrage": [
+    {
+     "t": "2015-12-02 20:00:00",
+     "cause": "stop_serre",
+     "prix": 4681.167,
+     "stop_origine": 4565.293785768241,
+     "prix_contrefactuel": 4565.293785768241,
+     "barres_avant_sortie_naturelle": 34,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2015-12-03 12:00:00",
+     "cause": "stop_serre",
+     "prix": 4704.388,
+     "stop_origine": 4600.276299332849,
+     "prix_contrefactuel": 4600.276299332849,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.7650000000000001
+    },
+    {
+     "t": "2016-01-29 08:00:00",
+     "cause": "stop_serre",
+     "prix": 4182.257,
+     "stop_origine": 3972.650871842255,
+     "prix_contrefactuel": 3972.650871842255,
+     "barres_avant_sortie_naturelle": 30,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2016-02-02 16:00:00",
+     "cause": "stop_serre",
+     "prix": 4185.582550501406,
+     "stop_origine": 3981.740932016788,
+     "prix_contrefactuel": 3981.740932016788,
+     "barres_avant_sortie_naturelle": 18,
+     "delta_pct": 0.7663216179848061
+    },
+    {
+     "t": "2016-03-04 08:00:00",
+     "cause": "stop_serre",
+     "prix": 4320.568,
+     "stop_origine": 4141.293837179489,
+     "prix_contrefactuel": 4499.8421628205115,
+     "barres_avant_sortie_naturelle": 85,
+     "delta_pct": -1.02
+    },
+    {
+     "t": "2016-10-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 4863.096,
+     "stop_origine": 4772.364379799853,
+     "prix_contrefactuel": 4772.364379799853,
+     "barres_avant_sortie_naturelle": 16,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2016-10-28 04:00:00",
+     "cause": "stop_serre",
+     "prix": 4812.68490418564,
+     "stop_origine": 4766.55423694271,
+     "prix_contrefactuel": 4766.55423694271,
+     "barres_avant_sortie_naturelle": 13,
+     "delta_pct": 0.4980460497498798
+    },
+    {
+     "t": "2017-01-30 12:00:00",
+     "cause": "stop_serre",
+     "prix": 5119.67994508384,
+     "stop_origine": 5021.272644992574,
+     "prix_contrefactuel": 5183.733355007425,
+     "barres_avant_sortie_naturelle": 30,
+     "delta_pct": -0.8043111237921431
+    },
+    {
+     "t": "2017-11-02 12:00:00",
+     "cause": "stop_serre",
+     "prix": 6196.57,
+     "stop_origine": 6089.659635344955,
+     "prix_contrefactuel": 6303.4803646550445,
+     "barres_avant_sortie_naturelle": 8,
+     "delta_pct": -1.02
+    },
+    {
+     "t": "2018-03-15 16:00:00",
+     "cause": "stop_serre",
+     "prix": 7045.26,
+     "stop_origine": 6801.87572142566,
+     "prix_contrefactuel": 6801.87572142566,
+     "barres_avant_sortie_naturelle": 17,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2018-03-19 08:00:00",
+     "cause": "stop_serre",
+     "prix": 6923.274550126207,
+     "stop_origine": 6815.317671680986,
+     "prix_contrefactuel": 6815.317671680986,
+     "barres_avant_sortie_naturelle": 2,
+     "delta_pct": 0.5015707761562848
+    },
+    {
+     "t": "2018-07-25 20:00:00",
+     "cause": "stop_serre",
+     "prix": 7407.833633761563,
+     "stop_origine": 7208.84451887106,
+     "prix_contrefactuel": 7208.84451887106,
+     "barres_avant_sortie_naturelle": 16,
+     "delta_pct": 1.0423388780474567
+    },
+    {
+     "t": "2018-08-17 12:00:00",
+     "cause": "stop_serre",
+     "prix": 7322.228133641845,
+     "stop_origine": 7243.865822224145,
+     "prix_contrefactuel": 7598.874177775855,
+     "barres_avant_sortie_naturelle": 48,
+     "delta_pct": -1.1922774236320277
+    },
+    {
+     "t": "2019-06-13 16:00:00",
+     "cause": "stop_serre",
+     "prix": 7507.77,
+     "stop_origine": 7248.50284483562,
+     "prix_contrefactuel": 7767.037155164381,
+     "barres_avant_sortie_naturelle": 28,
+     "delta_pct": -0.7650000000000001
+    },
+    {
+     "t": "2019-07-19 16:00:00",
+     "cause": "stop_serre",
+     "prix": 7854.367615410025,
+     "stop_origine": 7613.353241368364,
+     "prix_contrefactuel": 8002.764758631636,
+     "barres_avant_sortie_naturelle": 18,
+     "delta_pct": -0.7774042593799769
+    },
+    {
+     "t": "2019-08-23 12:00:00",
+     "cause": "stop_serre",
+     "prix": 7518.97,
+     "stop_origine": 7180.994076399775,
+     "prix_contrefactuel": 7856.945923600226,
+     "barres_avant_sortie_naturelle": 54,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2019-12-13 12:00:00",
+     "cause": "stop_serre",
+     "prix": 8475.66,
+     "stop_origine": 8295.682905256903,
+     "prix_contrefactuel": 8655.637094743097,
+     "barres_avant_sortie_naturelle": 30,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2020-05-01 00:00:00",
+     "cause": "stop_serre",
+     "prix": 8805.95938087219,
+     "stop_origine": 7808.3648714903065,
+     "prix_contrefactuel": 9290.835128509694,
+     "barres_avant_sortie_naturelle": 40,
+     "delta_pct": -0.6672285804703156
+    },
+    {
+     "t": "2020-05-22 00:00:00",
+     "cause": "stop_serre",
+     "prix": 9321.59,
+     "stop_origine": 8781.219558973591,
+     "prix_contrefactuel": 9861.96044102641,
+     "barres_avant_sortie_naturelle": 66,
+     "delta_pct": -0.7650000000000001
+    },
+    {
+     "t": "2020-07-23 16:00:00",
+     "cause": "stop_serre",
+     "prix": 10687.46026887722,
+     "stop_origine": 10061.184625786042,
+     "prix_contrefactuel": 11081.71537421396,
+     "barres_avant_sortie_naturelle": 42,
+     "delta_pct": -0.7881001293943458
+    },
+    {
+     "t": "2021-05-03 12:00:00",
+     "cause": "stop_serre",
+     "prix": 13829.423850904936,
+     "stop_origine": 12983.50336699721,
+     "prix_contrefactuel": 12983.50336699721,
+     "barres_avant_sortie_naturelle": 43,
+     "delta_pct": 1.524812328692217
+    },
+    {
+     "t": "2021-08-18 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14880.949,
+     "stop_origine": 14511.564040330039,
+     "prix_contrefactuel": 15250.333959669962,
+     "barres_avant_sortie_naturelle": 17,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2021-12-10 12:00:00",
+     "cause": "stop_serre",
+     "prix": 16174.919,
+     "stop_origine": 15599.92284589004,
+     "prix_contrefactuel": 15599.92284589004,
+     "barres_avant_sortie_naturelle": 33,
+     "delta_pct": 0.7650000000000001
+    },
+    {
+     "t": "2022-02-03 08:00:00",
+     "cause": "stop_serre",
+     "prix": 14802.099,
+     "stop_origine": 13948.658054207004,
+     "prix_contrefactuel": 13948.658054207004,
+     "barres_avant_sortie_naturelle": 68,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2022-02-04 12:00:00",
+     "cause": "stop_serre",
+     "prix": 14376.583669960644,
+     "stop_origine": 13949.731197064146,
+     "prix_contrefactuel": 13949.731197064146,
+     "barres_avant_sortie_naturelle": 61,
+     "delta_pct": 0.5039768374296729
+    },
+    {
+     "t": "2022-02-17 20:00:00",
+     "cause": "stop_serre",
+     "prix": 14182.454964398012,
+     "stop_origine": 13879.504371083738,
+     "prix_contrefactuel": 13861.486,
+     "barres_avant_sortie_naturelle": 7,
+     "delta_pct": 0.37989577987446643
+    },
+    {
+     "t": "2022-03-07 00:00:00",
+     "cause": "gap_serre",
+     "prix": 13583.869,
+     "stop_origine": 13185.896628221863,
+     "prix_contrefactuel": 13185.896628221863,
+     "barres_avant_sortie_naturelle": 7,
+     "delta_pct": 0.4395806774875307
+    },
+    {
+     "t": "2022-04-21 16:00:00",
+     "cause": "stop_serre",
+     "prix": 13810.655959411783,
+     "stop_origine": 13673.315874035508,
+     "prix_contrefactuel": 13673.315874035508,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.16747727127239695
+    },
+    {
+     "t": "2022-05-25 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11933.599,
+     "stop_origine": 11048.576839589772,
+     "prix_contrefactuel": 12818.621160410228,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2022-07-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12104.233776033763,
+     "stop_origine": 11300.392295683698,
+     "prix_contrefactuel": 12783.825704316303,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": -0.7009250595419225
+    },
+    {
+     "t": "2022-08-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12780.81177597278,
+     "stop_origine": 12734.717261915192,
+     "prix_contrefactuel": 12734.717261915192,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.07405654011402674
+    },
+    {
+     "t": "2022-10-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11304.802633683817,
+     "stop_origine": 10400.741955432572,
+     "prix_contrefactuel": 11816.35604456743,
+     "barres_avant_sortie_naturelle": 67,
+     "delta_pct": -0.5528884776289944
+    },
+    {
+     "t": "2022-11-03 12:00:00",
+     "cause": "stop_serre",
+     "prix": 10766.762945773815,
+     "stop_origine": 10426.682605833343,
+     "prix_contrefactuel": 11804.575394166659,
+     "barres_avant_sortie_naturelle": 37,
+     "delta_pct": -1.1523777898291352
+    },
+    {
+     "t": "2022-12-07 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11414.693182103627,
+     "stop_origine": 11203.373502113307,
+     "prix_contrefactuel": 11203.373502113307,
+     "barres_avant_sortie_naturelle": 43,
+     "delta_pct": 0.22868623270844377
+    },
+    {
+     "t": "2023-01-24 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11808.539,
+     "stop_origine": 11310.292476367222,
+     "prix_contrefactuel": 12306.78552363278,
+     "barres_avant_sortie_naturelle": 35,
+     "delta_pct": -1.02
+    },
+    {
+     "t": "2023-02-24 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11923.216892167768,
+     "stop_origine": 11824.716211490797,
+     "prix_contrefactuel": 11824.716211490797,
+     "barres_avant_sortie_naturelle": 23,
+     "delta_pct": 0.14194711292653645
+    },
+    {
+     "t": "2023-04-25 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12870.435576871329,
+     "stop_origine": 12588.979936044903,
+     "prix_contrefactuel": 13593.578063955098,
+     "barres_avant_sortie_naturelle": 97,
+     "delta_pct": -1.468458513574659
+    },
+    {
+     "t": "2023-10-19 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14755.245289234383,
+     "stop_origine": 14513.820190635051,
+     "prix_contrefactuel": 14513.820190635051,
+     "barres_avant_sortie_naturelle": 10,
+     "delta_pct": 0.34604401641426863
+    },
+    {
+     "t": "2023-12-04 12:00:00",
+     "cause": "stop_serre",
+     "prix": 15803.739,
+     "stop_origine": 15287.205118569145,
+     "prix_contrefactuel": 16320.272881430854,
+     "barres_avant_sortie_naturelle": 37,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2024-05-02 16:00:00",
+     "cause": "stop_serre",
+     "prix": 17405.642,
+     "stop_origine": 16807.198554671064,
+     "prix_contrefactuel": 18004.085445328936,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2024-10-30 20:00:00",
+     "cause": "stop_serre",
+     "prix": 20331.802955177154,
+     "stop_origine": 19698.408991985903,
+     "prix_contrefactuel": 20880.253008014093,
+     "barres_avant_sortie_naturelle": 34,
+     "delta_pct": -0.946688473786433
+    },
+    {
+     "t": "2025-02-07 16:00:00",
+     "cause": "stop_serre",
+     "prix": 21491.454,
+     "stop_origine": 20692.091187952177,
+     "prix_contrefactuel": 20692.091187952177,
+     "barres_avant_sortie_naturelle": 85,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2025-02-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 20925.12901279757,
+     "stop_origine": 20845.161861074368,
+     "prix_contrefactuel": 20845.161861074368,
+     "barres_avant_sortie_naturelle": 0,
+     "delta_pct": 0.08150106147553964
+    },
+    {
+     "t": "2025-10-23 08:00:00",
+     "cause": "stop_serre",
+     "prix": 24932.511,
+     "stop_origine": 24189.041379022405,
+     "prix_contrefactuel": 25675.980620977592,
+     "barres_avant_sortie_naturelle": 12,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2026-02-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 24873.56439260621,
+     "stop_origine": 23819.323066393434,
+     "prix_contrefactuel": 23819.323066393434,
+     "barres_avant_sortie_naturelle": 97,
+     "delta_pct": 0.8609865077949694
+    },
+    {
+     "t": "2026-03-05 04:00:00",
+     "cause": "stop_serre",
+     "prix": 24982.372,
+     "stop_origine": 24123.594198513572,
+     "prix_contrefactuel": 24123.594198513572,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2026-07-23 12:00:00",
+     "cause": "stop_serre",
+     "prix": 28531.457322698483,
+     "stop_origine": 27967.275189931308,
+     "prix_contrefactuel": 27967.275189931308,
+     "barres_avant_sortie_naturelle": 12,
+     "delta_pct": 0.34480368855451843
+    }
+   ],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 263,
+   "n_independants": 16
+  }
+ ],
+ "2021-26": [
+  {
+   "config": "REFERENCE (moteur tel quel)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 139.4,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 236.0,
+   "cagr": 23.50593817228841,
+   "dd": -10.734233477301602,
+   "trades": 151,
+   "serrages": 0,
+   "gaps_anyway": 0,
+   "cout_gaps_anyway_pct": 0.0,
+   "sorties_serrage": [],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 109,
+   "n_independants": 8
+  },
+  {
+   "config": "REFERENCE + gaps pessimistes",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 236.0,
+   "p10": 139.4,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 236.0,
+   "cagr": 23.50593817228841,
+   "dd": -10.734233477301602,
+   "trades": 151,
+   "serrages": 0,
+   "gaps_anyway": 0,
+   "cout_gaps_anyway_pct": 0.0,
+   "sorties_serrage": [],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 109,
+   "n_independants": 8
+  },
+  {
+   "config": "SERRAGE 0,5 ATR (+ gaps)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 259.0,
+   "p10": 92.7,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 259.0,
+   "cagr": 21.99096882695084,
+   "dd": -9.97772363022621,
+   "trades": 159,
+   "serrages": 96,
+   "gaps_anyway": 1,
+   "cout_gaps_anyway_pct": -0.09724931725046493,
+   "sorties_serrage": [
+    {
+     "t": "2021-08-18 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14896.393944793685,
+     "stop_origine": 14511.564040330039,
+     "prix_contrefactuel": 15250.333959669962,
+     "barres_avant_sortie_naturelle": 17,
+     "delta_pct": -0.9773511501290324
+    },
+    {
+     "t": "2021-12-10 12:00:00",
+     "cause": "stop_serre",
+     "prix": 16174.919,
+     "stop_origine": 15599.92284589004,
+     "prix_contrefactuel": 15599.92284589004,
+     "barres_avant_sortie_naturelle": 33,
+     "delta_pct": 0.7650000000000001
+    },
+    {
+     "t": "2022-02-03 08:00:00",
+     "cause": "stop_serre",
+     "prix": 14802.099,
+     "stop_origine": 13948.658054207004,
+     "prix_contrefactuel": 13948.658054207004,
+     "barres_avant_sortie_naturelle": 68,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2022-02-03 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14595.111334980322,
+     "stop_origine": 13949.731197064146,
+     "prix_contrefactuel": 13949.731197064146,
+     "barres_avant_sortie_naturelle": 66,
+     "delta_pct": 0.7619884187148365
+    },
+    {
+     "t": "2022-02-17 12:00:00",
+     "cause": "stop_serre",
+     "prix": 14387.036134675851,
+     "stop_origine": 13879.504371083738,
+     "prix_contrefactuel": 13861.486,
+     "barres_avant_sortie_naturelle": 9,
+     "delta_pct": 0.6220360857949985
+    },
+    {
+     "t": "2022-03-04 00:00:00",
+     "cause": "stop_serre",
+     "prix": 13851.966533197243,
+     "stop_origine": 13185.896628221863,
+     "prix_contrefactuel": 13185.896628221863,
+     "barres_avant_sortie_naturelle": 13,
+     "delta_pct": 0.7357080059978599
+    },
+    {
+     "t": "2022-04-21 12:00:00",
+     "cause": "stop_serre",
+     "prix": 13995.132479705891,
+     "stop_origine": 13673.315874035508,
+     "prix_contrefactuel": 13673.315874035508,
+     "barres_avant_sortie_naturelle": 2,
+     "delta_pct": 0.39243434879305517
+    },
+    {
+     "t": "2022-05-25 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11933.599,
+     "stop_origine": 11048.576839589772,
+     "prix_contrefactuel": 12818.621160410228,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2022-07-25 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12272.73138801688,
+     "stop_origine": 11300.392295683698,
+     "prix_contrefactuel": 12783.825704316303,
+     "barres_avant_sortie_naturelle": 20,
+     "delta_pct": -0.5271381238871535
+    },
+    {
+     "t": "2022-08-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12918.49038798639,
+     "stop_origine": 12734.717261915192,
+     "prix_contrefactuel": 12734.717261915192,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.29525426530733817
+    },
+    {
+     "t": "2022-10-21 08:00:00",
+     "cause": "stop_serre",
+     "prix": 10926.518310286714,
+     "stop_origine": 10400.741955432572,
+     "prix_contrefactuel": 11816.35604456743,
+     "barres_avant_sortie_naturelle": 92,
+     "delta_pct": -0.9617393214004645
+    },
+    {
+     "t": "2022-10-25 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11485.420816841908,
+     "stop_origine": 10449.71235657514,
+     "prix_contrefactuel": 11886.605643424858,
+     "barres_avant_sortie_naturelle": 88,
+     "delta_pct": -0.4271804943968061
+    },
+    {
+     "t": "2022-10-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11446.619,
+     "stop_origine": 10765.708891127088,
+     "prix_contrefactuel": 10765.708891127088,
+     "barres_avant_sortie_naturelle": 36,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2022-10-27 04:00:00",
+     "cause": "stop_serre",
+     "prix": 11450.859,
+     "stop_origine": 10738.92003398423,
+     "prix_contrefactuel": 10738.92003398423,
+     "barres_avant_sortie_naturelle": 32,
+     "delta_pct": 1.0200000000000002
+    },
+    {
+     "t": "2022-11-02 16:00:00",
+     "cause": "stop_serre",
+     "prix": 10941.195972886908,
+     "stop_origine": 10426.682605833343,
+     "prix_contrefactuel": 11804.575394166659,
+     "barres_avant_sortie_naturelle": 42,
+     "delta_pct": -0.9586888949145675
+    },
+    {
+     "t": "2022-11-17 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11589.711091051813,
+     "stop_origine": 11203.373502113307,
+     "prix_contrefactuel": 11203.373502113307,
+     "barres_avant_sortie_naturelle": 126,
+     "delta_pct": 0.41808736305136107
+    },
+    {
+     "t": "2022-12-09 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11554.221060571557,
+     "stop_origine": 11031.51184839653,
+     "prix_contrefactuel": 11031.51184839653,
+     "barres_avant_sortie_naturelle": 38,
+     "delta_pct": 0.5966313251715741
+    },
+    {
+     "t": "2023-01-24 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11808.539,
+     "stop_origine": 11310.292476367222,
+     "prix_contrefactuel": 12306.78552363278,
+     "barres_avant_sortie_naturelle": 35,
+     "delta_pct": -1.02
+    },
+    {
+     "t": "2023-02-23 16:00:00",
+     "cause": "stop_serre",
+     "prix": 12047.67580322674,
+     "stop_origine": 11824.716211490797,
+     "prix_contrefactuel": 11824.716211490797,
+     "barres_avant_sortie_naturelle": 28,
+     "delta_pct": 0.321302047140024
+    },
+    {
+     "t": "2023-04-20 04:00:00",
+     "cause": "stop_serre",
+     "prix": 12978.797288435664,
+     "stop_origine": 12588.979936044903,
+     "prix_contrefactuel": 13593.578063955098,
+     "barres_avant_sortie_naturelle": 117,
+     "delta_pct": -1.2484124220583448
+    },
+    {
+     "t": "2023-04-25 16:00:00",
+     "cause": "stop_serre",
+     "prix": 12733.155334626483,
+     "stop_origine": 12624.65121418961,
+     "prix_contrefactuel": 13469.14678581039,
+     "barres_avant_sortie_naturelle": 89,
+     "delta_pct": -1.3334195680270975
+    },
+    {
+     "t": "2023-10-18 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14884.122144617191,
+     "stop_origine": 14513.820190635051,
+     "prix_contrefactuel": 14513.820190635051,
+     "barres_avant_sortie_naturelle": 16,
+     "delta_pct": 0.5307682431754686
+    },
+    {
+     "t": "2023-11-30 12:00:00",
+     "cause": "stop_serre",
+     "prix": 15858.836564907255,
+     "stop_origine": 15287.205118569145,
+     "prix_contrefactuel": 16320.272881430854,
+     "barres_avant_sortie_naturelle": 49,
+     "delta_pct": -0.91119878051422
+    },
+    {
+     "t": "2024-05-02 16:00:00",
+     "cause": "stop_serre",
+     "prix": 17405.642,
+     "stop_origine": 16807.198554671064,
+     "prix_contrefactuel": 18004.085445328936,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2024-10-23 16:00:00",
+     "cause": "stop_serre",
+     "prix": 20056.38468160078,
+     "stop_origine": 19698.408991985903,
+     "prix_contrefactuel": 20880.253008014093,
+     "barres_avant_sortie_naturelle": 65,
+     "delta_pct": -1.4220923938265917
+    },
+    {
+     "t": "2024-10-29 16:00:00",
+     "cause": "stop_serre",
+     "prix": 20469.198,
+     "stop_origine": 19895.044618771015,
+     "prix_contrefactuel": 19895.044618771015,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2025-02-07 12:00:00",
+     "cause": "stop_serre",
+     "prix": 21588.897520289254,
+     "stop_origine": 20692.091187952177,
+     "prix_contrefactuel": 20692.091187952177,
+     "barres_avant_sortie_naturelle": 86,
+     "delta_pct": 0.8582546421947117
+    },
+    {
+     "t": "2025-02-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 21106.519506398785,
+     "stop_origine": 20845.161861074368,
+     "prix_contrefactuel": 20845.161861074368,
+     "barres_avant_sortie_naturelle": 0,
+     "delta_pct": 0.2663709418139409
+    },
+    {
+     "t": "2025-10-23 08:00:00",
+     "cause": "stop_serre",
+     "prix": 24932.511,
+     "stop_origine": 24189.041379022405,
+     "prix_contrefactuel": 25675.980620977592,
+     "barres_avant_sortie_naturelle": 12,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2026-02-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 25093.881480634114,
+     "stop_origine": 23819.323066393434,
+     "prix_contrefactuel": 23819.323066393434,
+     "barres_avant_sortie_naturelle": 97,
+     "delta_pct": 1.0409168857001285
+    },
+    {
+     "t": "2026-03-05 04:00:00",
+     "cause": "stop_serre",
+     "prix": 24982.372,
+     "stop_origine": 24123.594198513572,
+     "prix_contrefactuel": 24123.594198513572,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2026-07-23 04:00:00",
+     "cause": "stop_serre",
+     "prix": 28846.62766134924,
+     "stop_origine": 27967.275189931308,
+     "prix_contrefactuel": 27967.275189931308,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": 0.5374221515972047
+    }
+   ],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 120,
+   "n_independants": 8
+  },
+  {
+   "config": "SERRAGE PRUDENT 1,0 ATR (+ gaps)",
+   "reussite": 100.0,
+   "ic95": [
+    67.55843804891231,
+    100.0
+   ],
+   "med": 268.0,
+   "p10": 92.4,
+   "p45": 0.0,
+   "p60": 0.0,
+   "esp": 268.0,
+   "cagr": 21.446906733287086,
+   "dd": -10.88404981764256,
+   "trades": 153,
+   "serrages": 74,
+   "gaps_anyway": 1,
+   "cout_gaps_anyway_pct": -0.09724931725046493,
+   "sorties_serrage": [
+    {
+     "t": "2021-08-18 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14880.949,
+     "stop_origine": 14511.564040330039,
+     "prix_contrefactuel": 15250.333959669962,
+     "barres_avant_sortie_naturelle": 17,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2021-12-10 12:00:00",
+     "cause": "stop_serre",
+     "prix": 16174.919,
+     "stop_origine": 15599.92284589004,
+     "prix_contrefactuel": 15599.92284589004,
+     "barres_avant_sortie_naturelle": 33,
+     "delta_pct": 0.7650000000000001
+    },
+    {
+     "t": "2022-02-03 08:00:00",
+     "cause": "stop_serre",
+     "prix": 14802.099,
+     "stop_origine": 13948.658054207004,
+     "prix_contrefactuel": 13948.658054207004,
+     "barres_avant_sortie_naturelle": 68,
+     "delta_pct": 1.02
+    },
+    {
+     "t": "2022-02-04 12:00:00",
+     "cause": "stop_serre",
+     "prix": 14376.583669960644,
+     "stop_origine": 13949.731197064146,
+     "prix_contrefactuel": 13949.731197064146,
+     "barres_avant_sortie_naturelle": 61,
+     "delta_pct": 0.5039768374296729
+    },
+    {
+     "t": "2022-02-17 20:00:00",
+     "cause": "stop_serre",
+     "prix": 14182.454964398012,
+     "stop_origine": 13879.504371083738,
+     "prix_contrefactuel": 13861.486,
+     "barres_avant_sortie_naturelle": 7,
+     "delta_pct": 0.37989577987446643
+    },
+    {
+     "t": "2022-03-07 00:00:00",
+     "cause": "gap_serre",
+     "prix": 13583.869,
+     "stop_origine": 13185.896628221863,
+     "prix_contrefactuel": 13185.896628221863,
+     "barres_avant_sortie_naturelle": 7,
+     "delta_pct": 0.4395806774875307
+    },
+    {
+     "t": "2022-04-21 16:00:00",
+     "cause": "stop_serre",
+     "prix": 13810.655959411783,
+     "stop_origine": 13673.315874035508,
+     "prix_contrefactuel": 13673.315874035508,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.16747727127239695
+    },
+    {
+     "t": "2022-05-25 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11933.599,
+     "stop_origine": 11048.576839589772,
+     "prix_contrefactuel": 12818.621160410228,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2022-07-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12104.233776033763,
+     "stop_origine": 11300.392295683698,
+     "prix_contrefactuel": 12783.825704316303,
+     "barres_avant_sortie_naturelle": 14,
+     "delta_pct": -0.7009250595419225
+    },
+    {
+     "t": "2022-08-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12780.81177597278,
+     "stop_origine": 12734.717261915192,
+     "prix_contrefactuel": 12734.717261915192,
+     "barres_avant_sortie_naturelle": 1,
+     "delta_pct": 0.07405654011402674
+    },
+    {
+     "t": "2022-10-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11304.802633683817,
+     "stop_origine": 10400.741955432572,
+     "prix_contrefactuel": 11816.35604456743,
+     "barres_avant_sortie_naturelle": 67,
+     "delta_pct": -0.5528884776289944
+    },
+    {
+     "t": "2022-11-03 12:00:00",
+     "cause": "stop_serre",
+     "prix": 10766.762945773815,
+     "stop_origine": 10426.682605833343,
+     "prix_contrefactuel": 11804.575394166659,
+     "barres_avant_sortie_naturelle": 37,
+     "delta_pct": -1.1523777898291352
+    },
+    {
+     "t": "2022-12-07 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11414.693182103627,
+     "stop_origine": 11203.373502113307,
+     "prix_contrefactuel": 11203.373502113307,
+     "barres_avant_sortie_naturelle": 43,
+     "delta_pct": 0.22868623270844377
+    },
+    {
+     "t": "2023-01-24 20:00:00",
+     "cause": "stop_serre",
+     "prix": 11808.539,
+     "stop_origine": 11310.292476367222,
+     "prix_contrefactuel": 12306.78552363278,
+     "barres_avant_sortie_naturelle": 35,
+     "delta_pct": -1.02
+    },
+    {
+     "t": "2023-02-24 12:00:00",
+     "cause": "stop_serre",
+     "prix": 11923.216892167768,
+     "stop_origine": 11824.716211490797,
+     "prix_contrefactuel": 11824.716211490797,
+     "barres_avant_sortie_naturelle": 23,
+     "delta_pct": 0.14194711292653645
+    },
+    {
+     "t": "2023-04-25 12:00:00",
+     "cause": "stop_serre",
+     "prix": 12870.435576871329,
+     "stop_origine": 12588.979936044903,
+     "prix_contrefactuel": 13593.578063955098,
+     "barres_avant_sortie_naturelle": 97,
+     "delta_pct": -1.468458513574659
+    },
+    {
+     "t": "2023-10-19 16:00:00",
+     "cause": "stop_serre",
+     "prix": 14755.245289234383,
+     "stop_origine": 14513.820190635051,
+     "prix_contrefactuel": 14513.820190635051,
+     "barres_avant_sortie_naturelle": 10,
+     "delta_pct": 0.34604401641426863
+    },
+    {
+     "t": "2023-12-04 12:00:00",
+     "cause": "stop_serre",
+     "prix": 15803.739,
+     "stop_origine": 15287.205118569145,
+     "prix_contrefactuel": 16320.272881430854,
+     "barres_avant_sortie_naturelle": 37,
+     "delta_pct": -1.0200000000000002
+    },
+    {
+     "t": "2024-05-02 16:00:00",
+     "cause": "stop_serre",
+     "prix": 17405.642,
+     "stop_origine": 16807.198554671064,
+     "prix_contrefactuel": 18004.085445328936,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2024-10-30 20:00:00",
+     "cause": "stop_serre",
+     "prix": 20331.802955177154,
+     "stop_origine": 19698.408991985903,
+     "prix_contrefactuel": 20880.253008014093,
+     "barres_avant_sortie_naturelle": 34,
+     "delta_pct": -0.946688473786433
+    },
+    {
+     "t": "2025-02-07 16:00:00",
+     "cause": "stop_serre",
+     "prix": 21491.454,
+     "stop_origine": 20692.091187952177,
+     "prix_contrefactuel": 20692.091187952177,
+     "barres_avant_sortie_naturelle": 85,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2025-02-27 12:00:00",
+     "cause": "stop_serre",
+     "prix": 20925.12901279757,
+     "stop_origine": 20845.161861074368,
+     "prix_contrefactuel": 20845.161861074368,
+     "barres_avant_sortie_naturelle": 0,
+     "delta_pct": 0.08150106147553964
+    },
+    {
+     "t": "2025-10-23 08:00:00",
+     "cause": "stop_serre",
+     "prix": 24932.511,
+     "stop_origine": 24189.041379022405,
+     "prix_contrefactuel": 25675.980620977592,
+     "barres_avant_sortie_naturelle": 12,
+     "delta_pct": -0.765
+    },
+    {
+     "t": "2026-02-26 12:00:00",
+     "cause": "stop_serre",
+     "prix": 24873.56439260621,
+     "stop_origine": 23819.323066393434,
+     "prix_contrefactuel": 23819.323066393434,
+     "barres_avant_sortie_naturelle": 97,
+     "delta_pct": 0.8609865077949694
+    },
+    {
+     "t": "2026-03-05 04:00:00",
+     "cause": "stop_serre",
+     "prix": 24982.372,
+     "stop_origine": 24123.594198513572,
+     "prix_contrefactuel": 24123.594198513572,
+     "barres_avant_sortie_naturelle": 11,
+     "delta_pct": 0.765
+    },
+    {
+     "t": "2026-07-23 12:00:00",
+     "cause": "stop_serre",
+     "prix": 28531.457322698483,
+     "stop_origine": 27967.275189931308,
+     "prix_contrefactuel": 27967.275189931308,
+     "barres_avant_sortie_naturelle": 12,
+     "delta_pct": 0.34480368855451843
+    }
+   ],
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "non_resolus": 0,
+   "n_departs": 119,
+   "n_independants": 8
+  }
+ ]
+}
