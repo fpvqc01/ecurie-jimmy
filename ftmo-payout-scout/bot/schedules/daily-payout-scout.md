@@ -2,13 +2,14 @@
 cron: "0 7 * * *"
 ---
 
-Fais le briefing FTMO du jour (UTC).
+Mission du jour : **une** idée pour réussir plus de challenges FTMO et/ou
+extraire plus de cash légitime une fois financé (Écurie Jimmy).
 
-1. Appelle `list_ftmo_sources`, puis `fetch_ftmo_page` sur chaque source pertinente
-   (payouts / FAQ, scaling, trading objectives, challenge).
-2. Appelle `get_latest_brief` pour comparer avec le dernier brief sauvegardé.
-3. Rédige le briefing au format des instructions (changements, leviers payout
-   légitimes, pièges règlement, sources).
-4. Appelle `save_daily_brief` avec la date UTC du jour, un headline, le résumé,
-   3 à 5 idées concrètes et conformes, les URLs utilisées, et une note de conformité.
-5. Reste strictement dans le règlement FTMO — aucun contournement.
+1. `list_knowledge` puis `list_rejected_ideas`.
+2. `search_knowledge` sur le levier du jour (challenge, funded risk, sizing,
+   scaling, portfolio, pyramidage cassure, allocation, Free Trial, etc.).
+3. `list_prior_ideas` + `get_latest_idea` — ne pas répéter la même headline.
+4. Propose **une** idée au format des instructions (thèse, hors cimetière,
+   plan de test go/no-go, risque FTMO, prochaine action).
+5. `save_daily_idea` avec la date UTC du jour.
+6. Aucune fraude / contournement. Pas de scrape ftmo.com.

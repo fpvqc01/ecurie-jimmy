@@ -2,7 +2,7 @@
   "name": "ftmo-payout-scout",
   "private": true,
   "type": "module",
-  "description": "Daily legitimate FTMO payout / scaling rules scout (Agent SDK)",
+  "description": "Daily Écurie Jimmy idea engine: pass FTMO challenges and maximize funded Reward cash",
   "scripts": {
     "check": "tsc --noEmit",
     "dev": "agent-sdk dev"

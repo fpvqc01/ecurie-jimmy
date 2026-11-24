@@ -1,11 +1,12 @@
 ---
-description: Use when the user asks about loopholes, hacks, account sharing, KYC tricks, or anything that may break FTMO rules — before answering.
+description: Use when the user asks for loopholes, account sharing, KYC tricks, multi-account hedges, or anything that may break FTMO rules — before answering.
 ---
 
-# Conformité FTMO
+# Conformité FTMO (Écurie Jimmy)
 
-1. Si la demande vise à **tromper**, **contourner** ou **exploiter** FTMO → refuse.
-2. Si la demande vise à **optimiser un payout dans les règles** (fréquence, scaling,
-   risque, objectifs) → continue avec les outils officiels.
-3. Cite toujours une source `ftmo.com` pour les affirmations de règles.
-4. Rappelle que ce n’est pas un conseil financier personnalisé.
+1. Objectif = passer challenges + payouts **dans les règles**.
+2. Refuse : fraude, faux docs, partage/vente de compte, hedge entre comptes interdit,
+   exploits, « astuces » ToS.
+3. Autorisé : risque, sizing, produit Swing, timing Rewards, scaling, robots,
+   backtests, Free Trial.
+4. Si une idée touche une limite jour/total : dis clairement le mode de mort du compte.

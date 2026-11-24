@@ -1,21 +1,22 @@
 # ftmo-payout-scout
 
-Agent Agent SDK qui, chaque jour (07:00 UTC), lit les pages officielles FTMO
-et produit un briefing sur les leviers **légitimes** pour maximiser les
-retraits / payouts (règles, scaling, objectifs, fréquence).
+Agent quotidien (07:00 UTC) pour l’**Écurie Jimmy** : une idée concrète par jour
+pour **réussir plus de challenges FTMO**, **garder des comptes financés**, et
+**maximiser le cash légitime** (Rewards + scaling).
 
-Ce n’est **pas** un outil de fraude ni de contournement des ToS FTMO.
+Ancré dans la connaissance locale du labo (`knowledge/`) — **pas** un scraper
+FAQ FTMO.
 
-## Démarrage local
+## Démarrage
 
 ```bash
 cd ftmo-payout-scout
-npx @grok/agent-sdk login          # une fois
+npx @grok/agent-sdk login
 npx @grok/agent-sdk validate --dir .
-npx @grok/agent-sdk dev --dir .    # playground
+npx @grok/agent-sdk dev --dir .
 ```
 
-Déclencher le cron à la main en mode dev :
+Déclencher le cron en dev :
 
 ```bash
 curl -X POST http://127.0.0.1:3000/ftmo-payout-scout/v1/dev/schedules/daily-payout-scout
@@ -23,6 +24,5 @@ curl -X POST http://127.0.0.1:3000/ftmo-payout-scout/v1/dev/schedules/daily-payo
 
 ## Outils
 
-- `list_ftmo_sources` — URLs officielles curatées
-- `fetch_ftmo_page` — fetch allowlisté `ftmo.com`
-- `get_latest_brief` / `save_daily_brief` — mémoire jour après jour
+- `list_knowledge` / `search_knowledge` / `list_rejected_ideas`
+- `list_prior_ideas` / `get_latest_idea` / `save_daily_idea`
