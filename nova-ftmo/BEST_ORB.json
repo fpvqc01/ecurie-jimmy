@@ -1,0 +1,15 @@
+{
+  "locked": "xau_m5 / orb_fast",
+  "why": "Best speed/survival tradeoff on available sample: ~12% pass, ~19% dead, median ~14-16 days when it passes.",
+  "params": {
+    "symbol": "XAUUSD",
+    "timeframe": "M5",
+    "risk": 0.018,
+    "tp_r": 1.8,
+    "range_bars": 3,
+    "halt_day": 0.032,
+    "sl_buffer_atr": 0.2,
+    "max_trades_day": 2
+  },
+  "warning": "Experimental sprint mode. Not a high-EV money printer. Validate on Free Trial."
+}

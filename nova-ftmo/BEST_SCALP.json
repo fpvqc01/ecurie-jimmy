@@ -1,0 +1,42 @@
+{
+  "market": "us100_h1",
+  "config": "h1_blitz",
+  "stats": {
+    "n": 558,
+    "pass_rate": 0.0627,
+    "median_days_pass": 19,
+    "pct_pass_le_30d": 0.0609,
+    "pct_pass_le_45d": 0.0627,
+    "expected_days": 661.5,
+    "dead_rate": 0.9283,
+    "timeout_rate": 0.009,
+    "avg_trades_pass": 10.8
+  },
+  "params": {
+    "ema_fast": 20,
+    "ema_slow": 35,
+    "atr_n": 14,
+    "risk": 0.022,
+    "sl_atr": 1.0,
+    "tp_r": 1.2,
+    "max_trades_day": 10,
+    "cooldown_bars": 0,
+    "halt_day": 0.035,
+    "initial": 100000.0,
+    "p1_target": 0.1,
+    "p2_target": 0.05,
+    "flatten_at_phase": true,
+    "session1": [
+      7,
+      16
+    ],
+    "session2": [
+      13,
+      21
+    ],
+    "spread": 0.00012,
+    "slippage": 4e-05,
+    "allow_short": true,
+    "max_bars": 50000
+  }
+}

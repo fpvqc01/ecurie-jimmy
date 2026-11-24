@@ -1,0 +1,153 @@
+{
+  "xau_m15": {
+    "m15_base": {
+      "n": 89,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.3483,
+      "timeout_rate": 0.6517,
+      "avg_trades_pass": null
+    },
+    "m15_fast": {
+      "n": 89,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.5169,
+      "timeout_rate": 0.4831,
+      "avg_trades_pass": null
+    },
+    "m15_sprint": {
+      "n": 89,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.8989,
+      "timeout_rate": 0.1011,
+      "avg_trades_pass": null
+    },
+    "m15_gold_only_agg": {
+      "n": 89,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.5955,
+      "timeout_rate": 0.4045,
+      "avg_trades_pass": null
+    }
+  },
+  "us100_m15": {
+    "m15_base": {
+      "n": 89,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.1011,
+      "timeout_rate": 0.8989,
+      "avg_trades_pass": null
+    },
+    "m15_fast": {
+      "n": 89,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.6067,
+      "timeout_rate": 0.3933,
+      "avg_trades_pass": null
+    },
+    "m15_sprint": {
+      "n": 89,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.809,
+      "timeout_rate": 0.191,
+      "avg_trades_pass": null
+    }
+  },
+  "xau_h1": {
+    "h1_fast": {
+      "n": 560,
+      "pass_rate": 0.0161,
+      "median_days_pass": 39,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0161,
+      "expected_days": 2671.6,
+      "dead_rate": 0.1911,
+      "timeout_rate": 0.7929,
+      "avg_trades_pass": 15.7
+    },
+    "h1_sprint": {
+      "n": 560,
+      "pass_rate": 0.0,
+      "median_days_pass": null,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0,
+      "expected_days": null,
+      "dead_rate": 0.6018,
+      "timeout_rate": 0.3982,
+      "avg_trades_pass": null
+    },
+    "h1_blitz": {
+      "n": 560,
+      "pass_rate": 0.0054,
+      "median_days_pass": 19,
+      "pct_pass_le_30d": 0.0036,
+      "pct_pass_le_45d": 0.0054,
+      "expected_days": 8002.7,
+      "dead_rate": 0.8393,
+      "timeout_rate": 0.1554,
+      "avg_trades_pass": 10.3
+    }
+  },
+  "us100_h1": {
+    "h1_fast": {
+      "n": 558,
+      "pass_rate": 0.0036,
+      "median_days_pass": 19.5,
+      "pct_pass_le_30d": 0.0036,
+      "pct_pass_le_45d": 0.0036,
+      "expected_days": 11973.5,
+      "dead_rate": 0.405,
+      "timeout_rate": 0.5914,
+      "avg_trades_pass": 14
+    },
+    "h1_sprint": {
+      "n": 558,
+      "pass_rate": 0.0054,
+      "median_days_pass": 32,
+      "pct_pass_le_30d": 0.0,
+      "pct_pass_le_45d": 0.0054,
+      "expected_days": 7987.0,
+      "dead_rate": 0.8584,
+      "timeout_rate": 0.1362,
+      "avg_trades_pass": 24.7
+    },
+    "h1_blitz": {
+      "n": 558,
+      "pass_rate": 0.0627,
+      "median_days_pass": 19,
+      "pct_pass_le_30d": 0.0609,
+      "pct_pass_le_45d": 0.0627,
+      "expected_days": 661.5,
+      "dead_rate": 0.9283,
+      "timeout_rate": 0.009,
+      "avg_trades_pass": 10.8
+    }
+  }
+}
