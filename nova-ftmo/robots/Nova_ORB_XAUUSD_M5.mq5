@@ -1,10 +1,10 @@
 //+------------------------------------------------------------------+
 //| Nova_ORB_XAUUSD_M5.mq5 — Opening Range Breakout (sprint ~30j)   |
+//| + filtre "IA légère" : score range/vol + biais fichier optionnel|
 //| Config labo orb_fast : risk 1.8%, TP 1.8R — HAUTE MORTALITÉ     |
-//| À utiliser en Free Trial / démo avant challenge réel.           |
 //+------------------------------------------------------------------+
 #property copyright "Nova FTMO"
-#property version   "1.00"
+#property version   "1.10"
 
 input double RisquePct        = 1.8;
 input int    RangeBars        = 3;      // barres M5 pour construire le range
@@ -20,6 +20,14 @@ input int    SessionEndHour   = 20;
 input int    MaxTradesDay     = 2;
 input bool   AllowShort       = true;
 input long   Magic            = 202611243;
+
+// --- Filtre intelligent (pas un LLM dans la boucle) ---
+input bool   UseSmartFilter   = true;   // refuse les ranges pourris
+input double MinRangeAtr      = 0.35;   // range trop petit = bruit
+input double MaxRangeAtr      = 2.20;   // range trop large = chaos
+input double MinBreakBodyAtr  = 0.15;   // bougie de break trop molle = skip
+input bool   UseBiasFile      = false;  // lit MQL5\Files\nova_ai_bias.txt
+input string BiasFileName     = "nova_ai_bias.txt"; // BOTH|LONG|SHORT|OFF
 
 int hAtr;
 datetime g_day0=0;
@@ -123,6 +131,42 @@ void ManageRisk()
       CloseAllMine();
 }
 
+// BOTH / LONG / SHORT / OFF
+string ReadBias()
+{
+   if(!UseBiasFile) return "BOTH";
+   int h=FileOpen(BiasFileName,FILE_READ|FILE_TXT|FILE_ANSI);
+   if(h==INVALID_HANDLE) return "BOTH";
+   string line=FileReadString(h);
+   FileClose(h);
+   StringTrimLeft(line); StringTrimRight(line);
+   StringToUpper(line);
+   if(line=="LONG" || line=="SHORT" || line=="OFF" || line=="BOTH") return line;
+   return "BOTH";
+}
+
+bool SmartFilterOk(const double atr,const double rangeW,const double body,const int side)
+{
+   if(!UseSmartFilter) return true;
+   if(atr<=0) return false;
+   double rangeAtr=rangeW/atr;
+   double bodyAtr=body/atr;
+   // Trop étroit = faux breakouts ; trop large = déjà explosé
+   if(rangeAtr < MinRangeAtr || rangeAtr > MaxRangeAtr) {
+      Print("Nova AI-filter SKIP range/ATR=",DoubleToString(rangeAtr,2));
+      return false;
+   }
+   if(bodyAtr < MinBreakBodyAtr) {
+      Print("Nova AI-filter SKIP weak break body/ATR=",DoubleToString(bodyAtr,2));
+      return false;
+   }
+   string bias=ReadBias();
+   if(bias=="OFF") return false;
+   if(bias=="LONG" && side<0) return false;
+   if(bias=="SHORT" && side>0) return false;
+   return true;
+}
+
 void OnTick()
 {
    ManageRisk();
@@ -139,6 +183,7 @@ void OnTick()
    double hi1=iHigh(_Symbol,PERIOD_M5,1);
    double lo1=iLow(_Symbol,PERIOD_M5,1);
    double c1=iClose(_Symbol,PERIOD_M5,1);
+   double o1=iOpen(_Symbol,PERIOD_M5,1);
 
    if(hh==LondonOpenHour || hh==NyOpenHour)
    {
@@ -179,6 +224,16 @@ void OnTick()
    else if(AllowShort && c1<g_rangeLo) side=-1;
    if(side==0) return;
 
+   double rangeW=g_rangeHi-g_rangeLo;
+   double body=MathAbs(c1-o1);
+   if(!SmartFilterOk(atr,rangeW,body,side))
+   {
+      // consomme la session pour ne pas spammer après un range pourri
+      g_takenSession=true;
+      g_armed=false;
+      return;
+   }
+
    double ask=SymbolInfoDouble(_Symbol,SYMBOL_ASK);
    double bid=SymbolInfoDouble(_Symbol,SYMBOL_BID);
    double entry=(side>0)?ask:bid;
@@ -209,12 +264,13 @@ void OnTick()
    req.tp=tp;
    req.deviation=40;
    req.magic=Magic;
-   req.comment="NovaORB";
+   req.comment="NovaORB+AI";
    if(OrderSend(req,res))
    {
       g_dayTrades++;
       g_takenSession=true;
       g_armed=false;
+      Print("Nova AI-filter TAKE side=",side," range/ATR=",DoubleToString(rangeW/atr,2));
    }
    else Print("Nova ORB fail ",res.retcode);
 }
