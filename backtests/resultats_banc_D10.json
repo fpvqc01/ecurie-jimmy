@@ -1,0 +1,406 @@
+{
+ "moteur": {
+  "D9 tel que code | 10 ans": {
+   "cagr": 20.103321813375263,
+   "dd": -12.475087181073407,
+   "trades": 432,
+   "giveback_part": 64.0761198408171,
+   "seances": 4018
+  },
+  "D9 tel que code | 2021-26": {
+   "cagr": 13.424007386426705,
+   "dd": -12.236916931215436,
+   "trades": 207,
+   "giveback_part": 67.29777690808149,
+   "seances": 2058
+  },
+  "D10 | 10 ans": {
+   "cagr": 22.280241678102676,
+   "dd": -11.951666807923377,
+   "trades": 273,
+   "giveback_part": 47.47754824403085,
+   "seances": 4018
+  },
+  "D10 | 2021-26": {
+   "cagr": 17.984581906760155,
+   "dd": -10.586400947738117,
+   "trades": 150,
+   "giveback_part": 48.319262898654735,
+   "seances": 2058
+  }
+ },
+ "challenge": {
+  "D9 tel que code | 10 ans": {
+   "cagr": 20.103321813375263,
+   "dd": -12.475087181073407,
+   "trades": 432,
+   "reussite": 84.28571428571429,
+   "ic95": [
+    57.405150773801786,
+    95.52500855954968
+   ],
+   "duree_med": 284.5,
+   "p60": 0.0,
+   "esperance": 358.7033898305084,
+   "morts_jour": 0,
+   "morts_totale": 44,
+   "non_resolus": 0,
+   "ind": 13,
+   "n_departs": 280
+  },
+  "D9 tel que code | 2021-26": {
+   "cagr": 13.424007386426705,
+   "dd": -12.236916931215436,
+   "trades": 207,
+   "reussite": 71.09375,
+   "ic95": [
+    30.67327004398934,
+    93.18412002115726
+   ],
+   "duree_med": 412.0,
+   "p60": 0.0,
+   "esperance": 574.2307692307693,
+   "morts_jour": 0,
+   "morts_totale": 37,
+   "non_resolus": 0,
+   "ind": 5,
+   "n_departs": 128
+  },
+  "D10 | 10 ans": {
+   "cagr": 22.280241678102676,
+   "dd": -11.951666807923377,
+   "trades": 273,
+   "reussite": 90.68825910931174,
+   "ic95": [
+    64.71101433742358,
+    98.10337009410935
+   ],
+   "duree_med": 251.5,
+   "p60": 0.0,
+   "esperance": 284.45982142857144,
+   "morts_jour": 0,
+   "morts_totale": 23,
+   "non_resolus": 0,
+   "ind": 13,
+   "n_departs": 247
+  },
+  "D10 | 2021-26": {
+   "cagr": 17.984581906760155,
+   "dd": -10.586400947738117,
+   "trades": 150,
+   "reussite": 88.9908256880734,
+   "ic95": [
+    45.35354441054897,
+    98.74574269594014
+   ],
+   "duree_med": 297.0,
+   "p60": 0.0,
+   "esperance": 354.34020618556696,
+   "morts_jour": 0,
+   "morts_totale": 12,
+   "non_resolus": 0,
+   "ind": 5,
+   "n_departs": 109
+  }
+ },
+ "finance": {
+  "D9 tel que code (plafonds morts, turbo finance) | 365j | 10 ans": {
+   "survie": 93.77049180327869,
+   "ic95": [
+    65.72092892200759,
+    99.16094497785033
+   ],
+   "n_departs": 305,
+   "n_eff": 11,
+   "survies": 286,
+   "morts_jour": 0,
+   "morts_totale": 19,
+   "jours": 365
+  },
+  "D9 tel que code (plafonds morts, turbo finance) | 365j | 2021-26": {
+   "survie": 88.0794701986755,
+   "ic95": [
+    44.51686432332094,
+    98.55166422205038
+   ],
+   "n_departs": 151,
+   "n_eff": 5,
+   "survies": 133,
+   "morts_jour": 0,
+   "morts_totale": 18,
+   "jours": 365
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 365j | 10 ans": {
+   "survie": 99.2619926199262,
+   "ic95": [
+    73.03700669934983,
+    99.98502850159728
+   ],
+   "n_departs": 271,
+   "n_eff": 11,
+   "survies": 269,
+   "morts_jour": 0,
+   "morts_totale": 2,
+   "jours": 365
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 365j | 2021-26": {
+   "survie": 100.0,
+   "ic95": [
+    56.550850524791905,
+    100.0
+   ],
+   "n_departs": 131,
+   "n_eff": 5,
+   "survies": 131,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "jours": 365
+  },
+  "decomposition : plafonds morts, turbo coupe | 365j | 10 ans": {
+   "survie": 96.39344262295081,
+   "ic95": [
+    69.08173084152445,
+    99.68819542686427
+   ],
+   "n_departs": 305,
+   "n_eff": 11,
+   "survies": 294,
+   "morts_jour": 0,
+   "morts_totale": 11,
+   "jours": 365
+  },
+  "decomposition : plafonds morts, turbo coupe | 365j | 2021-26": {
+   "survie": 94.03973509933775,
+   "ic95": [
+    50.213201170508185,
+    99.59648836457342
+   ],
+   "n_departs": 151,
+   "n_eff": 5,
+   "survies": 142,
+   "morts_jour": 0,
+   "morts_totale": 9,
+   "jours": 365
+  },
+  "decomposition : plafonds actifs, turbo finance laisse | 365j | 10 ans": {
+   "survie": 95.9409594095941,
+   "ic95": [
+    68.48669520561795,
+    99.61250616155746
+   ],
+   "n_departs": 271,
+   "n_eff": 11,
+   "survies": 260,
+   "morts_jour": 0,
+   "morts_totale": 11,
+   "jours": 365
+  },
+  "decomposition : plafonds actifs, turbo finance laisse | 365j | 2021-26": {
+   "survie": 100.0,
+   "ic95": [
+    56.550850524791905,
+    100.0
+   ],
+   "n_departs": 131,
+   "n_eff": 5,
+   "survies": 131,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "jours": 365
+  },
+  "D9 tel que code (plafonds morts, turbo finance) | 1095j | 10 ans": {
+   "survie": 92.33870967741936,
+   "ic95": [
+    37.542615489017365,
+    99.58791802134806
+   ],
+   "n_departs": 248,
+   "n_eff": 3,
+   "survies": 229,
+   "morts_jour": 0,
+   "morts_totale": 19,
+   "jours": 1095
+  },
+  "D9 tel que code (plafonds morts, turbo finance) | 1095j | 2021-26": {
+   "survie": 80.85106382978724,
+   "ic95": [
+    13.620943170961219,
+    99.12321736678963
+   ],
+   "n_departs": 94,
+   "n_eff": 1,
+   "survies": 76,
+   "morts_jour": 0,
+   "morts_totale": 18,
+   "jours": 1095
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 1095j | 10 ans": {
+   "survie": 99.06103286384976,
+   "ic95": [
+    43.03271558582279,
+    99.99321360955526
+   ],
+   "n_departs": 213,
+   "n_eff": 3,
+   "survies": 211,
+   "morts_jour": 0,
+   "morts_totale": 2,
+   "jours": 1095
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 1095j | 2021-26": {
+   "survie": 100.0,
+   "ic95": [
+    20.654329147389294,
+    100.0
+   ],
+   "n_departs": 73,
+   "n_eff": 1,
+   "survies": 73,
+   "morts_jour": 0,
+   "morts_totale": 0,
+   "jours": 1095
+  },
+  "decomposition : plafonds morts, turbo coupe | 1095j | 10 ans": {
+   "survie": 95.56451612903226,
+   "ic95": [
+    40.10355374324513,
+    99.85597279648147
+   ],
+   "n_departs": 248,
+   "n_eff": 3,
+   "survies": 237,
+   "morts_jour": 0,
+   "morts_totale": 11,
+   "jours": 1095
+  },
+  "decomposition : plafonds morts, turbo coupe | 1095j | 2021-26": {
+   "survie": 88.29787234042553,
+   "ic95": [
+    16.15768471771889,
+    99.662652501558
+   ],
+   "n_departs": 94,
+   "n_eff": 1,
+   "survies": 83,
+   "morts_jour": 0,
+   "morts_totale": 11,
+   "jours": 1095
+  },
+  "decomposition : plafonds actifs, turbo finance laisse | 1095j | 10 ans": {
+   "survie": 94.83568075117371,
+   "ic95": [
+    39.51369164948353,
+    99.80665512715383
+   ],
+   "n_departs": 213,
+   "n_eff": 3,
+   "survies": 202,
+   "morts_jour": 0,
+   "morts_totale": 11,
+   "jours": 1095
+  },
+  "decomposition : plafonds actifs, turbo finance laisse | 1095j | 2021-26": {
+   "survie": 97.26027397260275,
+   "ic95": [
+    19.541853914439873,
+    99.98073117007877
+   ],
+   "n_departs": 73,
+   "n_eff": 1,
+   "survies": 71,
+   "morts_jour": 0,
+   "morts_totale": 2,
+   "jours": 1095
+  }
+ },
+ "compte_entier": {
+  "D9 tel que code (plafonds morts, turbo finance) | 10 ans": {
+   "issue": "mort jour au jour 2906",
+   "duree": 2906,
+   "cause": "jour",
+   "borne": {
+    "multiple": 7.626308733717614,
+    "cagr": 20.288850365905642,
+    "creux": -12.475087181073263
+   },
+   "borne_sans_turbo": {
+    "multiple": 7.497938167438437,
+    "cagr": 20.103321813375263,
+    "creux": -12.475087181073407
+   }
+  },
+  "D9 tel que code (plafonds morts, turbo finance) | 2021-26": {
+   "issue": "survivant jusqu'au bout (2058 seances)",
+   "duree": 2058,
+   "cause": null,
+   "borne": {
+    "multiple": 2.0671816636854095,
+    "cagr": 13.762734916531393,
+    "creux": -12.236916931215314
+   },
+   "borne_sans_turbo": {
+    "multiple": 2.0327562652544193,
+    "cagr": 13.424007386426705,
+    "creux": -12.236916931215436
+   }
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 10 ans": {
+   "issue": "mort jour au jour 2223",
+   "duree": 2223,
+   "cause": "jour",
+   "borne": {
+    "multiple": 9.135657222421592,
+    "cagr": 22.280241678102676,
+    "creux": -11.951666807923377
+   },
+   "borne_sans_turbo": {
+    "multiple": 9.135657222421592,
+    "cagr": 22.280241678102676,
+    "creux": -11.951666807923377
+   }
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 2021-26": {
+   "issue": "survivant jusqu'au bout (2058 seances)",
+   "duree": 2058,
+   "cause": null,
+   "borne": {
+    "multiple": 2.5380638740924626,
+    "cagr": 17.984581906760155,
+    "creux": -10.586400947738117
+   },
+   "borne_sans_turbo": {
+    "multiple": 2.5380638740924626,
+    "cagr": 17.984581906760155,
+    "creux": -10.586400947738117
+   }
+  }
+ },
+ "borne": {
+  "D9 tel que code (plafonds morts, turbo finance) | 10 ans": {
+   "multiple": 7.626308733717614,
+   "cagr": 20.288850365905642,
+   "creux": -12.475087181073263
+  },
+  "D9 tel que code (plafonds morts, turbo finance) | 2021-26": {
+   "multiple": 2.0671816636854095,
+   "cagr": 13.762734916531393,
+   "creux": -12.236916931215314
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 10 ans": {
+   "multiple": 9.135657222421592,
+   "cagr": 22.280241678102676,
+   "creux": -11.951666807923377
+  },
+  "D10 (plafonds actifs, turbo finance coupe) | 2021-26": {
+   "multiple": 2.5380638740924626,
+   "cagr": 17.984581906760155,
+   "creux": -10.586400947738117
+  }
+ },
+ "controle": {
+  "D9 tel que code | 10 ans": true,
+  "D9 tel que code | 2021-26": true,
+  "D10 | 10 ans": true,
+  "D10 | 2021-26": true
+ }
+}
