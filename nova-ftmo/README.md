@@ -29,4 +29,10 @@ python3 banc_scalp.py  # EMA scalp (échec après frais)
 3. Sprint : chart **XAUUSD M5** + `Nova_ORB_XAUUSD_M5` (heures Londres/NY)  
 4. Algo Trading ON  
 
+## Superviseur ML (optionnel)
+
+L’EA peut **attendre une autorisation** avant chaque trade (`UseAuthSupervisor=true`).  
+Un script Python lit le signal, score un modèle sklearn, écrit `YES`/`NO`.  
+Voir `SUPERVISEUR.md`.
+
 Aucune garantie de profit.

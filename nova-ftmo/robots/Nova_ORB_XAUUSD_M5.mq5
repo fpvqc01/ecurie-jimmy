@@ -4,7 +4,7 @@
 //| Config labo orb_fast : risk 1.8%, TP 1.8R — HAUTE MORTALITÉ     |
 //+------------------------------------------------------------------+
 #property copyright "Nova FTMO"
-#property version   "1.10"
+#property version   "1.20"
 
 input double RisquePct        = 1.8;
 input int    RangeBars        = 3;      // barres M5 pour construire le range
@@ -29,6 +29,12 @@ input double MinBreakBodyAtr  = 0.15;   // bougie de break trop molle = skip
 input bool   UseBiasFile      = false;  // lit MQL5\Files\nova_ai_bias.txt
 input string BiasFileName     = "nova_ai_bias.txt"; // BOTH|LONG|SHORT|OFF
 
+// --- Superviseur ML / agent (handshake fichiers) ---
+input bool   UseAuthSupervisor = false; // attend YES du supervisor.py
+input int    AuthTimeoutBars   = 3;     // expire si pas de réponse
+input string PendingFileName   = "nova_pending.json";
+input string AuthFileName      = "nova_auth.txt";
+
 int hAtr;
 datetime g_day0=0;
 double g_dayStartEquity=0;
@@ -41,6 +47,15 @@ bool g_armed=false;
 bool g_takenSession=false;
 int g_rangeBars=0;
 double g_rangeHi=0, g_rangeLo=0;
+
+// auth handshake
+bool g_waitingAuth=false;
+int g_authWaitBars=0;
+string g_pendingId="";
+int g_pendingSide=0;
+double g_pendingAtr=0, g_pendingRange=0, g_pendingBody=0;
+double g_pendingBreak=0, g_pendingRet1=0, g_pendingRet4=0;
+int g_pendingHour=0;
 
 int OnInit()
 {
@@ -167,6 +182,103 @@ bool SmartFilterOk(const double atr,const double rangeW,const double body,const 
    return true;
 }
 
+void WritePending(const int side,const double atr,const double rangeW,const double body,
+                  const double breakDist,const double ret1,const double ret4,const int hour)
+{
+   g_pendingId=IntegerToString((long)TimeCurrent())+"_"+IntegerToString(side);
+   g_pendingSide=side;
+   g_pendingAtr=atr;
+   g_pendingRange=rangeW/atr;
+   g_pendingBody=body/atr;
+   g_pendingBreak=breakDist/atr;
+   g_pendingRet1=ret1;
+   g_pendingRet4=ret4;
+   g_pendingHour=hour;
+   // clear old auth
+   FileDelete(AuthFileName);
+   int h=FileOpen(PendingFileName,FILE_WRITE|FILE_TXT|FILE_ANSI);
+   if(h==INVALID_HANDLE){ Print("Nova pending write fail"); return; }
+   string js=StringFormat(
+      "{\"status\":\"WAIT\",\"id\":\"%s\",\"hour\":%d,\"side\":%d,\"atr\":%.5f,\"range_atr\":%.5f,\"body_atr\":%.5f,\"break_dist_atr\":%.5f,\"ret_1h\":%.5f,\"ret_4h\":%.5f}",
+      g_pendingId, hour, side, atr, rangeW/atr, body/atr, breakDist/atr, ret1, ret4);
+   FileWriteString(h, js);
+   FileClose(h);
+   g_waitingAuth=true;
+   g_authWaitBars=0;
+   Print("Nova pending auth id=", g_pendingId);
+}
+
+int PollAuth() // 1=YES 0=wait -1=NO/timeout
+{
+   if(!g_waitingAuth) return 1;
+   g_authWaitBars++;
+   if(g_authWaitBars > AuthTimeoutBars) {
+      Print("Nova auth TIMEOUT -> DENY");
+      g_waitingAuth=false;
+      return -1;
+   }
+   if(!FileIsExist(AuthFileName)) return 0;
+   int h=FileOpen(AuthFileName,FILE_READ|FILE_TXT|FILE_ANSI);
+   if(h==INVALID_HANDLE) return 0;
+   string line=FileReadString(h);
+   FileClose(h);
+   StringTrimLeft(line); StringTrimRight(line);
+   string parts[];
+   int n=StringSplit(line, ',', parts);
+   if(n<1) return 0;
+   string dec=parts[0];
+   StringToUpper(dec);
+   if(n>=3 && parts[2]!="" && parts[2]!=g_pendingId) return 0; // stale
+   if(dec=="YES"){ g_waitingAuth=false; return 1; }
+   if(dec=="NO"){ g_waitingAuth=false; Print("Nova auth DENY"); return -1; }
+   return 0;
+}
+
+bool SendTrade(const int side,const double atr)
+{
+   double ask=SymbolInfoDouble(_Symbol,SYMBOL_ASK);
+   double bid=SymbolInfoDouble(_Symbol,SYMBOL_BID);
+   double entry=(side>0)?ask:bid;
+   double stop=(side>0)?(g_rangeLo-SlBufferAtr*atr):(g_rangeHi+SlBufferAtr*atr);
+   double slDist=MathAbs(entry-stop);
+   if(slDist<=0) return false;
+
+   double equity=AccountInfoDouble(ACCOUNT_EQUITY);
+   double tickVal=SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_VALUE);
+   double tickSize=SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_SIZE);
+   if(tickVal<=0 || tickSize<=0) return false;
+   double lots=(equity*(RisquePct/100.0))/((slDist/tickSize)*tickVal);
+   double step=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_STEP);
+   double vmin=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MIN);
+   double vmax=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MAX);
+   lots=MathFloor(lots/step)*step;
+   if(lots<vmin) return false;
+   if(lots>vmax) lots=vmax;
+
+   double tp=entry+side*TpR*slDist;
+   MqlTradeRequest req; MqlTradeResult res; ZeroMemory(req); ZeroMemory(res);
+   req.action=TRADE_ACTION_DEAL;
+   req.symbol=_Symbol;
+   req.volume=lots;
+   req.type=(side>0)?ORDER_TYPE_BUY:ORDER_TYPE_SELL;
+   req.price=entry;
+   req.sl=stop;
+   req.tp=tp;
+   req.deviation=40;
+   req.magic=Magic;
+   req.comment="NovaORB+ML";
+   if(!OrderSend(req,res))
+   {
+      Print("Nova ORB fail ",res.retcode);
+      return false;
+   }
+   g_dayTrades++;
+   g_takenSession=true;
+   g_armed=false;
+   Print("Nova TRADE side=",side);
+   return true;
+}
+
 void OnTick()
 {
    ManageRisk();
@@ -214,8 +326,19 @@ void OnTick()
       if(CountMine()>0) CloseAllMine();
    }
 
-   if(CountMine()>0 || !g_armed || g_takenSession || g_dayTrades>=MaxTradesDay)
+   if(CountMine()>0 || g_takenSession || g_dayTrades>=MaxTradesDay)
       return;
+
+   // Si on attend une autorisation ML/agent
+   if(UseAuthSupervisor && g_waitingAuth)
+   {
+      int a=PollAuth();
+      if(a==1) SendTrade(g_pendingSide, g_pendingAtr);
+      else if(a==-1){ g_takenSession=true; g_armed=false; }
+      return;
+   }
+
+   if(!g_armed) return;
 
    double atr; if(!Buf(hAtr,1,atr) || atr<=0) return;
 
@@ -228,49 +351,22 @@ void OnTick()
    double body=MathAbs(c1-o1);
    if(!SmartFilterOk(atr,rangeW,body,side))
    {
-      // consomme la session pour ne pas spammer après un range pourri
       g_takenSession=true;
       g_armed=false;
       return;
    }
 
-   double ask=SymbolInfoDouble(_Symbol,SYMBOL_ASK);
-   double bid=SymbolInfoDouble(_Symbol,SYMBOL_BID);
-   double entry=(side>0)?ask:bid;
-   double stop=(side>0)?(g_rangeLo-SlBufferAtr*atr):(g_rangeHi+SlBufferAtr*atr);
-   double slDist=MathAbs(entry-stop);
-   if(slDist<=0) return;
+   double c12=iClose(_Symbol,PERIOD_M5,13);
+   double c48=iClose(_Symbol,PERIOD_M5,49);
+   double ret1=(c12>0)?(c1/c12-1.0):0.0;
+   double ret4=(c48>0)?(c1/c48-1.0):0.0;
+   double breakDist=MathAbs(c1-(side>0?g_rangeHi:g_rangeLo));
 
-   double equity=AccountInfoDouble(ACCOUNT_EQUITY);
-   double tickVal=SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_VALUE);
-   double tickSize=SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_SIZE);
-   if(tickVal<=0 || tickSize<=0) return;
-   double lots=(equity*(RisquePct/100.0))/((slDist/tickSize)*tickVal);
-   double step=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_STEP);
-   double vmin=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MIN);
-   double vmax=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MAX);
-   lots=MathFloor(lots/step)*step;
-   if(lots<vmin) return;
-   if(lots>vmax) lots=vmax;
-
-   double tp=entry+side*TpR*slDist;
-   MqlTradeRequest req; MqlTradeResult res; ZeroMemory(req); ZeroMemory(res);
-   req.action=TRADE_ACTION_DEAL;
-   req.symbol=_Symbol;
-   req.volume=lots;
-   req.type=(side>0)?ORDER_TYPE_BUY:ORDER_TYPE_SELL;
-   req.price=entry;
-   req.sl=stop;
-   req.tp=tp;
-   req.deviation=40;
-   req.magic=Magic;
-   req.comment="NovaORB+AI";
-   if(OrderSend(req,res))
+   if(UseAuthSupervisor)
    {
-      g_dayTrades++;
-      g_takenSession=true;
-      g_armed=false;
-      Print("Nova AI-filter TAKE side=",side," range/ATR=",DoubleToString(rangeW/atr,2));
+      WritePending(side,atr,rangeW,body,breakDist,ret1,ret4,hh);
+      return; // trade after YES
    }
-   else Print("Nova ORB fail ",res.retcode);
+
+   SendTrade(side, atr);
 }

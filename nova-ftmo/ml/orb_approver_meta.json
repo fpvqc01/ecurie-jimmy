@@ -1,0 +1,34 @@
+{
+  "rows": 50,
+  "winrate_base": 0.36,
+  "auc": 0.6904761904761905,
+  "threshold": 0.625,
+  "report": {
+    "0": {
+      "precision": 0.6666666666666666,
+      "recall": 0.8571428571428571,
+      "f1-score": 0.75,
+      "support": 7.0
+    },
+    "1": {
+      "precision": 0.75,
+      "recall": 0.5,
+      "f1-score": 0.6,
+      "support": 6.0
+    },
+    "accuracy": 0.6923076923076923,
+    "macro avg": {
+      "precision": 0.7083333333333333,
+      "recall": 0.6785714285714286,
+      "f1-score": 0.675,
+      "support": 13.0
+    },
+    "weighted avg": {
+      "precision": 0.7051282051282051,
+      "recall": 0.6923076923076923,
+      "f1-score": 0.6807692307692308,
+      "support": 13.0
+    }
+  },
+  "model": "/agent/repos/ecurie-jimmy/nova-ftmo/ml/orb_approver.joblib"
+}
