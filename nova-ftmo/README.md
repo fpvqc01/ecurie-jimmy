@@ -1,34 +1,32 @@
 # Nova FTMO — système neuf
 
-Décision : **robots MQL5 natifs** (meilleur pour FTMO 24/7), projet **from scratch**.
-Pas l’ancienne écurie. Pas d’agent LLM qui clique des trades.
+Robots **MQL5** from scratch (pas l’ancienne écurie). Pas d’agent LLM qui trade.
 
-## Stratégie verrouillée (`nova_v3_D`)
+## Deux modes
 
-- Marchés : **XAUUSD H4** + **US100 H4**
-- Long only : close croise au-dessus EMA20, avec EMA20 > EMA100 et prix > EMA100
-- Stop = 1.8 / 1.7 ATR · Take-profit = 2.8R / 2.5R
-- Risque 1.0 % or · 0.8 % Nasdaq · halt jour interne 2.4 %
-- Flatten à l’objectif de phase challenge (10 % puis 5 %)
-
-## Chiffres du banc (données H4 2015→2026)
-
-| Fenêtre | Réussite challenge | Médiane si réussi | Morts | Timeouts |
+| Mode | EA | Pass labo | Médiane | Rôle |
 |---|---|---|---|---|
-| 2015–2026 | **68.4 %** | **354 j** | 9.5 % | 22 % |
-| 2021–2026 | **67.6 %** | **362 j** | 3.2 % | 29 % |
+| Survie H4 `nova_v3_D` | `Nova_XAUUSD_H4` + `Nova_US100_H4` | ~68 % | ~350 j | Base |
+| **Sprint ORB M5** `orb_fast` | `Nova_ORB_XAUUSD_M5` | **~12 %** | **~15 j** | Tentative ≤30 j |
 
-Ce n’est **pas** encore >85 %. C’est la base Nova à améliorer. Aucune garantie de profit.
+Sprint = plus rapide, **beaucoup plus de fails**. Détails : `RESULTATS_30J.md`.
+
+## Bancs
 
 ```bash
 cd nova-ftmo
-python3 banc.py
+python3 -m pip install pandas numpy yfinance
+python3 fetch_data.py
+python3 banc.py        # H4
+python3 banc_orb.py    # ORB sprint
+python3 banc_scalp.py  # EMA scalp (échec après frais)
 ```
 
-## Live (chez toi, Windows / VPS)
+## Live
 
-1. Compiler `robots/Nova_XAUUSD_H4.mq5` et `robots/Nova_US100_H4.mq5`
-2. Compte FTMO **2-Step Swing** (démo → Free Trial → challenge)
-3. Chart H4 XAUUSD + US100, Algo Trading ON
-4. Phase 1 : `ObjectifPhasePct=10` · Phase 2 : `5` · Financé : `0`
-5. Rewards dès J+14 une fois financé → viser scaling
+1. Compiler les `.mq5` dans MetaEditor  
+2. FTMO **2-Step Swing** — **Free Trial d’abord**  
+3. Sprint : chart **XAUUSD M5** + `Nova_ORB_XAUUSD_M5` (heures Londres/NY)  
+4. Algo Trading ON  
+
+Aucune garantie de profit.
