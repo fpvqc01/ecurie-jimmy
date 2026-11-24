@@ -1,0 +1,31 @@
+{
+  "locked": "nova_v3_D",
+  "params": {
+    "gold_risk": 0.010,
+    "nq_risk": 0.008,
+    "turbo_mult": 1.0,
+    "halt_day": 0.024,
+    "gold_tp_r": 2.8,
+    "nq_tp_r": 2.5,
+    "gold_sl_atr": 1.8,
+    "nq_sl_atr": 1.7,
+    "strategy": "H4 close cross above EMA20 while EMA20>EMA100 and price>EMA100; fixed TP/SL ATR; phase flatten"
+  },
+  "2015_2026": {
+    "n": 455,
+    "pass_rate": 0.6835,
+    "median_days_pass": 354,
+    "expected_days": 704.5,
+    "dead_rate": 0.0945,
+    "timeout_rate": 0.222
+  },
+  "2021_2026": {
+    "n": 222,
+    "pass_rate": 0.6757,
+    "median_days_pass": 361.5,
+    "expected_days": 724.4,
+    "dead_rate": 0.0315,
+    "timeout_rate": 0.2928
+  },
+  "note": "Nouveau système (pas l'ancienne écurie). Pas une garantie. Objectif suivant: remonter pass >80% sans exploser les morts."
+}
